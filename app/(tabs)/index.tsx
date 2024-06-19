@@ -1,5 +1,5 @@
 import SafeArea from "@/components/SafeArea";
-import { FlatList, StyleSheet } from "react-native";
+import { Dimensions, FlatList, StyleSheet } from "react-native";
 
 import PropertyCard from "@/components/PropertyCard";
 import SearchHeader from "@/components/SearchHeader";
@@ -66,25 +66,31 @@ const properties = [
   },
 ];
 const HeaderHeight = 250;
-const threshold = HeaderHeight * 0.1;
+const deviceHeight = Dimensions.get("window").height;
+const threshold = deviceHeight * 0.1;
 
 const Page = () => {
   const flatListRef = useAnimatedRef<Animated.FlatList>();
   const scrollOffset = useScrollViewOffset(flatListRef);
   const maxScrollOffset = useSharedValue(0);
 
+  useLayoutEffect(() => {
+    scrollOffset.value = 0; // Start with the scroll offset at 0
+    maxScrollOffset.value = 0; // No maximum scroll offset initially
+  }, []);
+
   const headerAnimatedStyle = useAnimatedStyle(() => {
     maxScrollOffset.value = Math.max(maxScrollOffset.value, scrollOffset.value);
 
-    const startComingBack = maxScrollOffset.value - maxScrollOffset.value * 0.1;
+    const startComingBack = maxScrollOffset.value - threshold;
 
     return {
       transform: [
         {
           translateY: interpolate(
             scrollOffset.value,
-            [0, startComingBack, maxScrollOffset.value],
-            [0, 0, -HeaderHeight],
+            [0, startComingBack],
+            [0, -HeaderHeight],
             "clamp",
           ),
         },
