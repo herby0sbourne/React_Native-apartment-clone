@@ -4,10 +4,15 @@ import { Ionicons } from "@expo/vector-icons";
 import utils from "@/constants/UtilStyles";
 import Colors from "@/constants/Colors";
 import Button from "@/components/Button";
+import { Property } from "@/constants/types";
 
 const width = Dimensions.get("window").width;
 
-const PropertyCard = ({ property }) => {
+interface PropertyCardProps {
+  property: Property;
+}
+
+const PropertyCard = ({ property }: PropertyCardProps) => {
   const flatListRef = useRef<FlatList>(null);
   const [scrollIndex, setScrollIndex] = useState(0);
 
@@ -81,7 +86,7 @@ const PropertyCard = ({ property }) => {
             );
           })}
         </View>
-        <View style={{ flexDirection: "row", gap: 10, marginTop: 10, marginBottom: 5 }}>
+        <View style={styles.btnWrapper}>
           <Button title={"Email"} />
           <Button title={"Call"} ghostBtn={false} />
         </View>
@@ -113,6 +118,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: "center",
     // alignItems: "center",
+  },
+  btnWrapper: {
+    gap: 10,
+    marginTop: 10,
+    marginBottom: 5,
+    flexDirection: "row",
   },
 });
 
