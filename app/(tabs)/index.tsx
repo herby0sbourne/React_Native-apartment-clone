@@ -4,53 +4,55 @@ import { Dimensions, FlatList, StyleSheet } from "react-native";
 import PropertyCard from "@/components/PropertyCard";
 import SearchHeader from "@/components/SearchHeader";
 import { properties } from "@/data/properties";
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import Animated, {
   interpolate,
   useAnimatedRef,
   useAnimatedStyle,
   useScrollViewOffset,
   useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 
 const headerHeight = 250;
 const deviceHeight = Dimensions.get("window").height;
 const threshold = deviceHeight * 0.1;
+const transitionThreshold = 100;
 
 const Page = () => {
   const flatListRef = useAnimatedRef<Animated.FlatList>();
   const scrollOffset = useScrollViewOffset(flatListRef);
-  const maxScrollOffset = useSharedValue(0);
+  const previousScrollOffset = useSharedValue(0);
+  const accumulatedScrollUp = useSharedValue(0);
+  const headerYPosition = useSharedValue(0);
 
   useLayoutEffect(() => {
     scrollOffset.value = 0; // Start with the scroll offset at 0
-    maxScrollOffset.value = 0; // No maximum scroll offset initially
+    previousScrollOffset.value = 0; // No previous scroll offset initially
+    accumulatedScrollUp.value = 0; // No accumulated scroll up initially
+    headerYPosition.value = 0; // Header is initially in view
   }, []);
 
   const headerAnimatedStyle = useAnimatedStyle(() => {
-    maxScrollOffset.value = Math.max(maxScrollOffset.value, scrollOffset.value);
-    const startComingBack = maxScrollOffset.value - threshold;
+    const scrollDiff = scrollOffset.value - previousScrollOffset.value;
 
-    const translateY = interpolate(
-      scrollOffset.value,
-      [0, 250],
-      [0, -headerHeight],
-      "clamp",
-    );
+    if (scrollDiff > 0) {
+      // Scrolling down
+      accumulatedScrollUp.value = 0;
+      headerYPosition.value = withTiming(-headerHeight, { duration: 300 });
+    } else {
+      // Scrolling up
+      accumulatedScrollUp.value -= scrollDiff;
+      if (accumulatedScrollUp.value >= transitionThreshold) {
+        headerYPosition.value = withTiming(0, { duration: 300 });
+        accumulatedScrollUp.value = 0; // Reset accumulated scroll up after showing header
+      }
+    }
 
-    const height =
-      scrollOffset.value < startComingBack
-        ? interpolate(
-            scrollOffset.value,
-            [0, 250],
-            [headerHeight, headerHeight - headerHeight * 0.5],
-            "clamp",
-          )
-        : headerHeight * 0.5;
+    previousScrollOffset.value = scrollOffset.value;
 
     return {
-      transform: [{ translateY }],
-      height,
+      transform: [{ translateY: headerYPosition.value }],
     };
   });
 
@@ -66,6 +68,7 @@ const Page = () => {
         contentContainerStyle={{ gap: 10 }}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={16}
+        bounces={false}
       />
     </SafeArea>
   );
