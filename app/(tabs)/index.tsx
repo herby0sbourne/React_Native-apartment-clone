@@ -36,7 +36,10 @@ const Page = () => {
   const headerAnimatedStyle = useAnimatedStyle(() => {
     const scrollDiff = scrollOffset.value - previousScrollOffset.value;
 
-    if (scrollDiff > 0) {
+    if (scrollOffset.value === 0) {
+      // User is at the top
+      headerYPosition.value = withTiming(0, { duration: 300 });
+    } else if (scrollDiff > 0) {
       // Scrolling down
       accumulatedScrollUp.value = 0;
       headerYPosition.value = withTiming(-headerHeight, { duration: 300 });
@@ -55,7 +58,6 @@ const Page = () => {
       transform: [{ translateY: headerYPosition.value }],
     };
   });
-
   return (
     <SafeArea style={{ paddingHorizontal: 10 }}>
       <SearchHeader style={headerAnimatedStyle} />
@@ -77,7 +79,3 @@ const Page = () => {
 const styles = StyleSheet.create({});
 
 export default Page;
-
-// [0, HeaderHeight],
-//     [HeaderHeight / 2, 0, -HeaderHeight * 0.75],
-//     "clamp",
