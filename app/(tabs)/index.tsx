@@ -1,10 +1,10 @@
 import SafeArea from "@/components/SafeArea";
-import { Dimensions, FlatList, StyleSheet } from "react-native";
+import { Dimensions, FlatList, StatusBar, StyleSheet } from "react-native";
 
 import PropertyCard from "@/components/PropertyCard";
 import SearchHeader from "@/components/SearchHeader";
 import { properties } from "@/data/properties";
-import React, { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -13,11 +13,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-
-const headerHeight = 250;
-const deviceHeight = Dimensions.get("window").height;
-const threshold = deviceHeight * 0.1;
-const transitionThreshold = 100;
+import { HEADER_HEIGHT, TRANSITION_THRESHOLD } from "@/constants/variable";
 
 const Page = () => {
   const flatListRef = useAnimatedRef<Animated.FlatList>();
@@ -42,11 +38,11 @@ const Page = () => {
     } else if (scrollDiff > 0) {
       // Scrolling down
       accumulatedScrollUp.value = 0;
-      headerYPosition.value = withTiming(-headerHeight, { duration: 300 });
+      headerYPosition.value = withTiming(-HEADER_HEIGHT, { duration: 300 });
     } else {
       // Scrolling up
       accumulatedScrollUp.value -= scrollDiff;
-      if (accumulatedScrollUp.value >= transitionThreshold) {
+      if (accumulatedScrollUp.value >= TRANSITION_THRESHOLD) {
         headerYPosition.value = withTiming(0, { duration: 300 });
         accumulatedScrollUp.value = 0; // Reset accumulated scroll up after showing header
       }
@@ -58,8 +54,11 @@ const Page = () => {
       transform: [{ translateY: headerYPosition.value }],
     };
   });
+
   return (
     <SafeArea style={{ paddingHorizontal: 10 }}>
+      {/*<ExpoStatusBar style="light" />*/}
+      <StatusBar translucent={false} />
       <SearchHeader style={headerAnimatedStyle} />
 
       <Animated.FlatList
@@ -67,7 +66,7 @@ const Page = () => {
         data={properties}
         renderItem={({ item }) => <PropertyCard property={item} />}
         keyExtractor={item => item.id}
-        contentContainerStyle={{ gap: 10 }}
+        contentContainerStyle={[{ gap: 10 }]}
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={16}
         bounces={false}
