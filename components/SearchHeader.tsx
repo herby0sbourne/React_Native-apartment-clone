@@ -1,5 +1,5 @@
 import {
-  FlatList,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -18,37 +18,20 @@ import { HEADER_HEIGHT, TRANSITION_THRESHOLD } from "@/constants/variable";
 import { Ionicons } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Colors from "@/constants/Colors";
-import { gray } from "colorette";
 import utilStyles from "@/constants/UtilStyles";
 import UtilStyles from "@/constants/UtilStyles";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { filterBtn } from "@/constants/filterBtn";
 
 interface SearchHeaderProps {
   scrollOffset: SharedValue<number>;
 }
 
-const filterBtn = [
-  {
-    label: "Price",
-    onPress: () => console.log("price press"),
-  },
-  {
-    label: "Beds & Bath",
-    onPress: () => console.log("price press"),
-  },
-  {
-    label: "Move-in Date",
-    onPress: () => console.log("price press"),
-  },
-  {
-    label: "Pets",
-    onPress: () => console.log("price press"),
-  },
-];
-
 const SearchHeader = ({ scrollOffset }: SearchHeaderProps) => {
   const previousScrollOffset = useSharedValue(0);
   const accumulatedScrollUp = useSharedValue(0);
   const headerYPosition = useSharedValue(0);
+  const insets = useSafeAreaInsets();
 
   useLayoutEffect(() => {
     scrollOffset.value = 0; // Start with the scroll offset at 0
@@ -83,8 +66,12 @@ const SearchHeader = ({ scrollOffset }: SearchHeaderProps) => {
     };
   });
 
+  const iosStyles = Platform.select({
+    ios: { top: insets.top, height: HEADER_HEIGHT - insets.top },
+  });
+
   return (
-    <Animated.View style={[styles.container, headerAnimatedStyle]}>
+    <Animated.View style={[styles.container, iosStyles, headerAnimatedStyle]}>
       <View style={{ marginHorizontal: 10, paddingTop: 10, gap: 15 }}>
         <TouchableOpacity onPress={() => console.log("go to input screen pressed")}>
           <View style={styles.searchBar}>
@@ -146,9 +133,8 @@ const SearchHeader = ({ scrollOffset }: SearchHeaderProps) => {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    height: HEADER_HEIGHT - 24,
-    zIndex: 10,
-    // top: 24,
+    height: HEADER_HEIGHT,
+    zIndex: 3,
     // backgroundColor: "pink",
     backgroundColor: "white",
   },
@@ -177,7 +163,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: "#E0E0E0", // Light grey color
+    backgroundColor: "#E0E0E0",
     width: "100%",
   },
   btnTitle: { color: Colors.info, fontWeight: "600" },
