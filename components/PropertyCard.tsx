@@ -1,7 +1,7 @@
 import { View, Text, FlatList, Image, Dimensions, StyleSheet } from "react-native";
 import React, { useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import utils from "@/constants/UtilStyles";
+import { UtilStyles } from "@/constants/UtilStyles";
 import Colors from "@/constants/Colors";
 import Button from "@/components/Button";
 import { Property } from "@/constants/types";
@@ -59,7 +59,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
         </View>
       </View>
       <View style={{ padding: 5 }}>
-        <View style={utils.row}>
+        <View style={UtilStyles.row}>
           <Text style={{ fontWeight: "600", fontSize: 17 }}>
             <Text>${property.rentLow.toLocaleString()} </Text>
             <Text>- {property.rentHigh.toLocaleString()}</Text>

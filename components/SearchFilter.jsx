@@ -1,7 +1,25 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
-import { filterBtn } from "@/constants/filterBtn";
+
+export const filterBtn = [
+  {
+    label: "Price",
+    onPress: () => console.log("price press"),
+  },
+  {
+    label: "Beds & Bath",
+    onPress: () => console.log("price press"),
+  },
+  {
+    label: "Move-in Date",
+    onPress: () => console.log("price press"),
+  },
+  {
+    label: "Pets",
+    onPress: () => console.log("price press"),
+  },
+];
 
 const SearchFilter = () => {
   return (

@@ -18,10 +18,9 @@ import { HEADER_HEIGHT, TRANSITION_THRESHOLD } from "@/constants/variable";
 import { Ionicons } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Colors from "@/constants/Colors";
-import utilStyles from "@/constants/UtilStyles";
-import UtilStyles from "@/constants/UtilStyles";
+
+import { UtilStyles } from "@/constants/UtilStyles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { filterBtn } from "@/constants/filterBtn";
 import SearchFilter from "@/components/SearchFilter";
 
 interface SearchHeaderProps {
@@ -74,16 +73,18 @@ const SearchHeader = ({ scrollOffset }: SearchHeaderProps) => {
   return (
     <Animated.View style={[styles.container, iosStyles, headerAnimatedStyle]}>
       <View style={{ marginHorizontal: 10, paddingTop: 10, gap: 15 }}>
+        {/*SEARCH INPUT*/}
         <TouchableOpacity onPress={() => console.log("go to input screen pressed")}>
           <View style={styles.searchBar}>
             <Ionicons name={"search-outline"} size={28} color={Colors.primary} />
             <Text style={styles.searchText}>Find Location</Text>
           </View>
         </TouchableOpacity>
+        {/*  FILTER BUTTON*/}
         <SearchFilter />
         <View>
           <View style={[styles.divider]} />
-          <View style={[utilStyles.row, { marginTop: 8 }]}>
+          <View style={[UtilStyles.row, { marginTop: 8 }]}>
             <View style={[UtilStyles.flex, { gap: 5 }]}>
               <FontAwesome name="map-marker" size={18} color={Colors.primary} />
               <Text style={{ color: "gray" }}>12 Available</Text>
@@ -91,17 +92,17 @@ const SearchHeader = ({ scrollOffset }: SearchHeaderProps) => {
                 <Text style={styles.btnTitle}>Save</Text>
               </TouchableOpacity>
             </View>
-            <View style={[utilStyles.flex, { gap: 20 }]}>
+            <View style={[UtilStyles.flex, { gap: 20 }]}>
               <TouchableOpacity
                 onPress={() => console.log("save pressed")}
-                style={[utilStyles.flex, { gap: 5 }]}
+                style={[UtilStyles.flex, { gap: 5 }]}
               >
                 <Ionicons name={"map-outline"} size={20} color={Colors.info} />
                 <Text style={styles.btnTitle}>Sort</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => console.log("save pressed")}
-                style={[utilStyles.flex, { gap: 5 }]}
+                style={[UtilStyles.flex, { gap: 5 }]}
               >
                 <Ionicons name={"map-outline"} size={20} color={Colors.info} />
                 <Text style={styles.btnTitle}>Map</Text>

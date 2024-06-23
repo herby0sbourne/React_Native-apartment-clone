@@ -1,6 +1,6 @@
 import { ViewStyle } from "react-native";
 
-const utils: { row: ViewStyle; flex: ViewStyle } = {
+export const UtilStyles: { row: ViewStyle; flex: ViewStyle } = {
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -11,5 +11,3 @@ const utils: { row: ViewStyle; flex: ViewStyle } = {
     alignItems: "center",
   },
 };
-
-export default utils;
