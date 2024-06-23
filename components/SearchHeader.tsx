@@ -22,6 +22,7 @@ import utilStyles from "@/constants/UtilStyles";
 import UtilStyles from "@/constants/UtilStyles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { filterBtn } from "@/constants/filterBtn";
+import SearchFilter from "@/components/SearchFilter";
 
 interface SearchHeaderProps {
   scrollOffset: SharedValue<number>;
@@ -79,24 +80,7 @@ const SearchHeader = ({ scrollOffset }: SearchHeaderProps) => {
             <Text style={styles.searchText}>Find Location</Text>
           </View>
         </TouchableOpacity>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ gap: 10 }}
-        >
-          <View style={styles.btnOutline}>
-            <Ionicons name={"filter"} size={20} color={Colors.primary} />
-          </View>
-          {filterBtn.map(item => (
-            <TouchableOpacity
-              key={item.label}
-              style={[styles.btnOutline, { paddingHorizontal: 10, borderRadius: 15 }]}
-              onPress={item.onPress}
-            >
-              <Text style={styles.filterText}>{item.label}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+        <SearchFilter />
         <View>
           <View style={[styles.divider]} />
           <View style={[utilStyles.row, { marginTop: 8 }]}>
@@ -132,11 +116,17 @@ const SearchHeader = ({ scrollOffset }: SearchHeaderProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
-    height: HEADER_HEIGHT,
+    // ...StyleSheet.absoluteFillObject,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    // height: HEADER_HEIGHT,
+    // height: 200,
     zIndex: 3,
     // backgroundColor: "pink",
     backgroundColor: "white",
+    paddingBottom: 20,
   },
   searchBar: {
     flexDirection: "row",
