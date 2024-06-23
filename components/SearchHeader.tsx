@@ -1,11 +1,4 @@
-import {
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useLayoutEffect } from "react";
 import Animated, {
   SharedValue,
@@ -22,6 +15,7 @@ import Colors from "@/constants/Colors";
 import { UtilStyles } from "@/constants/UtilStyles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SearchFilter from "@/components/SearchFilter";
+import SearchBtnOption from "@/components/SearchBtnOption";
 
 interface SearchHeaderProps {
   scrollOffset: SharedValue<number>;
@@ -88,25 +82,19 @@ const SearchHeader = ({ scrollOffset }: SearchHeaderProps) => {
             <View style={[UtilStyles.flex, { gap: 5 }]}>
               <FontAwesome name="map-marker" size={18} color={Colors.primary} />
               <Text style={{ color: "gray" }}>12 Available</Text>
-              <TouchableOpacity onPress={() => console.log("save pressed")}>
-                <Text style={styles.btnTitle}>Save</Text>
-              </TouchableOpacity>
+              <SearchBtnOption onPress={() => console.log("save")} title="Save" />
             </View>
             <View style={[UtilStyles.flex, { gap: 20 }]}>
-              <TouchableOpacity
-                onPress={() => console.log("save pressed")}
-                style={[UtilStyles.flex, { gap: 5 }]}
-              >
-                <Ionicons name={"map-outline"} size={20} color={Colors.info} />
-                <Text style={styles.btnTitle}>Sort</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => console.log("save pressed")}
-                style={[UtilStyles.flex, { gap: 5 }]}
-              >
-                <Ionicons name={"map-outline"} size={20} color={Colors.info} />
-                <Text style={styles.btnTitle}>Map</Text>
-              </TouchableOpacity>
+              <SearchBtnOption
+                onPress={() => console.log("sort")}
+                title="Sort"
+                iconName={"chevron-expand-outline"}
+              />
+              <SearchBtnOption
+                onPress={() => console.log("Map")}
+                title="Map"
+                iconName={"map-outline"}
+              />
             </View>
           </View>
         </View>
@@ -157,6 +145,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#E0E0E0",
     width: "100%",
   },
-  btnTitle: { color: Colors.info, fontWeight: "600" },
 });
 export default SearchHeader;
