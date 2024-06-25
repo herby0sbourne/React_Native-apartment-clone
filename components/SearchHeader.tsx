@@ -1,5 +1,5 @@
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
+import { useLayoutEffect } from "react";
 import Animated, {
   SharedValue,
   useAnimatedStyle,
@@ -16,10 +16,11 @@ import { UtilStyles } from "@/constants/UtilStyles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SearchFilter from "@/components/SearchFilter";
 import SearchBtnOption from "@/components/SearchBtnOption";
+import { useNavigation } from "expo-router";
 
 interface SearchHeaderProps {
-  scrollOffset: SharedValue<number>;
-  mapBtn: Dispatch<SetStateAction<boolean>>;
+  scrollOffset?: SharedValue<number>;
+  mapBtn: () => void;
   isMap: boolean;
 }
 
@@ -27,18 +28,23 @@ const SearchHeader = ({ scrollOffset, mapBtn, isMap }: SearchHeaderProps) => {
   const previousScrollOffset = useSharedValue(0);
   const accumulatedScrollUp = useSharedValue(0);
   const headerYPosition = useSharedValue(0);
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
 
   useLayoutEffect(() => {
-    scrollOffset.value = 0; // Start with the scroll offset at 0
+    if (scrollOffset) {
+      scrollOffset.value = 0;
+    }
+    // scrollOffset.value = 0; // Start with the scroll offset at 0
     previousScrollOffset.value = 0; // No previous scroll offset initially
     accumulatedScrollUp.value = 0; // No accumulated scroll up initially
     headerYPosition.value = 0; // Header is initially in view
   }, []);
 
   const headerAnimatedStyle = useAnimatedStyle(() => {
-    const scrollDiff = scrollOffset.value - previousScrollOffset.value;
+    if (!scrollOffset) return {};
 
+    const scrollDiff = scrollOffset.value - previousScrollOffset.value;
     if (scrollOffset.value === 0) {
       // User is at the top
       headerYPosition.value = withTiming(0, { duration: 300 });
@@ -65,6 +71,10 @@ const SearchHeader = ({ scrollOffset, mapBtn, isMap }: SearchHeaderProps) => {
   const iosStyles = Platform.select({
     ios: { top: insets.top, height: HEADER_HEIGHT - insets.top },
   });
+
+  const handleSearchNavigation = () => {
+    navigation.navigate("index");
+  };
 
   return (
     <Animated.View style={[styles.container, iosStyles, headerAnimatedStyle]}>
@@ -94,16 +104,12 @@ const SearchHeader = ({ scrollOffset, mapBtn, isMap }: SearchHeaderProps) => {
               />
               {isMap ? (
                 <SearchBtnOption
-                  onPress={() => mapBtn(false)}
+                  onPress={handleSearchNavigation}
                   title="List"
                   iconName={"list-outline"}
                 />
               ) : (
-                <SearchBtnOption
-                  onPress={() => mapBtn(true)}
-                  title="Map"
-                  iconName={"map-outline"}
-                />
+                <SearchBtnOption onPress={mapBtn} title="Map" iconName={"map-outline"} />
               )}
             </View>
           </View>
