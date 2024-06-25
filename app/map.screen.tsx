@@ -1,14 +1,13 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { Property } from "@/constants/types";
 import MapMarker from "@/components/MapMarker";
 import Colors from "@/constants/Colors";
 import MapView from "react-native-maps";
-import { useState } from "react";
-import { Stack, useRouter } from "expo-router";
+import { useRef, useState } from "react";
+import { Stack } from "expo-router";
 import { useRoute } from "@react-navigation/core";
-import { properties } from "@/data/properties";
+
 import SearchHeader from "@/components/SearchHeader";
-import SafeArea from "@/components/SafeArea";
 
 interface MapProps {
   properties: Property[];
@@ -23,10 +22,21 @@ const INITIAL_REGION = {
 
 const MapScreen = ({}: MapProps) => {
   const [activeMarker, setActiveMarker] = useState<null | number>(null);
+  const mapRef = useRef<MapView | null>(null);
   const route = useRoute();
   const properties = route.params?.properties;
 
   const handleMarkerPress = (index: number) => {
+    if (Platform.OS === "ios") {
+      setTimeout(() => {
+        mapRef.current?.animateCamera({
+          center: {
+            latitude: properties[index].lat,
+            longitude: properties[index].lng,
+          },
+        });
+      }, 100);
+    }
     setActiveMarker(index);
   };
 
@@ -37,7 +47,7 @@ const MapScreen = ({}: MapProps) => {
           header: () => <SearchHeader mapBtn={() => {}} isMap={true} />,
         }}
       />
-      <MapView style={styles.mapStyle} initialRegion={INITIAL_REGION}>
+      <MapView style={styles.mapStyle} initialRegion={INITIAL_REGION} ref={mapRef}>
         {properties.map((property, index) => {
           return (
             <MapMarker
