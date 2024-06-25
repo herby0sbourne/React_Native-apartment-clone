@@ -13,7 +13,10 @@ interface SearchBtnOptionProps {
 
 const SearchBtnOption = ({ title, iconName, onPress }: SearchBtnOptionProps) => {
   return (
-    <TouchableOpacity onPress={onPress} style={[UtilStyles.flex, { gap: 5 }]}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[UtilStyles.flex, { gap: 5, minWidth: 54 }]}
+    >
       {iconName && <Ionicons name={`${iconName}`} size={20} color={Colors.info} />}
       <Text style={styles.btnTitle}>{title}</Text>
     </TouchableOpacity>
