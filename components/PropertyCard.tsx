@@ -67,7 +67,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
           <Ionicons name="heart-outline" size={24} color={Colors.primary} />
         </View>
         <Text>
-          {property.bedRoomLow} - {property.bedRoomHigh} Beds
+          {property.bedroomLow} - {property.bedroomHigh} Beds
         </Text>
         <View style={{ marginVertical: 8 }}>
           <Text>{property.name}</Text>
