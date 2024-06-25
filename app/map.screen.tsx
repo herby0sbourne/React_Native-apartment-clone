@@ -28,14 +28,15 @@ const MapScreen = ({}: MapProps) => {
 
   const handleMarkerPress = (index: number) => {
     if (Platform.OS === "ios") {
-      setTimeout(() => {
-        mapRef.current?.animateCamera({
+      mapRef.current?.animateCamera(
+        {
           center: {
             latitude: properties[index].lat,
             longitude: properties[index].lng,
           },
-        });
-      }, 100);
+        },
+        { duration: 1 * 1000 },
+      );
     }
     setActiveMarker(index);
   };
