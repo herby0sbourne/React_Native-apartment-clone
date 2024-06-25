@@ -69,7 +69,10 @@ const SearchHeader = ({ scrollOffset, mapBtn, isMap }: SearchHeaderProps) => {
   });
 
   const iosStyles = Platform.select({
-    ios: { top: insets.top, height: HEADER_HEIGHT - insets.top },
+    ios: {
+      paddingTop: insets.top,
+      height: HEADER_HEIGHT - insets.top / 2,
+    },
   });
 
   const handleSearchNavigation = () => {
