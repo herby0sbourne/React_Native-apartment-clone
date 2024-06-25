@@ -28,11 +28,13 @@ const MapScreen = ({}: MapProps) => {
 
   const handleMarkerPress = (index: number) => {
     if (Platform.OS === "ios") {
+      const { lat, lng } = properties[index];
+
       mapRef.current?.animateCamera(
         {
           center: {
-            latitude: properties[index].lat,
-            longitude: properties[index].lng,
+            latitude: lat,
+            longitude: lng,
           },
         },
         { duration: 1 * 1000 },
