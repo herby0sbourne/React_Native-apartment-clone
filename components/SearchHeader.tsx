@@ -1,5 +1,5 @@
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useLayoutEffect } from "react";
+import { Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
 import Animated, {
   SharedValue,
   useAnimatedStyle,
@@ -19,9 +19,11 @@ import SearchBtnOption from "@/components/SearchBtnOption";
 
 interface SearchHeaderProps {
   scrollOffset: SharedValue<number>;
+  mapBtn: Dispatch<SetStateAction<boolean>>;
+  isMap: boolean;
 }
 
-const SearchHeader = ({ scrollOffset }: SearchHeaderProps) => {
+const SearchHeader = ({ scrollOffset, mapBtn, isMap }: SearchHeaderProps) => {
   const previousScrollOffset = useSharedValue(0);
   const accumulatedScrollUp = useSharedValue(0);
   const headerYPosition = useSharedValue(0);
@@ -84,17 +86,25 @@ const SearchHeader = ({ scrollOffset }: SearchHeaderProps) => {
               <Text style={{ color: "gray" }}>12 Available</Text>
               <SearchBtnOption onPress={() => console.log("save")} title="Save" />
             </View>
-            <View style={[UtilStyles.flex, { gap: 20 }]}>
+            <View style={[UtilStyles.flex, { gap: 14 }]}>
               <SearchBtnOption
                 onPress={() => console.log("sort")}
                 title="Sort"
                 iconName={"chevron-expand-outline"}
               />
-              <SearchBtnOption
-                onPress={() => console.log("Map")}
-                title="Map"
-                iconName={"map-outline"}
-              />
+              {isMap ? (
+                <SearchBtnOption
+                  onPress={() => mapBtn(false)}
+                  title="List"
+                  iconName={"list-outline"}
+                />
+              ) : (
+                <SearchBtnOption
+                  onPress={() => mapBtn(true)}
+                  title="Map"
+                  iconName={"map-outline"}
+                />
+              )}
             </View>
           </View>
         </View>
@@ -112,7 +122,7 @@ const styles = StyleSheet.create({
     right: 0,
     // height: HEADER_HEIGHT,
     // height: 200,
-    zIndex: 3,
+    zIndex: 10,
     // backgroundColor: "pink",
     backgroundColor: "white",
     paddingBottom: 20,
