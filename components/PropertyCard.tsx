@@ -1,4 +1,12 @@
-import { View, Text, FlatList, Image, Dimensions, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  Dimensions,
+  StyleSheet,
+  ViewStyle,
+} from "react-native";
 import React, { useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { UtilStyles } from "@/constants/UtilStyles";
@@ -10,9 +18,10 @@ const width = Dimensions.get("window").width;
 
 interface PropertyCardProps {
   property: Property;
+  extraStyle: ViewStyle;
 }
 
-const PropertyCard = ({ property }: PropertyCardProps) => {
+const PropertyCard = ({ property, extraStyle }: PropertyCardProps) => {
   const flatListRef = useRef<FlatList>(null);
   const [scrollIndex, setScrollIndex] = useState(0);
 
@@ -28,7 +37,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   };
 
   return (
-    <View style={styles.cardContainer}>
+    <View style={[styles.cardContainer, extraStyle]}>
       <View style={{ position: "relative" }}>
         <FlatList
           ref={flatListRef}
@@ -101,10 +110,11 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: "gray",
     overflow: "hidden",
+    backgroundColor: "white",
     // borderColor: "#D3D3D3",
   },
   image: {
-    height: 250,
+    height: 200,
     width: width,
     // width: "100%",
     // borderTopRightRadius: 6,
