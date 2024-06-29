@@ -46,6 +46,10 @@ const MapScreen = ({}: MapProps) => {
     setActiveMarker(index);
   };
 
+  const handleMapPress = () => {
+    setActiveMarker(null);
+  };
+
   return (
     <View style={styles.container}>
       <Stack.Screen
@@ -53,7 +57,12 @@ const MapScreen = ({}: MapProps) => {
           header: () => <SearchHeader mapBtn={() => {}} isMap={true} />,
         }}
       />
-      <MapView style={styles.mapStyle} initialRegion={INITIAL_REGION} ref={mapRef}>
+      <MapView
+        style={styles.mapStyle}
+        initialRegion={INITIAL_REGION}
+        ref={mapRef}
+        onPress={handleMapPress}
+      >
         {properties.map((property, index) => {
           return (
             <MapMarker
