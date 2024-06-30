@@ -9,6 +9,7 @@ import { useRoute } from "@react-navigation/core";
 
 import SearchHeader from "@/components/SearchHeader";
 import PropertyCard from "@/components/PropertyCard";
+import Animated, { FadeOut, SlideInDown, SlideInUp } from "react-native-reanimated";
 
 interface MapProps {
   properties: Property[];
@@ -76,7 +77,9 @@ const MapScreen = ({}: MapProps) => {
         })}
       </MapView>
       {activeMarker !== null && (
-        <PropertyCard property={properties[activeMarker]} extraStyle={styles.mapCard} />
+        <Animated.View entering={SlideInDown} exiting={FadeOut}>
+          <PropertyCard property={properties[activeMarker]} extraStyle={styles.mapCard} />
+        </Animated.View>
       )}
     </View>
   );
