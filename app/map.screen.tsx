@@ -1,19 +1,22 @@
-import { Platform, StyleSheet, Text, View } from "react-native";
-import { Property } from "@/constants/types";
-import MapMarker from "@/components/MapMarker";
-import Colors from "@/constants/Colors";
-import MapView from "react-native-maps";
 import { useRef, useState } from "react";
 import { Stack } from "expo-router";
-import { useRoute } from "@react-navigation/core";
+import MapView from "react-native-maps";
+import { Platform, StyleSheet, View } from "react-native";
+import { RouteProp, useRoute } from "@react-navigation/core";
+import Animated, { FadeOut, SlideInDown } from "react-native-reanimated";
 
+import MapMarker from "@/components/MapMarker";
 import SearchHeader from "@/components/SearchHeader";
 import PropertyCard from "@/components/PropertyCard";
-import Animated, { FadeOut, SlideInDown, SlideInUp } from "react-native-reanimated";
 
-interface MapProps {
-  properties: Property[];
-}
+import Colors from "@/constants/Colors";
+import { Property } from "@/constants/types";
+
+type RouteParams = {
+  params: {
+    properties: Property[];
+  };
+};
 
 const INITIAL_REGION = {
   latitude: 25.80913,
@@ -24,10 +27,14 @@ const INITIAL_REGION = {
   // longitudeDelta: 0.0421,
 };
 
+interface MapProps {
+  properties: Property[];
+}
+
 const MapScreen = ({}: MapProps) => {
   const [activeMarker, setActiveMarker] = useState<null | number>(null);
   const mapRef = useRef<MapView | null>(null);
-  const route = useRoute();
+  const route = useRoute<RouteProp<RouteParams, "params">>();
   const properties = route.params?.properties;
 
   const handleMarkerPress = (index: number) => {
@@ -89,7 +96,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: "relative",
-    // ...StyleSheet.absoluteFillObject,
   },
   mapStyle: {
     width: "100%",
@@ -98,7 +104,6 @@ const styles = StyleSheet.create({
   mapCard: {
     position: "absolute",
     bottom: 10,
-    // height: 250,
     marginHorizontal: 10,
   },
 });
