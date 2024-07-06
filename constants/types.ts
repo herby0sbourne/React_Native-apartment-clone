@@ -1,4 +1,4 @@
-export interface Property {
+interface Property {
   id: number;
   unitType: string;
   images: string[];
