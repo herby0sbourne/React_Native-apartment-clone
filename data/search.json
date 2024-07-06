@@ -1,0 +1,192 @@
+[
+    {
+        "boundingbox": [
+            "43.610384",
+            "43.7360196",
+            "-79.492821",
+            "-79.2785104"
+        ],
+        "class": "boundary",
+        "display_name": "Old Toronto, Golden Horseshoe, Ontario, Canada",
+        "icon": "https://locationiq.org/static/images/mapicons/poi_boundary_administrative.p.20.png",
+        "importance": 0.8130149417022804,
+        "lat": "43.6534817",
+        "licence": "https://locationiq.com/attribution",
+        "lon": "-79.3839347",
+        "osm_id": "2989349",
+        "osm_type": "relation",
+        "place_id": "343431499",
+        "type": "administrative"
+    },
+    {
+        "boundingbox": [
+            "43.5796082",
+            "43.8554425",
+            "-79.6392832",
+            "-79.1132193"
+        ],
+        "class": "boundary",
+        "display_name": "Toronto, Golden Horseshoe, Ontario, Canada",
+        "icon": "https://locationiq.org/static/images/mapicons/poi_boundary_administrative.p.20.png",
+        "importance": 0.8130149417022804,
+        "lat": "43.6534817",
+        "licence": "https://locationiq.com/attribution",
+        "lon": "-79.3839347",
+        "osm_id": "324211",
+        "osm_type": "relation",
+        "place_id": "343125339",
+        "type": "administrative"
+    },
+    {
+        "boundingbox": [
+            "41.8987461",
+            "41.9065584",
+            "-90.8672568",
+            "-90.8594528"
+        ],
+        "class": "boundary",
+        "display_name": "Toronto, Clinton County, Iowa, 52777, USA",
+        "icon": "https://locationiq.org/static/images/mapicons/poi_boundary_administrative.p.20.png",
+        "importance": 0.5353653500823204,
+        "lat": "41.9048584",
+        "licence": "https://locationiq.com/attribution",
+        "lon": "-90.8640346",
+        "osm_id": "128413",
+        "osm_type": "relation",
+        "place_id": "343082058",
+        "type": "administrative"
+    },
+    {
+        "boundingbox": [
+            "37.792721",
+            "37.803752",
+            "-95.956873",
+            "-95.9412801"
+        ],
+        "class": "boundary",
+        "display_name": "Toronto, Woodson County, Kansas, 66777, USA",
+        "icon": "https://locationiq.org/static/images/mapicons/poi_boundary_administrative.p.20.png",
+        "importance": 0.5160865819376758,
+        "lat": "37.7989253",
+        "licence": "https://locationiq.com/attribution",
+        "lon": "-95.9491562",
+        "osm_id": "129677",
+        "osm_type": "relation",
+        "place_id": "343083721",
+        "type": "administrative"
+    },
+    {
+        "boundingbox": [
+            "46.4305437",
+            "46.4662257",
+            "-63.3982902",
+            "-63.3671092"
+        ],
+        "class": "boundary",
+        "display_name": "Toronto, Queens County, Prince Edward Island, Canada",
+        "icon": "https://locationiq.org/static/images/mapicons/poi_boundary_administrative.p.20.png",
+        "importance": 0.4500099999999999,
+        "lat": "46.4524682",
+        "licence": "https://locationiq.com/attribution",
+        "lon": "-63.3799629",
+        "osm_id": "12030531",
+        "osm_type": "relation",
+        "place_id": "344427377",
+        "type": "administrative"
+    },
+    {
+        "boundingbox": [
+            "40.436469",
+            "40.4832531",
+            "-80.622815",
+            "-80.5961972"
+        ],
+        "class": "boundary",
+        "display_name": "Toronto, Jefferson County, Ohio, 43964, USA",
+        "icon": "https://locationiq.org/static/images/mapicons/poi_boundary_administrative.p.20.png",
+        "importance": 0.44837647060696384,
+        "lat": "40.4653962",
+        "licence": "https://locationiq.com/attribution",
+        "lon": "-80.6009547",
+        "osm_id": "183442",
+        "osm_type": "relation",
+        "place_id": "343106590",
+        "type": "administrative"
+    },
+    {
+        "boundingbox": [
+            "-33.031957",
+            "-32.9966783",
+            "151.556006",
+            "151.6068223"
+        ],
+        "class": "boundary",
+        "display_name": "Toronto, Newcastle-Maitland, Lake Macquarie City Council, New South Wales, 2283, Australia",
+        "icon": "https://locationiq.org/static/images/mapicons/poi_boundary_administrative.p.20.png",
+        "importance": 0.4203958451676493,
+        "lat": "-33.013441",
+        "licence": "https://locationiq.com/attribution",
+        "lon": "151.5942043",
+        "osm_id": "5993953",
+        "osm_type": "relation",
+        "place_id": "343766180",
+        "type": "administrative"
+    },
+    {
+        "boundingbox": [
+            "44.5666948",
+            "44.5780659",
+            "-96.6475168",
+            "-96.6373545"
+        ],
+        "class": "boundary",
+        "display_name": "Toronto, Blom Township, Deuel County, South Dakota, 57268, USA",
+        "icon": "https://locationiq.org/static/images/mapicons/poi_boundary_administrative.p.20.png",
+        "importance": 0.39402874005523814,
+        "lat": "44.57302",
+        "licence": "https://locationiq.com/attribution",
+        "lon": "-96.642554",
+        "osm_id": "194920",
+        "osm_type": "relation",
+        "place_id": "343109042",
+        "type": "administrative"
+    },
+    {
+        "boundingbox": [
+            "43.6523447",
+            "43.652424",
+            "-79.3837278",
+            "-79.3834075"
+        ],
+        "class": "tourism",
+        "display_name": "TORONTO, PATH, Entertainment District, Spadina—Fort York, Old Toronto, Golden Horseshoe, Ontario, M5T3M5, Canada",
+        "icon": "https://locationiq.org/static/images/mapicons/tourist_art_gallery2.p.20.png",
+        "importance": 0.3793549821575414,
+        "lat": "43.65238435",
+        "licence": "https://locationiq.com/attribution",
+        "lon": "-79.38356765",
+        "osm_id": "851806479",
+        "osm_type": "way",
+        "place_id": "289678801",
+        "type": "artwork"
+    },
+    {
+        "boundingbox": [
+            "49.8453059",
+            "49.8853059",
+            "14.4525114",
+            "14.4925114"
+        ],
+        "class": "place",
+        "display_name": "Toronto, Luka pod Medníkem, Jílové u Prahy, okres Praha-západ, Central Bohemia, 254 01, Czechia",
+        "icon": "https://locationiq.org/static/images/mapicons/poi_place_village.p.20.png",
+        "importance": 0.35000999999999993,
+        "lat": "49.8653059",
+        "licence": "https://locationiq.com/attribution",
+        "lon": "14.4725114",
+        "osm_id": "529925288",
+        "osm_type": "node",
+        "place_id": "4040034",
+        "type": "hamlet"
+    }
+]
