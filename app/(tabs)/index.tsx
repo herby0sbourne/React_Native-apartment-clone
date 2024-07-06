@@ -8,8 +8,8 @@ import SafeArea from "@/components/SafeArea";
 import PropertyCard from "@/components/PropertyCard";
 import SearchHeader from "@/components/SearchHeader";
 
-import { Property } from "@/constants/types";
 import { properties } from "@/data/properties";
+import { Property } from "@/types/property";
 
 type RootStackParamList = {
   "map.screen": { properties: Property[] };

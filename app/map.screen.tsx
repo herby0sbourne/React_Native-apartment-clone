@@ -10,7 +10,7 @@ import SearchHeader from "@/components/SearchHeader";
 import PropertyCard from "@/components/PropertyCard";
 
 import Colors from "@/constants/Colors";
-import { Property } from "@/constants/types";
+import { Property } from "@/types/property";
 
 type RouteParams = {
   params: {

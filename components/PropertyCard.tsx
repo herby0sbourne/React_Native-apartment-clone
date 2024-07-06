@@ -12,13 +12,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { UtilStyles } from "@/constants/UtilStyles";
 import Colors from "@/constants/Colors";
 import Button from "@/components/Button";
-import { Property } from "@/constants/types";
+import { Property } from "@/types/property";
 
 const width = Dimensions.get("window").width;
 
 interface PropertyCardProps {
   property: Property;
-  extraStyle: ViewStyle;
+  extraStyle?: ViewStyle;
 }
 
 const PropertyCard = ({ property, extraStyle }: PropertyCardProps) => {
