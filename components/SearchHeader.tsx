@@ -16,7 +16,7 @@ import { UtilStyles } from "@/constants/UtilStyles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SearchFilter from "@/components/SearchFilter";
 import SearchBtnOption from "@/components/SearchBtnOption";
-import { useNavigation } from "expo-router";
+import { Link, useNavigation } from "expo-router";
 
 interface SearchHeaderProps {
   scrollOffset?: SharedValue<number>;
@@ -83,12 +83,14 @@ const SearchHeader = ({ scrollOffset, mapBtn, isMap }: SearchHeaderProps) => {
     <Animated.View style={[styles.container, iosStyles, headerAnimatedStyle]}>
       <View style={{ marginHorizontal: 10, paddingTop: 10, gap: 15 }}>
         {/*SEARCH INPUT*/}
-        <TouchableOpacity onPress={() => console.log("go to input screen pressed")}>
-          <View style={styles.searchBar}>
-            <Ionicons name={"search-outline"} size={28} color={Colors.primary} />
-            <Text style={styles.searchText}>Find Location</Text>
-          </View>
-        </TouchableOpacity>
+        <Link href="(modals)/FindLocation.screen" asChild>
+          <TouchableOpacity>
+            <View style={styles.searchBar}>
+              <Ionicons name={"search-outline"} size={28} color={Colors.primary} />
+              <Text style={styles.searchText}>Find Location</Text>
+            </View>
+          </TouchableOpacity>
+        </Link>
         {/*  FILTER BUTTON*/}
         <SearchFilter />
         <View>
@@ -132,7 +134,6 @@ const styles = StyleSheet.create({
     // height: HEADER_HEIGHT,
     // height: 200,
     zIndex: 10,
-    // backgroundColor: "pink",
     backgroundColor: "white",
     paddingBottom: 20,
   },
