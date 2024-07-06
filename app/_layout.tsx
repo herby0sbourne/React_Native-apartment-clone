@@ -47,6 +47,16 @@ function RootLayoutNav() {
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="map.screen" />
+      <Stack.Screen
+        name="(modals)/FindLocation.screen"
+        options={{
+          headerShown: false,
+          presentation: "modal",
+          animation: "slide_from_bottom",
+          gestureEnabled: true,
+          gestureDirection: "vertical",
+        }}
+      />
       {/* <Stack.Screen name="modal" options={{ presentation: "modal" }} /> */}
     </Stack>
   );
