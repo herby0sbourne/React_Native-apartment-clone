@@ -1,5 +1,5 @@
 import { useNavigation } from "expo-router";
-import { RouteProp } from "@react-navigation/core";
+import { RouteProp, useRoute } from "@react-navigation/core";
 import { StatusBar, StyleSheet } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Animated, { useAnimatedRef, useScrollViewOffset } from "react-native-reanimated";
@@ -25,10 +25,17 @@ const Page = () => {
   const flatListRef = useAnimatedRef<Animated.FlatList>();
   const scrollOffset = useScrollViewOffset(flatListRef);
   const navigation = useNavigation<MapScreenNavigationProp>();
+  const route = useRoute();
 
   const handleMapNavigation = () => {
-    navigation.navigate("map.screen", { properties });
+    navigation.navigate("map.screen", {
+      properties,
+      lat: +route?.params?.lat,
+      lng: +route?.params?.lng,
+    });
   };
+
+  console.log(route.params);
 
   return (
     <>
