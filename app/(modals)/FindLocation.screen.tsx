@@ -14,6 +14,7 @@ import { Location } from "@/types/locationIQ";
 import { useNavigation } from "expo-router";
 import { autocomplete } from "@/data/autocomplete";
 import { Ionicons } from "@expo/vector-icons";
+import { NavigationProp } from "@react-navigation/native";
 
 const getFormattedLocationText = (item: Location) => {
   let location = item.address.name;
@@ -24,34 +25,47 @@ const getFormattedLocationText = (item: Location) => {
   return location;
 };
 
+ interface IndexParam {
+  index: {
+    location: string;
+    lat: string;
+    lng: string;
+    boundingBox: string[];
+  };
+  // other routes...
+};
+
 const FindLocationScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<IndexParam>>();
   const [text, setText] = useState("");
   const [suggestions, setSuggestions] = useState<Location[] | []>([]);
 
   const handleChangeText = async (text: string) => {
     setText(text);
 
-    if (text.length < 3) {
-      return;
-    }
+    if (text.length < 3) return;
 
     const fetchLocations = await getSuggestedLocations(text);
 
-    if (fetchLocations.length > 0) {
-      return setSuggestions(fetchLocations);
-    }
+    if (fetchLocations.length > 0) return setSuggestions(fetchLocations);
 
-    if (text.length === 0) {
-      setSuggestions([]);
-    }
+    if (text.length === 0) return setSuggestions([]);
   };
 
   const handleSubmit = async () => {
     const fetchLocations = await getSuggestedLocations(text);
     if (fetchLocations.length !== 0) {
-      console.log("navigate to search screen passing location", fetchLocations[0]);
+      handleNavigate(fetchLocations[0]);
     }
+  };
+
+  const handleNavigate = (location: Location) => {
+    navigation.navigate("index", {
+      location: getFormattedLocationText(location),
+      lat: location.lat,
+      lng: location.lon,
+      boundingBox: location.boundingbox,
+    });
   };
 
   return (
@@ -72,7 +86,10 @@ const FindLocationScreen = () => {
           {autocomplete.map(location => {
             return (
               <View key={Math.random().toString()} style={styles.locationText}>
-                <TouchableOpacity style={styles.locationBtn}>
+                <TouchableOpacity
+                  style={styles.locationBtn}
+                  onPress={() => handleNavigate(location)}
+                >
                   <Text style={{ color: "black" }}>
                     {getFormattedLocationText(location)}
                   </Text>
