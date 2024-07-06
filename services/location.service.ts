@@ -19,6 +19,7 @@ export const getSuggestedLocations = async (text: string, limit?: number) => {
 
     return data;
   } catch (error) {
+    console.log("getSuggestedLocations");
     console.error(error);
     return [];
   }
@@ -35,6 +36,7 @@ export const searchLocations = async (text: string) => {
 
     return data;
   } catch (error) {
+    console.log("searchLocations");
     console.error(error);
     return [];
   }
