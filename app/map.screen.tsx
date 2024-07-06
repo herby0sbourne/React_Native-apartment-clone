@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Stack } from "expo-router";
-import MapView from "react-native-maps";
+import MapView, { Region } from "react-native-maps";
 import { Platform, StyleSheet, View } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/core";
 import Animated, { FadeOut, SlideInDown } from "react-native-reanimated";
@@ -15,20 +15,15 @@ import { Property } from "@/types/property";
 type RouteParams = {
   params: {
     properties: Property[];
+    lat: number;
+    lng: number;
   };
-};
-
-const INITIAL_REGION = {
-  latitude: 25.80913,
-  longitude: -80.186363,
-  latitudeDelta: 0.1,
-  longitudeDelta: 0.1,
-  // latitudeDelta: 0.0922,
-  // longitudeDelta: 0.0421,
 };
 
 interface MapProps {
   properties: Property[];
+  // mapRef: MapView | null
+  initialRegion?: Region | undefined;
 }
 
 const MapScreen = ({}: MapProps) => {
@@ -36,6 +31,15 @@ const MapScreen = ({}: MapProps) => {
   const mapRef = useRef<MapView | null>(null);
   const route = useRoute<RouteProp<RouteParams, "params">>();
   const properties = route.params?.properties;
+
+  const INITIAL_REGION = {
+    latitude: route.params?.lat || 25.80913,
+    longitude: route.params?.lng || -80.186363,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.1,
+    // latitudeDelta: 0.0922,
+    // longitudeDelta: 0.0421,
+  };
 
   const handleMarkerPress = (index: number) => {
     if (Platform.OS === "ios") {
@@ -57,6 +61,13 @@ const MapScreen = ({}: MapProps) => {
   const handleMapPress = () => {
     setActiveMarker(null);
   };
+
+  // useEffect(() => {
+  //   if (route.params?.lat && route.params?.lng) {
+  //
+  //   }
+  //   console.log(route.params);
+  // }, []);
 
   return (
     <View style={styles.container}>
@@ -108,3 +119,13 @@ const styles = StyleSheet.create({
   },
 });
 export default MapScreen;
+
+
+// const INITIAL_REGION = {
+//   latitude: 25.80913,
+//   longitude: -80.186363,
+//   latitudeDelta: 0.1,
+//   longitudeDelta: 0.1,
+//   // latitudeDelta: 0.0922,
+//   // longitudeDelta: 0.0421,
+// };
