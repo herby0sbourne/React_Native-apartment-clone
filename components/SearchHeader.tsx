@@ -20,11 +20,12 @@ import { Link, useNavigation } from "expo-router";
 
 interface SearchHeaderProps {
   scrollOffset?: SharedValue<number>;
-  mapBtn: () => void;
+  // mapBtn: () => void;
   isMap: boolean;
+  setIsMap: (value: boolean) => void;
 }
 
-const SearchHeader = ({ scrollOffset, mapBtn, isMap }: SearchHeaderProps) => {
+const SearchHeader = ({ scrollOffset, isMap, setIsMap }: SearchHeaderProps) => {
   const previousScrollOffset = useSharedValue(0);
   const accumulatedScrollUp = useSharedValue(0);
   const headerYPosition = useSharedValue(0);
@@ -109,12 +110,16 @@ const SearchHeader = ({ scrollOffset, mapBtn, isMap }: SearchHeaderProps) => {
               />
               {isMap ? (
                 <SearchBtnOption
-                  onPress={handleSearchNavigation}
+                  onPress={() => setIsMap(false)}
                   title="List"
                   iconName={"list-outline"}
                 />
               ) : (
-                <SearchBtnOption onPress={mapBtn} title="Map" iconName={"map-outline"} />
+                <SearchBtnOption
+                  onPress={() => setIsMap(true)}
+                  title="Map"
+                  iconName={"map-outline"}
+                />
               )}
             </View>
           </View>
