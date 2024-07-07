@@ -24,6 +24,7 @@ const Layout = () => {
           title: "Search",
           headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="search-outline" color={color} />,
+          tabBarStyle: { position: "absolute", transform: [{ translateY: 0 }] },
         }}
       />
       <Tabs.Screen

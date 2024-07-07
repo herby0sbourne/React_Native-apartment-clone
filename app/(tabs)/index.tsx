@@ -17,6 +17,9 @@ import { properties } from "@/data/properties";
 import { Property } from "@/types/property";
 import { useEffect, useRef, useState } from "react";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import Map from "@/components/Map";
+import { useAnimatedRef } from "react-native-reanimated";
+import PropertyCard from "@/components/PropertyCard";
 
 type RootStackParamList = {
   "map.screen": { properties: Property[] };
@@ -29,7 +32,7 @@ type MapScreenNavigationProp = NativeStackNavigationProp<
 type MapScreenRouteProp = RouteProp<RootStackParamList, "map.screen">;
 
 const Page = () => {
-  // const flatListRef = useAnimatedRef<Animated.FlatList>();
+  const flatListRef = useAnimatedRef<Animated.FlatList>();
   // const scrollOffset = useScrollViewOffset(flatListRef);
 
   const navigation = useNavigation();
@@ -79,42 +82,25 @@ const Page = () => {
         <SearchHeader
           // scrollOffset={scrollOffset}
           mapBtn={handleMapNavigation}
-          isMap={false}
+          isMap={isMap}
+          setIsMap={setIsMap}
         />
 
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "pink",
-            position: "absolute",
-            zIndex: 100,
-            top: 0,
-            bottom: 0,
-            right: 0,
-            left: 0,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => setIsMap(!isMap)}
-            style={{ backgroundColor: "purple" }}
-          >
-            <Text>{isMap ? "showMap" : "hide Map"}</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/*<Animated.FlatList*/}
-        {/*  ref={flatListRef}*/}
-        {/*  data={properties}*/}
-        {/*  style={{ backgroundColor: "white" }}*/}
-        {/*  renderItem={({ item }) => <PropertyCard property={item} />}*/}
-        {/*  keyExtractor={item => item.id.toString()}*/}
-        {/*  contentContainerStyle={[{ gap: 10, paddingHorizontal: 10 }]}*/}
-        {/*  showsVerticalScrollIndicator={false}*/}
-        {/*  scrollEventThrottle={16}*/}
-        {/*  bounces={false}*/}
-        {/*/>*/}
+        {isMap ? (
+          <Map properties={properties} />
+        ) : (
+          <Animated.FlatList
+            ref={flatListRef}
+            data={properties}
+            style={{ backgroundColor: "white", marginBottom: bottomHeight }}
+            renderItem={({ item }) => <PropertyCard property={item} />}
+            keyExtractor={item => item.id.toString()}
+            contentContainerStyle={[{ gap: 10, paddingHorizontal: 10 }]}
+            showsVerticalScrollIndicator={false}
+            scrollEventThrottle={16}
+            bounces={false}
+          />
+        )}
       </SafeArea>
     </>
   );
