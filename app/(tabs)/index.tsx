@@ -15,10 +15,8 @@ import SearchHeader from "@/components/SearchHeader";
 
 import { properties } from "@/data/properties";
 import { Property } from "@/types/property";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
-import { transform } from "@babel/core";
 
 type RootStackParamList = {
   "map.screen": { properties: Property[] };
@@ -39,7 +37,10 @@ const Page = () => {
   const [isMap, setIsMap] = useState(false);
   const bottomHeight = useBottomTabBarHeight();
 
-  const translateY = useState(new Animated.Value(50))[0];
+  // const translateY = useState(new Animated.Value(50))[0];
+  // const translateY = useState(new Animated.Value(50))[0];
+  const translateY = useRef(new Animated.Value(50)).current;
+  const isInitialRender = useRef(true);
 
   const handleMapNavigation = () => {
     navigation.navigate("map.screen", {
@@ -50,8 +51,13 @@ const Page = () => {
   };
 
   useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+
     Animated.timing(translateY, {
-      toValue: isMap ? 0 : 50,
+      toValue: !isMap ? 0 : 50,
       duration: 500,
       useNativeDriver: true,
     }).start();
@@ -59,11 +65,11 @@ const Page = () => {
     navigation.setOptions({
       tabBarStyle: {
         position: "absolute",
-        height: 50,
+        // height: 50,
         transform: [{ translateY }],
       },
     });
-  }, [isMap, navigation, translateY]);
+  }, [isMap, navigation]);
   // console.log(bottomHeight);
 
   return (
@@ -94,7 +100,7 @@ const Page = () => {
             onPress={() => setIsMap(!isMap)}
             style={{ backgroundColor: "purple" }}
           >
-            <Text>click</Text>
+            <Text>{isMap ? "showMap" : "hide Map"}</Text>
           </TouchableOpacity>
         </View>
 
