@@ -1,25 +1,18 @@
 import { useNavigation } from "expo-router";
-import { RouteProp, useRoute } from "@react-navigation/core";
-import {
-  Animated,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { RouteProp } from "@react-navigation/core";
+import { Animated, StatusBar, StyleSheet } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import SafeArea from "@/components/SafeArea";
-import SearchHeader from "@/components/SearchHeader";
 
 import { properties } from "@/data/properties";
 import { Property } from "@/types/property";
 import { useEffect, useRef, useState } from "react";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import Map from "@/components/Map";
-import { useAnimatedRef } from "react-native-reanimated";
+import ReAnimated, { useAnimatedRef, useScrollViewOffset } from "react-native-reanimated";
 import PropertyCard from "@/components/PropertyCard";
+import SearchHeader from "@/components/SearchHeader";
 
 type RootStackParamList = {
   "map.screen": { properties: Property[] };
@@ -32,26 +25,17 @@ type MapScreenNavigationProp = NativeStackNavigationProp<
 type MapScreenRouteProp = RouteProp<RootStackParamList, "map.screen">;
 
 const Page = () => {
-  const flatListRef = useAnimatedRef<Animated.FlatList>();
-  // const scrollOffset = useScrollViewOffset(flatListRef);
-
   const navigation = useNavigation();
-  const route = useRoute();
   const [isMap, setIsMap] = useState(false);
   const bottomHeight = useBottomTabBarHeight();
+
+  const flatListRef = useAnimatedRef<ReAnimated.FlatList>();
+  const scrollOffset = useScrollViewOffset(flatListRef);
 
   // const translateY = useState(new Animated.Value(50))[0];
   // const translateY = useState(new Animated.Value(50))[0];
   const translateY = useRef(new Animated.Value(50)).current;
   const isInitialRender = useRef(true);
-
-  const handleMapNavigation = () => {
-    navigation.navigate("map.screen", {
-      properties,
-      lat: +route?.params?.lat,
-      lng: +route?.params?.lng,
-    });
-  };
 
   useEffect(() => {
     if (isInitialRender.current) {
@@ -79,17 +63,12 @@ const Page = () => {
     <>
       <SafeArea>
         <StatusBar translucent={false} barStyle={"dark-content"} />
-        <SearchHeader
-          // scrollOffset={scrollOffset}
-          mapBtn={handleMapNavigation}
-          isMap={isMap}
-          setIsMap={setIsMap}
-        />
+        <SearchHeader scrollOffset={scrollOffset} isMap={isMap} setIsMap={setIsMap} />
 
         {isMap ? (
           <Map properties={properties} />
         ) : (
-          <Animated.FlatList
+          <ReAnimated.FlatList
             ref={flatListRef}
             data={properties}
             style={{ backgroundColor: "white", marginBottom: bottomHeight }}
@@ -109,3 +88,11 @@ const Page = () => {
 const styles = StyleSheet.create({});
 
 export default Page;
+
+// const handleMapNavigation = () => {
+//   navigation.navigate("map.screen", {
+//     properties,
+//     lat: +route?.params?.lat,
+//     lng: +route?.params?.lng,
+//   });
+// };
