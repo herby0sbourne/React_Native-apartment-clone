@@ -16,7 +16,7 @@ import { UtilStyles } from "@/constants/UtilStyles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SearchFilter from "@/components/SearchFilter";
 import SearchBtnOption from "@/components/SearchBtnOption";
-import { Link, useNavigation } from "expo-router";
+import { Link } from "expo-router";
 
 interface SearchHeaderProps {
   scrollOffset?: SharedValue<number>;
@@ -29,7 +29,6 @@ const SearchHeader = ({ scrollOffset, isMap, setIsMap }: SearchHeaderProps) => {
   const previousScrollOffset = useSharedValue(0);
   const accumulatedScrollUp = useSharedValue(0);
   const headerYPosition = useSharedValue(0);
-  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
 
   useLayoutEffect(() => {
@@ -75,10 +74,6 @@ const SearchHeader = ({ scrollOffset, isMap, setIsMap }: SearchHeaderProps) => {
       height: HEADER_HEIGHT - insets.top / 2,
     },
   });
-
-  const handleSearchNavigation = () => {
-    navigation.navigate("index");
-  };
 
   return (
     <Animated.View style={[styles.container, iosStyles, headerAnimatedStyle]}>
