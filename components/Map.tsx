@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import MapView, { Region } from "react-native-maps";
-import { Platform, StyleSheet, View } from "react-native";
+import MapView, { MarkerPressEvent, Region } from "react-native-maps";
+import { Dimensions, Platform, StyleSheet, View } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/core";
 import Animated, { FadeOut, SlideInDown } from "react-native-reanimated";
 
@@ -27,9 +27,10 @@ interface MapProps {
 }
 
 const Map = ({ properties }: MapProps) => {
-  const [activeMarker, setActiveMarker] = useState<null | number>(null);
+  const markPressRef = useRef(false);
   const mapRef = useRef<MapView | null>(null);
   const route = useRoute<RouteProp<RouteParams, "params">>();
+  const [activeMarker, setActiveMarker] = useState<number | null>(null);
   // const properties = route.params?.properties;
 
   const INITIAL_REGION = {
@@ -41,24 +42,49 @@ const Map = ({ properties }: MapProps) => {
     // longitudeDelta: 0.0421,
   };
 
-  const handleMarkerPress = (index: number) => {
+  const handleMarkerPress = (event: MarkerPressEvent, index: number) => {
     if (Platform.OS === "ios") {
       const { lat, lng } = properties[index];
+
+      if (event.nativeEvent?.action === "marker-press") {
+        markPressRef.current = true;
+      }
+
+      // Get the current region of the map
+      const currentRegion = mapRef.current?.props.region || INITIAL_REGION;
+
+      // Get the dimensions of the map view
+      const { width, height } = Dimensions.get("window");
+
+      // Calculate the latitude and longitude deltas based on the map view dimensions
+      const latitudeDelta = (80 / height) * currentRegion.latitudeDelta;
+      const longitudeDelta = (50 / width) * currentRegion.longitudeDelta;
+
+      // Apply the deltas to the target coordinates
+      const offsetLat = lat - latitudeDelta;
+      const offsetLng = lng;
 
       mapRef.current?.animateCamera(
         {
           center: {
-            latitude: lat,
-            longitude: lng,
+            latitude: offsetLat,
+            longitude: offsetLng,
+            // latitude: lat,
+            // longitude: lng,
           },
         },
-        { duration: 1000 },
+        { duration: 500 },
       );
     }
     setActiveMarker(index);
   };
 
   const handleMapPress = () => {
+    if (Platform.OS === "ios" && markPressRef.current) {
+      markPressRef.current = false;
+      return;
+    }
+
     setActiveMarker(null);
   };
 
@@ -73,6 +99,7 @@ const Map = ({ properties }: MapProps) => {
     <View style={styles.container}>
       <MapView
         style={styles.mapStyle}
+        // provider={PROVIDER_GOOGLE}
         initialRegion={INITIAL_REGION}
         ref={mapRef}
         onPress={handleMapPress}
@@ -80,15 +107,16 @@ const Map = ({ properties }: MapProps) => {
         {properties.map((property, index) => {
           return (
             <MapMarker
-              key={Math.random().toString()}
+              key={index}
               lat={property.lat}
               lng={property.lng}
-              onPress={() => handleMarkerPress(index)}
+              onPress={(event) => handleMarkerPress(event, index)}
               color={activeMarker === index ? Colors.info : Colors.primary}
             />
           );
         })}
       </MapView>
+
       {activeMarker !== null && (
         <Animated.View entering={SlideInDown} exiting={FadeOut}>
           <PropertyCard property={properties[activeMarker]} extraStyle={styles.mapCard} />
@@ -101,7 +129,8 @@ const Map = ({ properties }: MapProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: "relative",
+    // position: "relative",
+    ...(Platform.OS === "android" && StyleSheet.absoluteFillObject),
   },
   mapStyle: {
     width: "100%",

@@ -1,11 +1,11 @@
-import { StyleSheet, View } from "react-native";
-import { Marker } from "react-native-maps";
+import { View } from "react-native";
+import { Marker, MarkerPressEvent } from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons";
 
 interface MapMarkerProps {
   lat: number;
   lng: number;
-  onPress: () => void;
+  onPress: (event: MarkerPressEvent) => void;
   color: string;
 }
 
@@ -19,5 +19,4 @@ const MapMarker = ({ lat, lng, onPress, color }: MapMarkerProps) => {
   );
 };
 
-const styles = StyleSheet.create({});
 export default MapMarker;
