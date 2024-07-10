@@ -65,27 +65,31 @@ const Page = () => {
         <StatusBar translucent={false} barStyle={"dark-content"} />
         <SearchHeader scrollOffset={scrollOffset} isMap={isMap} setIsMap={setIsMap} />
 
-        {isMap ? (
-          <Map properties={properties} />
-        ) : (
-          <ReAnimated.FlatList
-            ref={flatListRef}
-            data={properties}
-            style={{ backgroundColor: "white", marginBottom: bottomHeight }}
-            renderItem={({ item }) => <PropertyCard property={item} />}
-            keyExtractor={item => item.id.toString()}
-            contentContainerStyle={[{ gap: 10, paddingHorizontal: 10 }]}
-            showsVerticalScrollIndicator={false}
-            scrollEventThrottle={16}
-            bounces={false}
-          />
-        )}
+        <ReAnimated.FlatList
+          ref={flatListRef}
+          data={properties}
+          style={{
+            backgroundColor: "white",
+            marginBottom: bottomHeight,
+            zIndex: 5,
+            display: isMap ? "none" : "flex",
+          }}
+          renderItem={({ item }) => <PropertyCard property={item} />}
+          keyExtractor={item => item.id.toString()}
+          contentContainerStyle={[{ gap: 10, paddingHorizontal: 10 }]}
+          showsVerticalScrollIndicator={false}
+          scrollEventThrottle={16}
+          bounces={false}
+        />
+        <Map properties={properties} />
       </SafeArea>
     </>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    listStyle: {}
+});
 
 export default Page;
 
