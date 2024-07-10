@@ -1,6 +1,6 @@
 import { useNavigation } from "expo-router";
 import { RouteProp } from "@react-navigation/core";
-import { Animated, StatusBar, StyleSheet } from "react-native";
+import { Animated, StatusBar } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import SafeArea from "@/components/SafeArea";
@@ -50,45 +50,37 @@ const Page = () => {
     navigation.setOptions({
       tabBarStyle: {
         position: "absolute",
-        // height: 50,
         transform: [{ translateY }],
       },
     });
   }, [isMap, navigation]);
-  // console.log(bottomHeight);
 
   return (
-    <>
-      <SafeArea>
-        <StatusBar translucent={false} barStyle={"dark-content"} />
-        <SearchHeader scrollOffset={scrollOffset} isMap={isMap} setIsMap={setIsMap} />
+    <SafeArea>
+      <StatusBar translucent={false} barStyle={"dark-content"} />
+      <SearchHeader scrollOffset={scrollOffset} isMap={isMap} setIsMap={setIsMap} />
 
-        <ReAnimated.FlatList
-          ref={flatListRef}
-          data={properties}
-          style={{
-            backgroundColor: "white",
-            zIndex: 5,
-            display: isMap ? "none" : "flex",
-          }}
-          renderItem={({ item }) => <PropertyCard property={item} />}
-          keyExtractor={item => item.id.toString()}
-          contentContainerStyle={[
-            { gap: 10, paddingHorizontal: 10, paddingBottom: bottomHeight },
-          ]}
-          showsVerticalScrollIndicator={false}
-          scrollEventThrottle={16}
-          bounces={false}
-        />
-        <Map properties={properties} />
-      </SafeArea>
-    </>
+      <ReAnimated.FlatList
+        ref={flatListRef}
+        data={properties}
+        style={{
+          backgroundColor: "white",
+          zIndex: 5,
+          display: isMap ? "none" : "flex",
+        }}
+        renderItem={({ item }) => <PropertyCard property={item} />}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={[
+          { gap: 10, paddingHorizontal: 10, paddingBottom: bottomHeight },
+        ]}
+        showsVerticalScrollIndicator={false}
+        scrollEventThrottle={16}
+        bounces={false}
+      />
+      <Map properties={properties} />
+    </SafeArea>
   );
 };
-
-const styles = StyleSheet.create({
-  listStyle: {},
-});
 
 export default Page;
 

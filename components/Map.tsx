@@ -143,13 +143,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
 });
-export default Map;
 
-// const INITIAL_REGION = {
-//   latitude: 25.80913,
-//   longitude: -80.186363,
-//   latitudeDelta: 0.1,
-//   longitudeDelta: 0.1,
-//   // latitudeDelta: 0.0922,
-//   // longitudeDelta: 0.0421,
-// };
+export default Map;
