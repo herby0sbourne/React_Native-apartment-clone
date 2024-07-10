@@ -32,8 +32,6 @@ const Page = () => {
   const flatListRef = useAnimatedRef<ReAnimated.FlatList>();
   const scrollOffset = useScrollViewOffset(flatListRef);
 
-  // const translateY = useState(new Animated.Value(50))[0];
-  // const translateY = useState(new Animated.Value(50))[0];
   const translateY = useRef(new Animated.Value(50)).current;
   const isInitialRender = useRef(true);
 
@@ -44,7 +42,7 @@ const Page = () => {
     }
 
     Animated.timing(translateY, {
-      toValue: !isMap ? 0 : 50,
+      toValue: !isMap ? 0 : bottomHeight,
       duration: 500,
       useNativeDriver: true,
     }).start();
@@ -70,13 +68,14 @@ const Page = () => {
           data={properties}
           style={{
             backgroundColor: "white",
-            marginBottom: bottomHeight,
             zIndex: 5,
             display: isMap ? "none" : "flex",
           }}
           renderItem={({ item }) => <PropertyCard property={item} />}
           keyExtractor={item => item.id.toString()}
-          contentContainerStyle={[{ gap: 10, paddingHorizontal: 10 }]}
+          contentContainerStyle={[
+            { gap: 10, paddingHorizontal: 10, paddingBottom: bottomHeight },
+          ]}
           showsVerticalScrollIndicator={false}
           scrollEventThrottle={16}
           bounces={false}
@@ -88,7 +87,7 @@ const Page = () => {
 };
 
 const styles = StyleSheet.create({
-    listStyle: {}
+  listStyle: {},
 });
 
 export default Page;
