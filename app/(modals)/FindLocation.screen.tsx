@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import SafeArea from "@/components/SafeArea";
 import Colors from "@/constants/Colors";
 import { getSuggestedLocations } from "@/services/location.service";
@@ -17,6 +17,7 @@ import { autocomplete } from "@/data/autocomplete";
 import { Ionicons } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import { UtilStyles } from "@/constants/UtilStyles";
+import CurrentLocationBtn from "@/components/CurrentLocationBtn";
 
 const getFormattedLocationText = (item: Location) => {
   let location = item.address.name;
@@ -45,13 +46,13 @@ const FindLocationScreen = () => {
   const handleChangeText = async (text: string) => {
     setText(text);
 
-    if (text.length < 3) return;
+    if (text.length < 3) {
+      return setSuggestions([]);
+    }
 
     const fetchLocations = await getSuggestedLocations(text);
 
     if (fetchLocations.length > 0) return setSuggestions(fetchLocations);
-
-    if (text.length === 0) return setSuggestions([]);
   };
 
   const handleSubmit = async () => {
@@ -98,8 +99,8 @@ const FindLocationScreen = () => {
           )}
         </View>
 
-        <ScrollView style={{ marginTop: 10 }}>
-          {autocomplete.map(location => {
+        <ScrollView style={{ marginTop: 10 }} bounces={false}>
+          {suggestions.map((location) => {
             return (
               <View key={Math.random().toString()} style={styles.locationText}>
                 <TouchableOpacity
@@ -113,17 +114,11 @@ const FindLocationScreen = () => {
               </View>
             );
           })}
-          {autocomplete.map(location => {
-            return (
-              <View key={Math.random().toString()} style={styles.locationText}>
-                <TouchableOpacity style={styles.locationBtn}>
-                  <Text style={{ color: "black" }}>
-                    {getFormattedLocationText(location)}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            );
-          })}
+          {suggestions.length === 0 && (
+            <View>
+              <CurrentLocationBtn />
+            </View>
+          )}
         </ScrollView>
         <View style={styles.backBtn}>
           <TouchableOpacity style={styles.exitBtn} onPress={navigateBack}>
@@ -148,6 +143,7 @@ const styles = StyleSheet.create({
   },
   locationBtn: {
     padding: 15,
+    // backgroundColor: "green",
   },
   inputWrapper: {
     borderRadius: 6,
