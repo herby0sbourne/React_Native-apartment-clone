@@ -82,7 +82,12 @@ const Page = () => {
   return (
     <SafeArea>
       <StatusBar translucent={false} barStyle={"dark-content"} />
-      <SearchHeader scrollOffset={scrollOffset} isMap={isMap} setIsMap={setIsMap} />
+      <SearchHeader
+        scrollOffset={scrollOffset}
+        isMap={isMap}
+        setIsMap={setIsMap}
+        searchQuery={route?.params?.location}
+      />
 
       <ReAnimated.FlatList
         ref={flatListRef}
