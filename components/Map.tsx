@@ -1,14 +1,14 @@
-import { useRef, useState } from "react";
+import React, { MutableRefObject, useEffect, useRef, useState } from "react";
+import { RouteProp, useRoute } from "@react-navigation/core";
 import MapView, { MarkerPressEvent, Region } from "react-native-maps";
 import { Dimensions, Platform, StyleSheet, View } from "react-native";
-import { RouteProp, useRoute } from "@react-navigation/core";
 import Animated, { FadeOut, SlideInDown } from "react-native-reanimated";
 
 import MapMarker from "@/components/MapMarker";
 import PropertyCard from "@/components/PropertyCard";
 
 import Colors from "@/constants/Colors";
-import { Property } from "@/types/property";
+import { useFocusEffect } from "expo-router";
 
 type RouteParams = {
   params: {
@@ -20,26 +20,21 @@ type RouteParams = {
 
 interface MapProps {
   properties: Property[];
-  // mapRef: MapView | null
-  // lat: +route?.params?.lat,
-  // lng: +route?.params?.lng,
+  mapRef: MutableRefObject<MapView | null>;
   initialRegion?: Region | undefined;
+  isMap: boolean;
 }
 
-const Map = ({ properties }: MapProps) => {
+const Map = ({ properties, mapRef, isMap }: MapProps) => {
   const markPressRef = useRef(false);
-  const mapRef = useRef<MapView | null>(null);
   const route = useRoute<RouteProp<RouteParams, "params">>();
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
-  // const properties = route.params?.properties;
 
   const INITIAL_REGION = {
     latitude: route.params?.lat || 25.80913,
     longitude: route.params?.lng || -80.186363,
     latitudeDelta: 0.1,
     longitudeDelta: 0.1,
-    // latitudeDelta: 0.0922,
-    // longitudeDelta: 0.0421,
   };
 
   const handleMarkerPress = (event: MarkerPressEvent, index: number) => {
@@ -88,12 +83,13 @@ const Map = ({ properties }: MapProps) => {
     setActiveMarker(null);
   };
 
-  // useEffect(() => {
-  //   if (route.params?.lat && route.params?.lng) {
-  //
-  //   }
-  //   console.log(route.params);
-  // }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        setActiveMarker(null);
+      };
+    }, [isMap]),
+  );
 
   return (
     <View style={styles.container}>
