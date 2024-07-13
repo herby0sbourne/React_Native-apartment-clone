@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
+import React, { MutableRefObject, useRef, useState } from "react";
 import { RouteProp, useRoute } from "@react-navigation/core";
 import MapView, { MarkerPressEvent, Region } from "react-native-maps";
 import { Dimensions, Platform, StyleSheet, View } from "react-native";
