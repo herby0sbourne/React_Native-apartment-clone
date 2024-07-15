@@ -8,25 +8,21 @@ import {
   View,
 } from "react-native";
 import { useState } from "react";
-import SafeArea from "@/components/SafeArea";
-import Colors from "@/constants/Colors";
-import { getSuggestedLocations } from "@/services/location.service";
-import { Location } from "@/types/locationIQ";
 import { useNavigation } from "expo-router";
-import { autocomplete } from "@/data/autocomplete";
 import { Ionicons } from "@expo/vector-icons";
+import { useQueryClient } from "@tanstack/react-query";
 import { NavigationProp } from "@react-navigation/native";
-import { UtilStyles } from "@/constants/UtilStyles";
+
+import SafeArea from "@/components/SafeArea";
+import RecentSearchList from "@/components/RecentSearchList";
 import CurrentLocationBtn from "@/components/CurrentLocationBtn";
 
-const getFormattedLocationText = (item: Location) => {
-  let location = item.address.name;
-
-  if (item.type === "city" && item.address.state) {
-    location += `, ${item.address.state}`;
-  }
-  return location;
-};
+import Colors from "@/constants/Colors";
+import { Location } from "@/types/locationIQ";
+import { UtilStyles } from "@/constants/UtilStyles";
+import { getSuggestedLocations } from "@/services/location.service";
+import getFormattedLocationText from "@/utils/getFormattedLocationText";
+// import { autocomplete } from "@/data/autocomplete";
 
 interface IndexParam {
   index: {
@@ -39,9 +35,31 @@ interface IndexParam {
 }
 
 const FindLocationScreen = () => {
+  const queryClient = useQueryClient();
   const navigation = useNavigation<NavigationProp<IndexParam>>();
   const [text, setText] = useState("");
   const [suggestions, setSuggestions] = useState<Location[] | []>([]);
+  const recentSearches: Location[] | undefined = queryClient.getQueryData([
+    "recentSearches",
+  ]);
+
+  const setRecentSearch = (location: Location) => {
+    queryClient.setQueryData(["recentSearches"], (oldData: Location[] | undefined) => {
+      if (!oldData) {
+        return [location];
+      }
+
+      const isAlreadyInRecentSearches = oldData.some(
+        (item) => item.lat === location.lat && item.lon === location.lon,
+      );
+
+      if (isAlreadyInRecentSearches) {
+        return oldData;
+      }
+
+      return [location, ...oldData];
+    });
+  };
 
   const handleChangeText = async (text: string) => {
     setText(text);
@@ -63,6 +81,8 @@ const FindLocationScreen = () => {
   };
 
   const handleNavigate = (location: Location) => {
+    setRecentSearch(location);
+
     navigation.navigate("index", {
       location: getFormattedLocationText(location),
       lat: location.lat,
@@ -115,9 +135,10 @@ const FindLocationScreen = () => {
             );
           })}
           {suggestions.length === 0 && (
-            <View>
+            <>
               <CurrentLocationBtn />
-            </View>
+              <RecentSearchList recentSearches={recentSearches} />
+            </>
           )}
         </ScrollView>
         <View style={styles.backBtn}>
@@ -132,7 +153,6 @@ const FindLocationScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: "green",
     flex: 1,
     padding: 10,
     position: "relative",
@@ -143,7 +163,6 @@ const styles = StyleSheet.create({
   },
   locationBtn: {
     padding: 15,
-    // backgroundColor: "green",
   },
   inputWrapper: {
     borderRadius: 6,
@@ -157,9 +176,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.info,
   },
   textInput: {
-    // borderRadius: 6,
-    // borderColor: "lightgray",
-    // borderWidth: 1,
     padding: 10,
     fontSize: 16,
     flex: 1,
