@@ -1,8 +1,12 @@
-import axios from "axios";
-import { ENDPOINTS } from "@/constants/variable";
+import axios, { CancelToken } from "axios";
 import { Location } from "@/types/locationIQ";
+import { ENDPOINTS } from "@/constants/variable";
 
-export const getSuggestedLocations = async (text: string, limit?: number) => {
+export const getSuggestedLocations = async (
+  text: string,
+  cancelToken?: CancelToken,
+  limit?: number,
+): Promise<Location[]> => {
   try {
     let defaultLimit = 8;
     if (limit) defaultLimit = limit;
@@ -13,14 +17,14 @@ export const getSuggestedLocations = async (text: string, limit?: number) => {
     });
 
     const url = `${ENDPOINTS.autocompleteEndpoint}?${params.toString()}`;
-    const { data } = await axios.get<Location[]>(url);
+    const { data } = await axios.get(url, { cancelToken: cancelToken });
 
     if (!data) return [];
 
     return data;
   } catch (error) {
     console.log("getSuggestedLocations");
-    console.error(error);
+    console.log(error);
     return [];
   }
 };

@@ -7,9 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useState } from "react";
+import debounce from "lodash/debounce";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import axios, { CancelTokenSource } from "axios";
+import { useCallback, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { NavigationProp } from "@react-navigation/native";
 
@@ -22,7 +24,6 @@ import { Location } from "@/types/locationIQ";
 import { UtilStyles } from "@/constants/UtilStyles";
 import { getSuggestedLocations } from "@/services/location.service";
 import getFormattedLocationText from "@/utils/getFormattedLocationText";
-// import { autocomplete } from "@/data/autocomplete";
 
 interface IndexParam {
   index: {
@@ -39,6 +40,7 @@ const FindLocationScreen = () => {
   const navigation = useNavigation<NavigationProp<IndexParam>>();
   const [text, setText] = useState("");
   const [suggestions, setSuggestions] = useState<Location[] | []>([]);
+  const cancelTokenRef = useRef<CancelTokenSource | null>(null);
   const recentSearches: Location[] | undefined = queryClient.getQueryData([
     "recentSearches",
   ]);
@@ -61,17 +63,37 @@ const FindLocationScreen = () => {
     });
   };
 
-  const handleChangeText = async (text: string) => {
-    setText(text);
+  const handleChangeText = useCallback(
+    debounce(async (text: string) => {
+      setText(text);
 
-    if (text.length < 3) {
-      return setSuggestions([]);
-    }
+      if (text.length < 3) {
+        return setSuggestions([]);
+      }
 
-    const fetchLocations = await getSuggestedLocations(text);
+      // Cancel previous request
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current.cancel("New search initiated");
+      }
 
-    if (fetchLocations.length > 0) return setSuggestions(fetchLocations);
-  };
+      cancelTokenRef.current = axios.CancelToken.source();
+
+      try {
+        // const token = cancelTokenRef.current?.token;
+        const fetchLocations = await getSuggestedLocations(
+          text,
+          cancelTokenRef.current?.token,
+        );
+        setSuggestions(fetchLocations);
+      } catch (err) {
+        if (!axios.isCancel(err)) {
+          console.error("Error fetching locations:", err);
+          // setError('Failed to fetch locations. Please try again.');
+        }
+      }
+    }, 300),
+    [],
+  );
 
   const handleSubmit = async () => {
     const fetchLocations = await getSuggestedLocations(text);
