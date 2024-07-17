@@ -1,7 +1,7 @@
-import { useNavigation } from "expo-router";
 import MapView from "react-native-maps";
+import { useNavigation } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { Animated, StatusBar, Text, View } from "react-native";
+import { Animated, FlatList, StatusBar } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/core";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -9,6 +9,7 @@ import ReAnimated, { useAnimatedRef, useScrollViewOffset } from "react-native-re
 
 import Map from "@/components/Map";
 import SafeArea from "@/components/SafeArea";
+import NoProperty from "@/components/NoProperty";
 import PropertyCard from "@/components/PropertyCard";
 import SearchHeader from "@/components/SearchHeader";
 
@@ -33,6 +34,8 @@ type RouteParams = {
     boundingBox: string[];
   };
 };
+
+// const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const Page = () => {
   const route = useRoute<RouteProp<RouteParams, "params">>();
@@ -86,7 +89,7 @@ const Page = () => {
       },
     });
   }, [isMap, navigation]);
-  console.log(properties);
+
   return (
     <SafeArea>
       <StatusBar translucent={false} barStyle={"dark-content"} />
@@ -101,6 +104,8 @@ const Page = () => {
       <ReAnimated.FlatList
         ref={flatListRef}
         data={properties}
+        scrollEnabled={!!properties.length}
+        ListEmptyComponent={<NoProperty isSearch={!!route.params} />}
         style={{
           backgroundColor: "white",
           zIndex: 5,
