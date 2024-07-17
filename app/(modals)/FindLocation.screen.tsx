@@ -63,37 +63,39 @@ const FindLocationScreen = () => {
     });
   };
 
-  const handleChangeText = useCallback(
-    debounce(async (text: string) => {
-      setText(text);
+  const fetchSuggestions = async (text: string) => {
+    if (text.length < 3) {
+      return setSuggestions([]);
+    }
 
-      if (text.length < 3) {
-        return setSuggestions([]);
+    // Cancel previous request
+    if (cancelTokenRef.current) {
+      cancelTokenRef.current.cancel("New search initiated");
+    }
+
+    cancelTokenRef.current = axios.CancelToken.source();
+
+    try {
+      // const token = cancelTokenRef.current?.token;
+      const fetchLocations = await getSuggestedLocations(
+        text,
+        cancelTokenRef.current?.token,
+      );
+      setSuggestions(fetchLocations);
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        console.error("Error fetching locations:", err);
+        // setError('Failed to fetch locations. Please try again.');
       }
+    }
+  };
 
-      // Cancel previous request
-      if (cancelTokenRef.current) {
-        cancelTokenRef.current.cancel("New search initiated");
-      }
+  const debouncedFetchSuggestions = useCallback(debounce(fetchSuggestions, 500), []);
 
-      cancelTokenRef.current = axios.CancelToken.source();
-
-      try {
-        // const token = cancelTokenRef.current?.token;
-        const fetchLocations = await getSuggestedLocations(
-          text,
-          cancelTokenRef.current?.token,
-        );
-        setSuggestions(fetchLocations);
-      } catch (err) {
-        if (!axios.isCancel(err)) {
-          console.error("Error fetching locations:", err);
-          // setError('Failed to fetch locations. Please try again.');
-        }
-      }
-    }, 300),
-    [],
-  );
+  const handleChangeText = (text: string) => {
+    setText(text);
+    debouncedFetchSuggestions(text);
+  };
 
   const handleSubmit = async () => {
     const fetchLocations = await getSuggestedLocations(text);
@@ -218,11 +220,3 @@ const styles = StyleSheet.create({
 });
 
 export default FindLocationScreen;
-
-// if (text.length > 3) {
-//   const fetchLocations = await getSuggestedLocations(text);
-//
-//   if (fetchLocations.length > 0) {
-//     setSuggestions(fetchLocations);
-//   }
-// }
