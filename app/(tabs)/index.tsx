@@ -1,7 +1,7 @@
 import { useNavigation } from "expo-router";
 import MapView from "react-native-maps";
 import { useEffect, useRef, useState } from "react";
-import { Animated, StatusBar } from "react-native";
+import { Animated, StatusBar, Text, View } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/core";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -13,7 +13,7 @@ import PropertyCard from "@/components/PropertyCard";
 import SearchHeader from "@/components/SearchHeader";
 
 import { Property } from "@/types/property";
-import { properties } from "@/data/properties";
+import { getPropertiesInArea } from "@/data/properties";
 
 type RootStackParamList = {
   "map.screen": { properties: Property[] };
@@ -47,9 +47,17 @@ const Page = () => {
   const isInitialRender = useRef(true);
   const translateY = useRef(new Animated.Value(50)).current;
 
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [location, setLocation] = useState<string | undefined>();
+
   useEffect(() => {
     if (route.params) {
-      const { lat, lng } = route.params;
+      const { lat, lng, boundingBox, location } = route.params;
+      const numBoundingBox = boundingBox.map((num) => +num);
+
+      setLocation(location);
+      setProperties(getPropertiesInArea(numBoundingBox));
+
       mapRef.current?.animateCamera({
         center: {
           latitude: +lat,
@@ -78,7 +86,7 @@ const Page = () => {
       },
     });
   }, [isMap, navigation]);
-
+  console.log(properties);
   return (
     <SafeArea>
       <StatusBar translucent={false} barStyle={"dark-content"} />
@@ -87,6 +95,7 @@ const Page = () => {
         isMap={isMap}
         setIsMap={setIsMap}
         searchQuery={route?.params?.location}
+        totalProperty={properties.length}
       />
 
       <ReAnimated.FlatList
@@ -120,11 +129,3 @@ const Page = () => {
 };
 
 export default Page;
-
-// const handleMapNavigation = () => {
-//   navigation.navigate("map.screen", {
-//     properties,
-//     lat: +route?.params?.lat,
-//     lng: +route?.params?.lng,
-//   });
-// };

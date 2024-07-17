@@ -20,12 +20,19 @@ import { Link } from "expo-router";
 
 interface SearchHeaderProps {
   scrollOffset?: SharedValue<number>;
-  searchQuery?:string
+  searchQuery?: string;
+  totalProperty?: number;
   isMap: boolean;
   setIsMap: (value: boolean) => void;
 }
 
-const SearchHeader = ({ scrollOffset, isMap, setIsMap,searchQuery }: SearchHeaderProps) => {
+const SearchHeader = ({
+  scrollOffset,
+  isMap,
+  setIsMap,
+  searchQuery,
+  totalProperty,
+}: SearchHeaderProps) => {
   const previousScrollOffset = useSharedValue(0);
   const accumulatedScrollUp = useSharedValue(0);
   const headerYPosition = useSharedValue(0);
@@ -83,18 +90,18 @@ const SearchHeader = ({ scrollOffset, isMap, setIsMap,searchQuery }: SearchHeade
           <TouchableOpacity>
             <View style={styles.searchBar}>
               <Ionicons name={"search-outline"} size={28} color={Colors.primary} />
-              <Text style={styles.searchText}>{searchQuery || 'Find Location'}</Text>
+              <Text style={styles.searchText}>{searchQuery || "Find Location"}</Text>
             </View>
           </TouchableOpacity>
         </Link>
         {/*  FILTER BUTTON*/}
-        <SearchFilter/>
+        <SearchFilter />
         <View>
           <View style={[styles.divider]} />
           <View style={[UtilStyles.row, { marginTop: 8 }]}>
             <View style={[UtilStyles.flex, { gap: 5 }]}>
               <FontAwesome name="map-marker" size={18} color={Colors.primary} />
-              <Text style={{ color: "gray" }}>12 Available</Text>
+              <Text style={{ color: "gray" }}>{totalProperty || 0} Available</Text>
               <SearchBtnOption onPress={() => console.log("save")} title="Save" />
             </View>
             <View style={[UtilStyles.flex, { gap: 14 }]}>
