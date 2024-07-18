@@ -146,7 +146,7 @@ const FindLocationScreen = () => {
         <ScrollView style={{ marginTop: 10 }} bounces={false}>
           {suggestions.map((location) => {
             return (
-              <View key={location.lat + location.lon} style={styles.locationText}>
+              <View key={Math.random().toString()} style={styles.locationText}>
                 <TouchableOpacity
                   style={styles.locationBtn}
                   onPress={() => handleNavigate(location)}
