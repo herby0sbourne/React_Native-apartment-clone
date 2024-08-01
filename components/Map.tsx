@@ -1,14 +1,22 @@
 import React, { MutableRefObject, useRef, useState } from "react";
+import { useFocusEffect } from "expo-router";
 import { RouteProp, useRoute } from "@react-navigation/core";
-import MapView, { MarkerPressEvent, Region } from "react-native-maps";
-import { Dimensions, Platform, StyleSheet, View } from "react-native";
+import MapView, { MarkerPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
+import {
+  Dimensions,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Animated, { FadeOut, SlideInDown } from "react-native-reanimated";
 
 import MapMarker from "@/components/MapMarker";
 import PropertyCard from "@/components/PropertyCard";
 
 import Colors from "@/constants/Colors";
-import { useFocusEffect } from "expo-router";
+import { getPropertiesInArea } from "@/data/properties";
 
 type RouteParams = {
   params: {
@@ -19,16 +27,24 @@ type RouteParams = {
 };
 
 interface MapProps {
-  properties: Property[];
-  mapRef: MutableRefObject<MapView | null>;
   initialRegion?: Region | undefined;
   isMap: boolean;
+  mapRef: MutableRefObject<MapView | null>;
+  properties: Property[];
+  location: string;
+  setLocation: (location: string) => void;
+  setProperties: (properties: Property[]) => void;
 }
 
-const Map = ({ properties, mapRef, isMap }: MapProps) => {
+let mapRegion: Region | undefined = undefined;
+
+const Map = ({ properties, mapRef, isMap, setLocation, setProperties }: MapProps) => {
   const markPressRef = useRef(false);
   const route = useRoute<RouteProp<RouteParams, "params">>();
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
+  const [isSearchAreaBtn, setIsSearchAreaBtn] = useState(false);
+  const [boundingBox, setBoundingBox] = useState<number[]>([]);
+  const [region, setRegion] = useState<Region | undefined>(mapRegion);
 
   const INITIAL_REGION = {
     latitude: route.params?.lat || 25.80913,
@@ -38,39 +54,48 @@ const Map = ({ properties, mapRef, isMap }: MapProps) => {
   };
 
   const handleMarkerPress = (event: MarkerPressEvent, index: number) => {
-    if (Platform.OS === "ios") {
-      const { lat, lng } = properties[index];
+    const { lat, lng } = properties[index];
 
-      if (event.nativeEvent?.action === "marker-press") {
-        markPressRef.current = true;
-      }
-
-      // Get the current region of the map
-      const currentRegion = mapRef.current?.props.region || INITIAL_REGION;
-
-      // Get the dimensions of the map view
-      const { width, height } = Dimensions.get("window");
-
-      // Calculate the latitude and longitude deltas based on the map view dimensions
-      const latitudeDelta = (80 / height) * currentRegion.latitudeDelta;
-      const longitudeDelta = (50 / width) * currentRegion.longitudeDelta;
-
-      // Apply the deltas to the target coordinates
-      const offsetLat = lat - latitudeDelta;
-      const offsetLng = lng;
-
-      mapRef.current?.animateCamera(
-        {
-          center: {
-            latitude: offsetLat,
-            longitude: offsetLng,
-            // latitude: lat,
-            // longitude: lng,
-          },
-        },
-        { duration: 500 },
-      );
+    if (event.nativeEvent?.action === "marker-press") {
+      markPressRef.current = true;
     }
+
+    // Get the current region of the map
+    const currentRegion = mapRef.current?.props.region || INITIAL_REGION;
+
+    // Get the dimensions of the map view
+    const { width, height } = Dimensions.get("window");
+
+    // Calculate the latitude and longitude deltas based on the map view dimensions
+    const latitudeDelta = (80 / height) * currentRegion.latitudeDelta;
+    const longitudeDelta = (50 / width) * currentRegion.longitudeDelta;
+
+    // Apply the deltas to the target coordinates
+    const offsetLat = lat - latitudeDelta;
+    const offsetLng = lng;
+
+    mapRef.current?.animateCamera(
+      {
+        center: {
+          latitude: offsetLat,
+          longitude: offsetLng,
+          // latitude: lat,
+          // longitude: lng,
+        },
+      },
+      // { duration: 500 },
+    );
+
+    setTimeout(() => {
+      const newRegion: Region = {
+        latitude: lat,
+        longitude: lng,
+        latitudeDelta: region?.latitudeDelta || 0.4,
+        longitudeDelta: region?.longitudeDelta || 0.4,
+      };
+
+      setRegion(newRegion);
+    }, 600);
     setActiveMarker(index);
   };
 
@@ -81,6 +106,13 @@ const Map = ({ properties, mapRef, isMap }: MapProps) => {
     }
 
     setActiveMarker(null);
+  };
+
+  const handleSearchBtn = () => {
+    setProperties(getPropertiesInArea(boundingBox));
+    setLocation("Map Area");
+    mapRegion = region;
+    setIsSearchAreaBtn(false);
   };
 
   useFocusEffect(
@@ -94,11 +126,27 @@ const Map = ({ properties, mapRef, isMap }: MapProps) => {
   return (
     <View style={styles.container}>
       <MapView
-        style={styles.mapStyle}
-        // provider={PROVIDER_GOOGLE}
-        initialRegion={INITIAL_REGION}
         ref={mapRef}
+        style={styles.mapStyle}
+        provider={PROVIDER_GOOGLE}
+        initialRegion={region || INITIAL_REGION}
         onPress={handleMapPress}
+        onRegionChangeComplete={(region, details) => {
+          if (details?.isGesture) {
+            console.log("i ran");
+            if (!isSearchAreaBtn) setIsSearchAreaBtn(true);
+
+            const newBoundingBox = [
+              region.latitude - region.latitudeDelta / 2,
+              region.latitude + region.latitudeDelta / 2,
+              region.longitude - region.longitudeDelta / 2,
+              region.longitude + region.longitudeDelta / 2,
+            ];
+
+            setBoundingBox(newBoundingBox);
+            setRegion(region);
+          }
+        }}
       >
         {properties.map((property, index) => {
           return (
@@ -117,6 +165,12 @@ const Map = ({ properties, mapRef, isMap }: MapProps) => {
         <Animated.View entering={SlideInDown} exiting={FadeOut}>
           <PropertyCard property={properties[activeMarker]} extraStyle={styles.mapCard} />
         </Animated.View>
+      )}
+
+      {isSearchAreaBtn && activeMarker === null && (
+        <TouchableOpacity style={styles.searchAreaBtn} onPress={handleSearchBtn}>
+          <Text style={styles.searchText}>Search Area</Text>
+        </TouchableOpacity>
       )}
     </View>
   );
@@ -137,6 +191,22 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 10,
     marginHorizontal: 10,
+  },
+  searchAreaBtn: {
+    position: "absolute",
+    bottom: 30,
+    zIndex: 4,
+    borderRadius: 30,
+    backgroundColor: "white",
+    borderColor: "gray",
+    alignSelf: "center",
+    borderWidth: 1,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+  },
+  searchText: {
+    color: Colors.info,
+    fontWeight: "600",
   },
 });
 
