@@ -97,7 +97,8 @@ const Page = () => {
         scrollOffset={scrollOffset}
         isMap={isMap}
         setIsMap={setIsMap}
-        searchQuery={route?.params?.location}
+        searchQuery={location}
+        // searchQuery={route?.params?.location}
         totalProperty={properties.length}
       />
 
@@ -124,6 +125,9 @@ const Page = () => {
         properties={properties}
         mapRef={mapRef}
         isMap={isMap}
+        location={location || ""}
+        setLocation={setLocation}
+        setProperties={setProperties}
         // initialRegion={{
         //   latitude: +route.params.lat,
         //   longitude: +route.params.lng,
