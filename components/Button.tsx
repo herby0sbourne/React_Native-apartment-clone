@@ -1,16 +1,18 @@
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from "react-native";
 import Colors from "@/constants/Colors";
 
 interface ButtonProps {
   title: string;
   ghostBtn?: boolean;
+  onPress?: () => void;
+  extraStyle?: StyleProp<ViewStyle>;
 }
 
-const Button = ({ title, ghostBtn = true }: ButtonProps) => {
+const Button = ({ title, ghostBtn = true, extraStyle, onPress }: ButtonProps) => {
   return (
     <TouchableOpacity
-      onPress={() => console.log(`${title} clicked`)}
-      style={[styles.btn, !ghostBtn && { backgroundColor: Colors.primary }]}
+      onPress={onPress}
+      style={[styles.btn, extraStyle, !ghostBtn && { backgroundColor: Colors.primary }]}
     >
       <Text style={[styles.btnTitle, !ghostBtn && { color: "white" }]}>{title}</Text>
     </TouchableOpacity>
@@ -28,6 +30,7 @@ const styles = StyleSheet.create({
   btnTitle: {
     textAlign: "center",
     color: Colors.primary,
+    fontWeight: "bold",
   },
 });
 
