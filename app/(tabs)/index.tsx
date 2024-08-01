@@ -1,7 +1,7 @@
 import MapView from "react-native-maps";
 import { useNavigation } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { Animated, FlatList, StatusBar } from "react-native";
+import { Animated, StatusBar } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/core";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
