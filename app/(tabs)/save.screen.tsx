@@ -55,7 +55,7 @@ const Page = () => {
         ) : (
           <View style={styles.lottieWrapper}>
             <EmptyContent
-              filePath={require("@/assets/lotties/Favorites.json")}
+              filePath={require("@/assets/lotties/favorites.json")}
               title={"You do not have any favorites saved"}
               subTitle={"Tap the heart icon on rentals to add favorites"}
             />
