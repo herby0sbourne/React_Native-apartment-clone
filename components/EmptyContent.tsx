@@ -9,21 +9,21 @@ interface EmptyContentProps {
 
 const EmptyContent = ({ filePath, subTitle, title }: EmptyContentProps) => {
   return (
-    <>
+    <View style={styles.lottieWrapper}>
       <LottieView autoPlay style={styles.lottie} source={filePath} />
       <View style={styles.textWrapper}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.subTitle}>{subTitle}</Text>
       </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   lottieWrapper: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 10,
   },
   lottie: {
     width: 180,
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 15,
     color: "gray",
+    textAlign: "center",
   },
 });
 
