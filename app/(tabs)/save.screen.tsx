@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
-import Button from "@/components/Button";
 import SafeArea from "@/components/SafeArea";
-import EmptyContent from "@/components/EmptyContent";
-import PropertyCard from "@/components/PropertyCard";
-import SignUpAndSignInBtn from "@/components/SignUpAndSignInBtn";
+import Button from "@/components/Button";
+import Contact from "@/components/Contact";
+import Favorites from "@/components/Favorites";
+import Application from "@/components/Application";
 
-import { UtilStyles } from "@/constants/UtilStyles";
 import { properties } from "@/data/properties";
+import { UtilStyles } from "@/constants/UtilStyles";
 
 const Page = () => {
   const [activeBtn, setActiveBtn] = useState<Number>(0);
@@ -19,6 +19,12 @@ const Page = () => {
 
   const handleClick = (btnIdx: number) => {
     setActiveBtn(btnIdx);
+  };
+
+  const displayScreen = {
+    0: <Favorites likeProperty={likeProperty} user={user} />,
+    1: <Contact contactProperty={contactProperty} user={user} />,
+    2: <Application applicationProperty={applicationProperty} user={user} />,
   };
 
   return (
@@ -37,32 +43,13 @@ const Page = () => {
           onPress={() => handleClick(1)}
         />
         <Button
-          title={"Application"}
+          title={"Applications"}
           ghostBtn={!(activeBtn === 2)}
           extraStyle={styles.rightRadius}
           onPress={() => handleClick(2)}
         />
       </View>
-      <>
-        {likeProperty ? (
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={likeProperty}
-            contentContainerStyle={{ paddingVertical: 10, gap: 10 }}
-            renderItem={({ item }) => <PropertyCard property={item} />}
-            keyExtractor={(item) => item.id.toString()}
-          />
-        ) : (
-          <View style={styles.lottieWrapper}>
-            <EmptyContent
-              filePath={require("@/assets/lotties/favorites.json")}
-              title={"You do not have any favorites saved"}
-              subTitle={"Tap the heart icon on rentals to add favorites"}
-            />
-            {!user && <SignUpAndSignInBtn />}
-          </View>
-        )}
-      </>
+      {displayScreen[activeBtn as keyof typeof displayScreen]}
     </SafeArea>
   );
 };
@@ -83,11 +70,6 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     borderTopLeftRadius: 5,
     borderBottomLeftRadius: 5,
-  },
-  lottieWrapper: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
 export default Page;
