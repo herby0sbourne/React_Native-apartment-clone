@@ -1,62 +1,21 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { useNavigation } from "expo-router";
 
 import SafeArea from "@/components/SafeArea";
-import SignUpAndSignInBtn from "@/components/SignUpAndSignInBtn";
-import ButtonList from "@/components/ButtonList";
 import Button from "@/components/Button";
+import ButtonList from "@/components/ButtonList";
+import SignUpAndSignInBtn from "@/components/SignUpAndSignInBtn";
 import Colors from "@/constants/Colors";
-
-const firstSignedOutBtns = [
-  { label: "Add property", onPress: () => console.log("navigate to add property") },
-  {
-    label: "View My Property",
-    onPress: () => console.log("navigate to View My Property"),
-  },
-];
-
-const supportBtns = [
-  { label: "Help Center", onPress: () => console.log("navigate to Help Center") },
-  {
-    label: "Terms and Condition",
-    onPress: () => console.log("navigate to Terms and Condition"),
-  },
-];
-
-const rentingBtns = [
-  {
-    label: "Favorite Properties",
-    onPress: () => console.log("navigate to Favorite Properties"),
-  },
-  {
-    label: "Rental Applications",
-    onPress: () => console.log("navigate to Rental Applications"),
-  },
-  { label: "My Residences", onPress: () => console.log("navigate to My Residences") },
-  { label: "Rent Payments", onPress: () => console.log("navigate to Rent Payments") },
-];
-
-const accountBtns = [
-  {
-    label: "Account Settings",
-    onPress: () => console.log("navigate to Account Settings"),
-  },
-  { label: "Billing History", onPress: () => console.log("navigate to Billing History") },
-  { label: "Banks and Cards", onPress: () => console.log("navigate to Banks and Cards") },
-];
-
-const rentalManagementBtns = [
-  { label: "add a Property", onPress: () => console.log("navigate to AddProperty") },
-  {
-    label: "add apartment to property",
-    onPress: () => console.log("navigate to MyProperties"),
-  },
-  { label: "View My Property", onPress: () => console.log("navigate to ViewProperties") },
-];
+import {
+  accountBtns,
+  firstSignedOutBtns,
+  rentalManagementBtns,
+  rentingBtns,
+  supportBtns,
+} from "@/constants/accountButtons";
 
 const Page = () => {
   const user = true;
-  const navigation = useNavigation();
+
   return (
     <SafeArea>
       <ScrollView style={{ flex: 1 }}>
