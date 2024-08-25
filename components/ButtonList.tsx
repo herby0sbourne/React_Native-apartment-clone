@@ -1,7 +1,8 @@
 import { Pressable, StyleSheet, Text, View, ViewStyle } from "react-native";
+import { useNavigation } from "expo-router";
 
 interface ButtonListProps {
-  data: { label: string; onPress: () => void }[];
+  data: { label: string; screenName: string | (() => void) }[];
   header?: string;
   extraStyle?: ViewStyle | ViewStyle[];
   borderTop?: boolean;
@@ -28,16 +29,24 @@ const ButtonList = ({
   borderTop,
   marginTop,
 }: ButtonListProps) => {
+  const navigation = useNavigation();
   const borderTopWidth = borderTop && { borderTopWidth: 1 };
+
+  const navigateToScreen = (screenName: string | (() => void)) => {
+    if (typeof screenName === "string") {
+      return navigation.navigate(screenName);
+    }
+    return screenName();
+  };
 
   return (
     <View style={[styles.container, extraStyle, borderTopWidth]}>
       <BtnHeader header={header} marginTop={marginTop} />
-      {data.map(({ label, onPress }, index) => {
+      {data.map(({ label, screenName }, index) => {
         return (
           <Pressable
             key={label}
-            onPress={onPress}
+            onPress={() => navigateToScreen(screenName)}
             style={({ pressed }) => [
               styles.option,
               pressed && { backgroundColor: "lightgray" },
