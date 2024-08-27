@@ -1,4 +1,5 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
 
 import SafeArea from "@/components/SafeArea";
 import Button from "@/components/Button";
@@ -14,7 +15,8 @@ import {
 } from "@/constants/accountButtons";
 
 const Page = () => {
-  const user = true;
+  const user = null;
+  const route = useRouter();
 
   return (
     <SafeArea>
@@ -50,7 +52,6 @@ const Page = () => {
               <Button
                 title={"Sign Out"}
                 ghostBtn
-                // extraStyle={styles.button}
                 onPress={() => console.log("log user out")}
               />
             </View>
@@ -63,6 +64,17 @@ const Page = () => {
           </>
         )}
       </ScrollView>
+      <Button
+        ghostBtn={false}
+        extraStyle={{ flex: 0, marginHorizontal: 10, marginBottom: 10 }}
+        title={"Reset password"}
+        onPress={() =>
+          route.push({
+            pathname: "(auth)/reset-password",
+            params: { token: "your_reset_token_here" },
+          })
+        }
+      />
     </SafeArea>
   );
 };
