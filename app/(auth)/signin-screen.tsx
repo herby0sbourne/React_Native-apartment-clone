@@ -1,10 +1,18 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
-import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
-import SafeArea from "@/components/SafeArea";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Formik } from "formik";
 import { useNavigation } from "expo-router";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Formik } from "formik";
 import * as Yup from "yup";
+
+import Button from "@/components/Button";
+import Divider from "@/components/Divider";
+import SafeArea from "@/components/SafeArea";
+import CustomInput from "@/components/CustomInput";
+import AppleButton from "@/components/AppleButton";
+import GoogleButton from "@/components/GoogleButton";
+import FacebookButton from "@/components/FacebookButton";
+
+import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
 
 const Page = () => {
   // useWarmUpBrowser();
@@ -25,26 +33,64 @@ const Page = () => {
           {({ values, errors, touched, handleChange, handleSubmit, setFieldTouched }) => {
             return (
               <>
-                <View>
-                  <Text style={{ color: "#574f4f" }}>Email</Text>
-                  <TextInput
-                    style={{
-                      backgroundColor: "white",
-                      height: 40,
-                      fontSize: 16,
-                      borderColor: "lightgray",
-                      borderWidth: StyleSheet.hairlineWidth,
-                      marginVertical: 4,
-                      paddingHorizontal: 10,
-                    }}
-                    keyboardType={"email-address"}
-                    textContentType={"emailAddress"}
-                    value={values.email}
-                    autoCapitalize="none"
-                    autoComplete={"email"}
-                    onChangeText={handleChange("email")}
-                    onBlur={() => setFieldTouched("email")}
-                    placeholder={"Your Email Address"}
+                <CustomInput
+                  label={"Email"}
+                  value={values.email}
+                  onChangeText={handleChange("email")}
+                  onBlur={() => setFieldTouched("email")}
+                  placeholder={"Your Email Address"}
+                  autoComplete={"email"}
+                  keyboardType={"email-address"}
+                  textContentType={"emailAddress"}
+                  autoCapitalize="none"
+                  caption={touched.email && errors.email ? errors.email : undefined}
+                  status={touched.email && errors.email ? "danger" : "basic"}
+                />
+                <CustomInput
+                  value={values.password}
+                  onChangeText={handleChange("password")}
+                  placeholder={"Your password"}
+                  onBlur={() => setFieldTouched("password")}
+                  label={"Password"}
+                  password={true}
+                  caption={
+                    touched.password && errors.password ? errors.password : undefined
+                  }
+                  status={touched.password && errors.password ? "danger" : "basic"}
+                />
+                {/*FORGOT PASSWORD*/}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("forgot-password")}
+                  style={styles.forgotPassword}
+                >
+                  <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
+                </TouchableOpacity>
+                {/* SUBMIT BUTTON*/}
+                <Button
+                  title={"Sign In"}
+                  ghostBtn={false}
+                  onPress={() => handleSubmit()}
+                  extraStyle={{ marginTop: 20 }}
+                />
+                {/*  DIVIDER*/}
+                <Divider style={styles.divider}>or</Divider>
+                <View style={{ gap: 10 }}>
+                  <GoogleButton
+                    text={"Continue with Google"}
+                    onPress={() => console.log("login with google")}
+                    textStyle={{ color: "#36454f" }}
+                  />
+
+                  <FacebookButton
+                    text={"Continue with Facebook"}
+                    onPress={() => console.log("login with facebook")}
+                    extraStyle={{ backgroundColor: "#3b5998", borderWidth: 0 }}
+                    textStyle={{ marginRight: -16 }}
+                  />
+
+                  <AppleButton
+                    type={"sign-in"}
+                    onPress={() => console.log("login with apple")}
                   />
                 </View>
               </>
@@ -58,10 +104,20 @@ const Page = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // marginHorizontal: 10,
     paddingHorizontal: 10,
-    backgroundColor: "pink",
+    // backgroundColor: "pink",
     paddingTop: 10,
+  },
+  forgotPassword: {
+    alignItems: "flex-end",
+    marginLeft: "auto",
+  },
+  forgotPasswordText: {
+    color: "#398fd2",
+    fontWeight: "bold",
+  },
+  divider: {
+    marginVertical: 30,
   },
 });
 
