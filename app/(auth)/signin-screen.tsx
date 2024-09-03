@@ -84,7 +84,10 @@ const Page = () => {
                   <FacebookButton
                     text={"Continue with Facebook"}
                     onPress={() => console.log("login with facebook")}
-                    extraStyle={{ backgroundColor: "#3b5998", borderWidth: 0 }}
+                    extraStyle={{
+                      backgroundColor: "#3b5998",
+                      borderWidth: 0,
+                    }}
                     textStyle={{ marginRight: -16 }}
                   />
 
@@ -106,7 +109,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
     // backgroundColor: "pink",
-    paddingTop: 10,
+    paddingTop: 18,
   },
   forgotPassword: {
     alignItems: "flex-end",
