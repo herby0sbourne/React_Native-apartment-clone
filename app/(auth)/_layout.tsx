@@ -1,20 +1,28 @@
 import { Stack } from "expo-router";
 import HeaderIcon from "@/components/HeaderIcon";
 
-export default function Layout() {
+const closeIcon = () => {
+  return () => <HeaderIcon />;
+};
+
+const Layout = () => {
   return (
-    <Stack>
+    <Stack screenOptions={{ headerTitleAlign: "center" }}>
       <Stack.Screen
         name="signin-screen"
         options={{
           title: "Sign In",
-          headerTitleAlign: "center",
-          headerLeft: () => <HeaderIcon />,
+          headerLeft: closeIcon(),
         }}
       />
-      <Stack.Screen name="signup-screen" options={{ title: "Sign Up" }} />
+      <Stack.Screen
+        name="signup-screen"
+        options={{ title: "Sign Up", headerLeft: closeIcon() }}
+      />
       <Stack.Screen name="forgot-password" options={{ title: "Forgot Password" }} />
       <Stack.Screen name="reset-password" options={{ title: "reset Password" }} />
     </Stack>
   );
-}
+};
+
+export default Layout;
