@@ -41,6 +41,7 @@ const CustomInput = ({
   ...props
 }: InputProps) => {
   const [isPassword, setIsPassword] = useState<boolean>(true);
+  const statusColor = status === "danger" && { borderColor: "red" };
   console.log({ caption, status });
 
   return (
@@ -48,7 +49,7 @@ const CustomInput = ({
       <Text style={[styles.label]}>{label}</Text>
       <View style={[styles.container]}>
         <TextInput
-          style={[styles.inputStyle, extraStyle]}
+          style={[styles.inputStyle, extraStyle, statusColor]}
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
@@ -56,6 +57,7 @@ const CustomInput = ({
           onBlur={onBlur}
           {...props}
         />
+        <Text style={styles.captionText}>{caption}</Text>
         {password && (
           <TouchableOpacity
             onPress={() => setIsPassword(!isPassword)}
@@ -87,6 +89,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   iconPosition: { position: "absolute", right: 10, top: 12 },
+  captionText: {
+    color: "red",
+  },
 });
 
 export default CustomInput;
