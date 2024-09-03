@@ -6,10 +6,21 @@ import Colors from "@/constants/Colors";
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof Ionicons>["name"];
-  color: string;
+  color?: string;
+  focused?: boolean;
+  size?: number;
 }) {
   return <Ionicons size={28} style={{ marginBottom: -3 }} {...props} />;
 }
+
+const TabBarIconComponent =
+  (name: string) =>
+  ({ color }: { color: string }) => (
+    <TabBarIcon
+      name={name as React.ComponentProps<typeof Ionicons>["name"]}
+      color={color}
+    />
+  );
 
 const Layout = () => {
   return (
@@ -23,7 +34,7 @@ const Layout = () => {
         options={{
           title: "Search",
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="search-outline" color={color} />,
+          tabBarIcon: TabBarIconComponent("search-outline"),
           tabBarStyle: { position: "absolute", transform: [{ translateY: 0 }] },
         }}
       />
@@ -32,7 +43,7 @@ const Layout = () => {
         options={{
           title: "Saved",
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="heart-outline" color={color} />,
+          tabBarIcon: TabBarIconComponent("heart-outline"),
         }}
       />
       <Tabs.Screen
@@ -40,29 +51,11 @@ const Layout = () => {
         options={{
           title: "Account",
           headerShown: false,
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="person-circle-outline" color={color} />
-          ),
+          tabBarIcon: TabBarIconComponent("person-circle-outline"),
         }}
       />
     </Tabs>
   );
 };
-
-/* <Tabs.Screen
-name="index"
-options={{
-  title: 'Tab One',
-  tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-  
-}}
-/> */
-
-// function TabBarIcon(props: {
-//   name: React.ComponentProps<typeof FontAwesome>["name"];
-//   color: string;
-// }) {
-//   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-// }
 
 export default Layout;
