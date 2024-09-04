@@ -14,8 +14,8 @@ interface InputProps extends TextInputProps {
   value: string;
   extraStyle?: TextStyle;
   onChangeText: (text: string) => void;
-  placeholder: "Your password" | "Your Email Address";
-  label: "Email" | "Password";
+  placeholder: string;
+  label: "Email" | "Password" | "First Name" | "Last Name";
   onBlur?: () => void;
   caption?: string;
   status?: string;
@@ -73,7 +73,7 @@ const CustomInput = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 10,
+    // marginBottom: 10,
     position: "relative",
   },
   label: {
@@ -88,7 +88,11 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     paddingHorizontal: 10,
   },
-  iconPosition: { position: "absolute", right: 10, top: 12 },
+  iconPosition: {
+    position: "absolute",
+    right: 10,
+    top: 12,
+  },
   captionText: {
     color: "red",
   },
