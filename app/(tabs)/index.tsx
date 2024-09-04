@@ -121,18 +121,18 @@ const Page = () => {
         scrollEventThrottle={16}
         bounces={false}
       />
-      <Map
-        properties={properties}
-        mapRef={mapRef}
-        isMap={isMap}
-        location={location || ""}
-        setLocation={setLocation}
-        setProperties={setProperties}
-        // initialRegion={{
-        //   latitude: +route.params.lat,
-        //   longitude: +route.params.lng,
-        // }}
-      />
+      {/*<Map*/}
+      {/*  properties={properties}*/}
+      {/*  mapRef={mapRef}*/}
+      {/*  isMap={isMap}*/}
+      {/*  location={location || ""}*/}
+      {/*  setLocation={setLocation}*/}
+      {/*  setProperties={setProperties}*/}
+      {/*  // initialRegion={{*/}
+      {/*  //   latitude: +route.params.lat,*/}
+      {/*  //   longitude: +route.params.lng,*/}
+      {/*  // }}*/}
+      {/*/>*/}
     </SafeArea>
   );
 };
