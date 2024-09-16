@@ -20,7 +20,7 @@ const Layout = () => {
         options={{ title: "Sign Up", headerLeft: closeIcon() }}
       />
       <Stack.Screen name="forgot-password" options={{ title: "Forgot Password" }} />
-      <Stack.Screen name="reset-password" options={{ title: "reset Password" }} />
+      <Stack.Screen name="reset-password" options={{ title: "Reset Password" }} />
     </Stack>
   );
 };
