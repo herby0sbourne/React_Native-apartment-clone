@@ -9,25 +9,7 @@ import Divider from "@/components/Divider";
 import GoogleButton from "@/components/GoogleButton";
 import FacebookButton from "@/components/FacebookButton";
 import AppleButton from "@/components/AppleButton";
-
-interface CaptionStatus {
-  caption?: string;
-  status: "basic" | "danger";
-}
-
-interface InputTypes {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
-
-type InputKeys = keyof InputTypes;
-
-const captionStatus = (touched, errors, inputName: InputKeys): CaptionStatus => ({
-  caption: touched[inputName] && errors[inputName] ? errors[inputName] : undefined,
-  status: touched[inputName] && errors[inputName] ? "danger" : "basic",
-});
+import { captionStatus } from "@/utils/captionStatus";
 
 const Page = () => {
   return (
