@@ -15,7 +15,7 @@ interface InputProps extends TextInputProps {
   extraStyle?: TextStyle;
   onChangeText: (text: string) => void;
   placeholder: string;
-  label: "Email" | "Password" | "First Name" | "Last Name";
+  label: string;
   onBlur?: () => void;
   caption?: string;
   status?: string;
