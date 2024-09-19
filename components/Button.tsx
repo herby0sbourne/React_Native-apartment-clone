@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { StyleProp, StyleSheet, Text, TouchableOpacity, ViewStyle } from "react-native";
 import Colors from "@/constants/Colors";
 
@@ -8,16 +9,19 @@ interface ButtonProps {
   extraStyle?: StyleProp<ViewStyle>;
 }
 
-const Button = ({ title, ghostBtn = true, extraStyle, onPress }: ButtonProps) => {
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={[styles.btn, extraStyle, !ghostBtn && { backgroundColor: Colors.primary }]}
-    >
-      <Text style={[styles.btnTitle, !ghostBtn && { color: "white" }]}>{title}</Text>
-    </TouchableOpacity>
-  );
-};
+const Button = forwardRef<TouchableOpacity, ButtonProps>(
+  ({ title, ghostBtn = true, extraStyle, onPress }, ref) => {
+    return (
+      <TouchableOpacity
+        ref={ref}
+        onPress={onPress}
+        style={[styles.btn, extraStyle, !ghostBtn && { backgroundColor: Colors.primary }]}
+      >
+        <Text style={[styles.btnTitle, !ghostBtn && { color: "white" }]}>{title}</Text>
+      </TouchableOpacity>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   btn: {
