@@ -43,3 +43,9 @@ expo-env.d.ts
 # @end expo-cli
 transition.txt
 old code.txt
+.vscode/
+
+/components/CardBody.tsx
+/components/CardImage.tsx
+/components/ModalSearchBar.tsx
+/hooks/useTabBarAnimation .ts
