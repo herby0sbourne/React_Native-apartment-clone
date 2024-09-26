@@ -16,7 +16,7 @@ const ENDPOINTS = {
   search: `${locationEndpoint}/search`,
   autocomplete: `${locationEndpoint}/autocomplete`,
   register: `${userEndpoint}/create-user`,
-  login: `${userEndpoint}/login`,
+  login: `${userEndpoint}/login-user`,
 };
 
 export { HEADER_HEIGHT, TRANSITION_THRESHOLD, ENDPOINTS };
