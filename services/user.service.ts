@@ -18,6 +18,8 @@ export const registerUser = async (userData: CreateUser) => {
 
     if (!data) return null;
 
+    // Delay the return of data by 3 seconds
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     return data;
   } catch (error) {
     handleError(error);
@@ -30,6 +32,8 @@ export const loginUser = async (email: string, password: string) => {
 
     if (!data) return null;
 
+    // Delay the return of data by 3 seconds
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     return data;
   } catch (error) {
     handleError(error);
