@@ -16,7 +16,7 @@ export const getSuggestedLocations = async (
       limit: defaultLimit.toString(),
     });
 
-    const url = `${ENDPOINTS.autocompleteEndpoint}?${params.toString()}`;
+    const url = `${ENDPOINTS.autocomplete}?${params.toString()}`;
     const { data } = await axios.get(url, { cancelToken: cancelToken });
 
     if (!data) return [];
@@ -33,7 +33,7 @@ export const searchLocations = async (text: string) => {
   try {
     const params = new URLSearchParams({ location: text });
 
-    const url = `${ENDPOINTS.searchEndpoint}?${params.toString()}`;
+    const url = `${ENDPOINTS.search}?${params.toString()}`;
     const { data } = await axios.get<Location>(url);
 
     if (!data) return [];
@@ -45,4 +45,3 @@ export const searchLocations = async (text: string) => {
     return [];
   }
 };
-// const url = `${ENDPOINTS.autocompleteEndpoint}?location=${text}&limit=${defaultLimit}`;
