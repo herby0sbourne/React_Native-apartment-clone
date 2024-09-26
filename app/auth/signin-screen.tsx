@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { Link, useNavigation } from "expo-router";
 import { useMutation } from "@tanstack/react-query";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import * as Yup from "yup";
+import { object, string } from "yup";
 
 import Button from "@/components/Button";
 import Divider from "@/components/Divider";
@@ -42,9 +42,9 @@ const Page = () => {
             console.log("form values", values);
             nativeLogin.mutate(values);
           }}
-          validationSchema={Yup.object().shape({
-            email: Yup.string().email().required("Your email is required"),
-            password: Yup.string().required("Your password is required"),
+          validationSchema={object().shape({
+            email: string().email().required("Your email is required"),
+            password: string().required("Your password is required"),
           })}
         >
           {({ values, errors, touched, handleChange, handleSubmit, setFieldTouched }) => {
