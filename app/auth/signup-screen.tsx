@@ -1,17 +1,50 @@
-import { StyleSheet, View } from "react-native";
-import SafeArea from "@/components/SafeArea";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Formik } from "formik";
 import { object, string } from "yup";
-import CustomInput from "@/components/CustomInput";
+import { StyleSheet, Text, View } from "react-native";
+import { useMutation } from "@tanstack/react-query";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
 import Button from "@/components/Button";
 import Divider from "@/components/Divider";
+import SafeArea from "@/components/SafeArea";
+import CustomInput from "@/components/CustomInput";
+import AppleButton from "@/components/AppleButton";
 import GoogleButton from "@/components/GoogleButton";
 import FacebookButton from "@/components/FacebookButton";
-import AppleButton from "@/components/AppleButton";
+
 import { captionStatus } from "@/utils/captionStatus";
+import { useNavigation } from "expo-router";
+import useAuth from "@/hooks/useAuth";
+import { registerUser } from "@/services/user.service";
+
+interface IRegisterUser {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
 
 const Page = () => {
+  const navigation = useNavigation();
+  const { login } = useAuth();
+
+  const nativeRegister = useMutation({
+    mutationFn: async (values: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      password: string;
+    }) => {
+      const user = await registerUser(values);
+
+      if (!user) return;
+
+      login(user);
+      navigation.goBack();
+    },
+    // 123456789aA@
+  });
+
   return (
     <KeyboardAwareScrollView bounces={false}>
       <SafeArea style={styles.container}>
@@ -29,7 +62,7 @@ const Page = () => {
               ),
           })}
           onSubmit={(values) => {
-            console.log("form values", values);
+            nativeRegister.mutate(values);
           }}
         >
           {({ values, errors, touched, handleChange, handleSubmit, setFieldTouched }) => {
@@ -84,6 +117,7 @@ const Page = () => {
                   ghostBtn={false}
                   onPress={() => handleSubmit()}
                   extraStyle={{ marginTop: 20 }}
+                  isLoading={nativeRegister.isPending}
                 />
                 {/*  DIVIDER*/}
                 <Divider style={styles.divider}>or</Divider>

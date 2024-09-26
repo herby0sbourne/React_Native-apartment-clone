@@ -24,14 +24,12 @@ const Page = () => {
     mutationFn: async (values: { email: string; password: string }) => {
       const user = await loginUser(values.email, values.password);
 
-      if (user) {
-        login(user);
-        navigation.goBack();
-      }
+      if (!user) return;
+
+      login(user);
+      navigation.goBack();
     },
   });
-
-  if (nativeLogin.isPending) return <Text>Loading...</Text>;
 
   return (
     <KeyboardAwareScrollView bounces={false} style={{ backgroundColor: "white" }}>
@@ -39,7 +37,6 @@ const Page = () => {
         <Formik
           initialValues={{ email: "", password: "" }}
           onSubmit={(values) => {
-            console.log("form values", values);
             nativeLogin.mutate(values);
           }}
           validationSchema={object().shape({
@@ -87,6 +84,7 @@ const Page = () => {
                   ghostBtn={false}
                   onPress={() => handleSubmit()}
                   extraStyle={{ marginTop: 20 }}
+                  isLoading={nativeLogin.isPending}
                 />
                 {/*  DIVIDER*/}
                 <Divider style={styles.divider}>or</Divider>
