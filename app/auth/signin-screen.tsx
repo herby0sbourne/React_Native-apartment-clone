@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Formik } from "formik";
 import { Link, useNavigation } from "expo-router";
+import { useMutation } from "@tanstack/react-query";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as Yup from "yup";
 
@@ -12,11 +13,26 @@ import AppleButton from "@/components/AppleButton";
 import GoogleButton from "@/components/GoogleButton";
 import FacebookButton from "@/components/FacebookButton";
 
-import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
+import useAuth from "@/hooks/useAuth";
+import { loginUser } from "@/services/user.service";
 
 const Page = () => {
-  // useWarmUpBrowser();
   const navigation = useNavigation();
+  const { login } = useAuth();
+
+  const nativeLogin = useMutation({
+    mutationFn: async (values: { email: string; password: string }) => {
+      const user = await loginUser(values.email, values.password);
+
+      if (user) {
+        login(user);
+        navigation.goBack();
+      }
+    },
+  });
+
+  if (nativeLogin.isPending) return <Text>Loading...</Text>;
+
   return (
     <KeyboardAwareScrollView bounces={false} style={{ backgroundColor: "white" }}>
       <SafeArea style={styles.container}>
@@ -24,6 +40,7 @@ const Page = () => {
           initialValues={{ email: "", password: "" }}
           onSubmit={(values) => {
             console.log("form values", values);
+            nativeLogin.mutate(values);
           }}
           validationSchema={Yup.object().shape({
             email: Yup.string().email().required("Your email is required"),
