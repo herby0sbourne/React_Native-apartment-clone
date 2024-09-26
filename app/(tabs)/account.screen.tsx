@@ -13,9 +13,10 @@ import {
   rentingBtns,
   supportBtns,
 } from "@/constants/accountButtons";
+import useAuth from "@/hooks/useAuth";
 
 const Page = () => {
-  const user = null;
+  const { user, logout } = useAuth();
 
   return (
     <SafeArea>
@@ -23,8 +24,10 @@ const Page = () => {
         <View style={{ marginHorizontal: 10 }}>
           {user ? (
             <>
-              <Text style={styles.userName}>Welcome, user's FirstName</Text>
-              <Text style={styles.email}>user@example.com</Text>
+              <Text style={styles.userName}>
+                Welcome, {user?.firstName ? user.firstName : ""}
+              </Text>
+              <Text style={styles.email}>{user.email}</Text>
             </>
           ) : (
             <>
@@ -48,11 +51,7 @@ const Page = () => {
             <ButtonList data={supportBtns} header="Support" />
             <ButtonList data={supportBtns} header="Support" />
             <View style={styles.wrapper}>
-              <Button
-                title={"Sign Out"}
-                ghostBtn
-                onPress={() => console.log("log user out")}
-              />
+              <Button title={"Sign Out"} ghostBtn onPress={logout} />
             </View>
           </>
         ) : (
@@ -78,7 +77,7 @@ const Page = () => {
 
 const styles = StyleSheet.create({
   userName: {
-    fontSize: 26,
+    fontSize: 24,
     textAlign: "center",
     fontWeight: "600",
     marginBottom: 5,
