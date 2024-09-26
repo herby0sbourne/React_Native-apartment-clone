@@ -42,7 +42,6 @@ const CustomInput = ({
 }: InputProps) => {
   const [isPassword, setIsPassword] = useState<boolean>(true);
   const statusColor = status === "danger" && { borderColor: "red" };
-  console.log({ caption, status });
 
   return (
     <>
