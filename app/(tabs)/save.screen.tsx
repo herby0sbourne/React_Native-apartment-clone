@@ -7,12 +7,14 @@ import Contact from "@/components/Contact";
 import Favorites from "@/components/Favorites";
 import Application from "@/components/Application";
 
-import { properties } from "@/data/properties";
+// import { properties } from "@/data/properties";
 import { UtilStyles } from "@/constants/UtilStyles";
+import useAuth from "@/hooks/useAuth";
 
 const Page = () => {
-  const [activeBtn, setActiveBtn] = useState<Number>(0);
-  const user = false;
+  const { user } = useAuth();
+  const [activeBtn, setActiveBtn] = useState<number>(0);
+
   const likeProperty = undefined;
   const contactProperty = undefined;
   const applicationProperty = undefined;
@@ -32,19 +34,19 @@ const Page = () => {
       <View style={[UtilStyles.flex, { paddingVertical: 10 }]}>
         <Button
           title={"Favorites"}
-          ghostBtn={!(activeBtn === 0)}
+          ghostBtn={activeBtn === 0}
           extraStyle={styles.leftRadius}
           onPress={() => handleClick(0)}
         />
         <Button
           title={"Contacted"}
-          ghostBtn={!(activeBtn === 1)}
+          ghostBtn={activeBtn === 1}
           extraStyle={styles.noBorderRadius}
           onPress={() => handleClick(1)}
         />
         <Button
           title={"Applications"}
-          ghostBtn={!(activeBtn === 2)}
+          ghostBtn={activeBtn === 2}
           extraStyle={styles.rightRadius}
           onPress={() => handleClick(2)}
         />
