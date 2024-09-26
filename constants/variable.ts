@@ -5,13 +5,18 @@ const TRANSITION_THRESHOLD = 100;
 
 const IPAddress = Platform.OS === "android" ? "10.0.2.2" : "localhost";
 const SERVER_URL = `http://${IPAddress}:4000/api`;
-// const SERVER_URL = "http://192.168.100.7:4000/api";
+
 const location = "/location";
+const user = "/user";
+
 const locationEndpoint = SERVER_URL + location;
+const userEndpoint = SERVER_URL + user;
 
 const ENDPOINTS = {
-  searchEndpoint: `${locationEndpoint}/search`,
-  autocompleteEndpoint: `${locationEndpoint}/autocomplete`,
+  search: `${locationEndpoint}/search`,
+  autocomplete: `${locationEndpoint}/autocomplete`,
+  register: `${userEndpoint}/create-user`,
+  login: `${userEndpoint}/login`,
 };
 
 export { HEADER_HEIGHT, TRANSITION_THRESHOLD, ENDPOINTS };
