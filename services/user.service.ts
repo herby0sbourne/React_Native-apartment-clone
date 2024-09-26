@@ -3,7 +3,7 @@ import { ENDPOINTS } from "@/constants/variable";
 import { handleError } from "@/utils/errorHandler";
 import { User } from "@/types/user";
 
-type DataRes = { data: User };
+type DataRes = User;
 
 interface CreateUser {
   firstName: string;
@@ -18,7 +18,7 @@ export const registerUser = async (userData: CreateUser) => {
 
     if (!data) return null;
 
-    return data.data;
+    return data;
   } catch (error) {
     handleError(error);
   }
@@ -30,7 +30,7 @@ export const loginUser = async (email: string, password: string) => {
 
     if (!data) return null;
 
-    return data.data;
+    return data;
   } catch (error) {
     handleError(error);
   }
