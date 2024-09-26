@@ -1,10 +1,12 @@
+import { useEffect } from "react";
+import { Stack } from "expo-router";
+import { useFonts } from "expo-font";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
 import "react-native-reanimated";
+import * as SplashScreen from "expo-splash-screen";
+
+import { AuthProvider } from "@/context/authContext";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -42,9 +44,11 @@ export default function RootLayout() {
     return null;
   }
   return (
-    <QueryClientProvider client={queryClient}>
-      <RootLayoutNav />
-    </QueryClientProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <RootLayoutNav />
+      </QueryClientProvider>
+    </AuthProvider>
   );
 }
 
