@@ -12,7 +12,7 @@ interface CreateUser {
   password: string;
 }
 
-export const registerUser = async (userData: CreateUser) => {
+export const apiRegisterUser = async (userData: CreateUser) => {
   try {
     const { data } = await axios.post<DataRes>(ENDPOINTS.register, userData);
 
@@ -26,7 +26,7 @@ export const registerUser = async (userData: CreateUser) => {
   }
 };
 
-export const loginUser = async (email: string, password: string) => {
+export const apiLoginUser = async (email: string, password: string) => {
   try {
     const { data } = await axios.post<DataRes>(ENDPOINTS.login, { email, password });
 

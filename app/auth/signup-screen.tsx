@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import { object, string } from "yup";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useMutation } from "@tanstack/react-query";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -15,7 +15,7 @@ import FacebookButton from "@/components/FacebookButton";
 import { captionStatus } from "@/utils/captionStatus";
 import { useNavigation } from "expo-router";
 import useAuth from "@/hooks/useAuth";
-import { registerUser } from "@/services/user.service";
+import { apiRegisterUser } from "@/services/user.service";
 
 interface IRegisterUser {
   firstName: string;
@@ -35,7 +35,7 @@ const Page = () => {
       email: string;
       password: string;
     }) => {
-      const user = await registerUser(values);
+      const user = await apiRegisterUser(values);
 
       if (!user) return;
 

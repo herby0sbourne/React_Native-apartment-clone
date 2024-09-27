@@ -14,7 +14,7 @@ import GoogleButton from "@/components/GoogleButton";
 import FacebookButton from "@/components/FacebookButton";
 
 import useAuth from "@/hooks/useAuth";
-import { loginUser } from "@/services/user.service";
+import { apiLoginUser } from "@/services/user.service";
 
 const Page = () => {
   const navigation = useNavigation();
@@ -22,7 +22,7 @@ const Page = () => {
 
   const nativeLogin = useMutation({
     mutationFn: async (values: { email: string; password: string }) => {
-      const user = await loginUser(values.email, values.password);
+      const user = await apiLoginUser(values.email, values.password);
 
       if (!user) return;
 
