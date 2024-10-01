@@ -1,5 +1,4 @@
 import { Text, ViewStyle, StyleSheet, TouchableOpacity, TextStyle } from "react-native";
-import * as WebBrowser from "expo-web-browser";
 
 import GoogleLogo from "../assets/logos/google.svg";
 import { UtilStyles } from "@/constants/UtilStyles";
@@ -11,7 +10,6 @@ export interface AuthButtonProps {
   onPress: () => void;
 }
 
-WebBrowser.maybeCompleteAuthSession();
 
 const GoogleButton = ({ text, extraStyle, onPress, textStyle }: AuthButtonProps) => {
   return (
