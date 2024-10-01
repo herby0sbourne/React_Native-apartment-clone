@@ -6,15 +6,18 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 import Button from "@/components/Button";
 import Divider from "@/components/Divider";
+import { useNavigation } from "expo-router";
 import SafeArea from "@/components/SafeArea";
 import CustomInput from "@/components/CustomInput";
 import AppleButton from "@/components/AppleButton";
 import GoogleButton from "@/components/GoogleButton";
 import FacebookButton from "@/components/FacebookButton";
+import { AccessToken, LoginManager } from "react-native-fbsdk-next";
+
+import useAuth from "@/hooks/useAuth";
+import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
 
 import { captionStatus } from "@/utils/captionStatus";
-import { useNavigation } from "expo-router";
-import useAuth from "@/hooks/useAuth";
 import { apiRegisterUser } from "@/services/user.service";
 
 interface IRegisterUser {
@@ -25,6 +28,8 @@ interface IRegisterUser {
 }
 
 const Page = () => {
+  useWarmUpBrowser();
+
   const navigation = useNavigation();
   const { login } = useAuth();
 
@@ -42,7 +47,17 @@ const Page = () => {
       login(user);
       navigation.goBack();
     },
-    // 123456789aA@
+  });
+
+  const facebookLogin = useMutation({
+    mutationFn: async () => {
+      const res = await LoginManager.logInWithPermissions(["public_profile", "email"]);
+
+      if (res.isCancelled) return;
+
+      const token = await AccessToken.getCurrentAccessToken();
+      console.log(token!.accessToken);
+    },
   });
 
   return (
@@ -132,7 +147,7 @@ const Page = () => {
 
                   <FacebookButton
                     text={"Continue with Facebook"}
-                    onPress={() => console.log("sign up with facebook")}
+                    onPress={() => facebookLogin.mutate()}
                     extraStyle={{
                       backgroundColor: "#3b5998",
                       borderWidth: 0,
