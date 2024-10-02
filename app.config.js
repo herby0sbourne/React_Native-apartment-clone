@@ -2,6 +2,9 @@ module.exports = {
   scheme: "com.herbyosbourne.apartments",
   extra: {
     fact: "kittens are cool",
+    eas: {
+      projectId: "05968cf2-083c-45b5-974a-6bcd0cf3b60e",
+    },
   },
   ios: {
     supportsTablet: true,
