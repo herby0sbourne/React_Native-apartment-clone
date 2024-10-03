@@ -39,3 +39,15 @@ export const apiLoginUser = async (email: string, password: string) => {
     handleError(error);
   }
 };
+
+export const apiFacebookLogin = async (accessToken: string) => {
+  try {
+    const { data } = await axios.post<DataRes>(ENDPOINTS.facebook, { accessToken });
+
+    if (!data) return null;
+
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
+};
