@@ -17,6 +17,7 @@ const ENDPOINTS = {
   autocomplete: `${locationEndpoint}/autocomplete`,
   register: `${userEndpoint}/create-user`,
   login: `${userEndpoint}/login-user`,
+  facebook: `${userEndpoint}/facebook-login`,
 };
 
 export { HEADER_HEIGHT, TRANSITION_THRESHOLD, ENDPOINTS };
