@@ -10,8 +10,7 @@ import Divider from "@/components/Divider";
 import SafeArea from "@/components/SafeArea";
 import CustomInput from "@/components/CustomInput";
 import AppleButton from "@/components/AppleButton";
-import GoogleButton from "@/components/GoogleButton";
-import FacebookButton from "@/components/FacebookButton";
+import SocialAuthButton from "@/components/SocialAuthButton";
 
 import useAuth from "@/hooks/useAuth";
 import { apiLoginUser } from "@/services/user.service";
@@ -89,13 +88,15 @@ const Page = () => {
                 {/*  DIVIDER*/}
                 <Divider style={styles.divider}>or</Divider>
                 <View style={{ gap: 10 }}>
-                  <GoogleButton
+                  <SocialAuthButton
+                    type={"google"}
                     text={"Continue with Google"}
                     onPress={() => console.log("login with google")}
                     textStyle={{ color: "#36454f" }}
                   />
 
-                  <FacebookButton
+                  <SocialAuthButton
+                    type={"facebook"}
                     text={"Continue with Facebook"}
                     onPress={() => console.log("login with facebook")}
                     extraStyle={{
