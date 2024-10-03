@@ -1,24 +1,23 @@
 import { Formik } from "formik";
 import { object, string } from "yup";
+import { useNavigation } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { useMutation } from "@tanstack/react-query";
+import { AccessToken, LoginManager } from "react-native-fbsdk-next";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import Button from "@/components/Button";
 import Divider from "@/components/Divider";
-import { useNavigation } from "expo-router";
 import SafeArea from "@/components/SafeArea";
 import CustomInput from "@/components/CustomInput";
 import AppleButton from "@/components/AppleButton";
-import GoogleButton from "@/components/GoogleButton";
-import FacebookButton from "@/components/FacebookButton";
-import { AccessToken, LoginManager } from "react-native-fbsdk-next";
+import SocialAuthButton from "@/components/SocialAuthButton";
 
 import useAuth from "@/hooks/useAuth";
 import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
 
 import { captionStatus } from "@/utils/captionStatus";
-import { apiRegisterUser } from "@/services/user.service";
+import { apiFacebookLogin, apiRegisterUser } from "@/services/user.service";
 
 interface IRegisterUser {
   firstName: string;
@@ -56,7 +55,13 @@ const Page = () => {
       if (res.isCancelled) return;
 
       const token = await AccessToken.getCurrentAccessToken();
-      console.log(token!.accessToken);
+
+      const user = await apiFacebookLogin(token!.accessToken);
+
+      if (!user) return;
+
+      login(user);
+      navigation.goBack();
     },
   });
 
@@ -139,13 +144,15 @@ const Page = () => {
 
                 {/* SOCIAL SIGN UP */}
                 <View style={{ gap: 10 }}>
-                  <GoogleButton
+                  <SocialAuthButton
+                    type={"google"}
                     text={"Continue with Google"}
                     onPress={() => console.log("sign up with google")}
                     textStyle={{ color: "#36454f" }}
                   />
 
-                  <FacebookButton
+                  <SocialAuthButton
+                    type={"facebook"}
                     text={"Continue with Facebook"}
                     onPress={() => facebookLogin.mutate()}
                     extraStyle={{
@@ -153,6 +160,7 @@ const Page = () => {
                       borderWidth: 0,
                     }}
                     textStyle={{ marginRight: -16 }}
+                    isLoading={facebookLogin.isPending}
                   />
 
                   <AppleButton
