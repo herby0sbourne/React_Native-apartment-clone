@@ -1,23 +1,21 @@
 import { Formik } from "formik";
 import { object, string } from "yup";
 import { useNavigation } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { useMutation } from "@tanstack/react-query";
-import { AccessToken, LoginManager } from "react-native-fbsdk-next";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import Button from "@/components/Button";
 import Divider from "@/components/Divider";
 import SafeArea from "@/components/SafeArea";
+import SocialAuth from "@/components/SocialAuth";
 import CustomInput from "@/components/CustomInput";
-import AppleButton from "@/components/AppleButton";
-import SocialAuthButton from "@/components/SocialAuthButton";
 
 import useAuth from "@/hooks/useAuth";
 import { useWarmUpBrowser } from "@/hooks/useWarmUpBrowser";
 
 import { captionStatus } from "@/utils/captionStatus";
-import { apiFacebookLogin, apiRegisterUser } from "@/services/user.service";
+import { apiRegisterUser } from "@/services/user.service";
 
 interface IRegisterUser {
   firstName: string;
@@ -33,30 +31,8 @@ const Page = () => {
   const { login } = useAuth();
 
   const nativeRegister = useMutation({
-    mutationFn: async (values: {
-      firstName: string;
-      lastName: string;
-      email: string;
-      password: string;
-    }) => {
+    mutationFn: async (values: IRegisterUser) => {
       const user = await apiRegisterUser(values);
-
-      if (!user) return;
-
-      login(user);
-      navigation.goBack();
-    },
-  });
-
-  const facebookLogin = useMutation({
-    mutationFn: async () => {
-      const res = await LoginManager.logInWithPermissions(["public_profile", "email"]);
-
-      if (res.isCancelled) return;
-
-      const token = await AccessToken.getCurrentAccessToken();
-
-      const user = await apiFacebookLogin(token!.accessToken);
 
       if (!user) return;
 
@@ -142,32 +118,8 @@ const Page = () => {
                 {/*  DIVIDER*/}
                 <Divider style={styles.divider}>or</Divider>
 
-                {/* SOCIAL SIGN UP */}
-                <View style={{ gap: 10 }}>
-                  <SocialAuthButton
-                    type={"google"}
-                    text={"Continue with Google"}
-                    onPress={() => console.log("sign up with google")}
-                    textStyle={{ color: "#36454f" }}
-                  />
-
-                  <SocialAuthButton
-                    type={"facebook"}
-                    text={"Continue with Facebook"}
-                    onPress={() => facebookLogin.mutate()}
-                    extraStyle={{
-                      backgroundColor: "#3b5998",
-                      borderWidth: 0,
-                    }}
-                    textStyle={{ marginRight: -16 }}
-                    isLoading={facebookLogin.isPending}
-                  />
-
-                  <AppleButton
-                    type={"sign-up"}
-                    onPress={() => console.log("sign up with apple")}
-                  />
-                </View>
+                {/* SOCIAL AUTH BUTTONS*/}
+                <SocialAuth />
               </>
             );
           }}

@@ -1,16 +1,15 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Formik } from "formik";
+import { object, string } from "yup";
 import { Link, useNavigation } from "expo-router";
 import { useMutation } from "@tanstack/react-query";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { object, string } from "yup";
 
 import Button from "@/components/Button";
 import Divider from "@/components/Divider";
 import SafeArea from "@/components/SafeArea";
+import SocialAuth from "@/components/SocialAuth";
 import CustomInput from "@/components/CustomInput";
-import AppleButton from "@/components/AppleButton";
-import SocialAuthButton from "@/components/SocialAuthButton";
 
 import useAuth from "@/hooks/useAuth";
 import { apiLoginUser } from "@/services/user.service";
@@ -87,30 +86,8 @@ const Page = () => {
                 />
                 {/*  DIVIDER*/}
                 <Divider style={styles.divider}>or</Divider>
-                <View style={{ gap: 10 }}>
-                  <SocialAuthButton
-                    type={"google"}
-                    text={"Continue with Google"}
-                    onPress={() => console.log("login with google")}
-                    textStyle={{ color: "#36454f" }}
-                  />
-
-                  <SocialAuthButton
-                    type={"facebook"}
-                    text={"Continue with Facebook"}
-                    onPress={() => console.log("login with facebook")}
-                    extraStyle={{
-                      backgroundColor: "#3b5998",
-                      borderWidth: 0,
-                    }}
-                    textStyle={{ marginRight: -16 }}
-                  />
-
-                  <AppleButton
-                    type={"sign-in"}
-                    onPress={() => console.log("login with apple")}
-                  />
-                </View>
+                {/* SOCIAL AUTH BUTTONS*/}
+                <SocialAuth />
               </>
             );
           }}
