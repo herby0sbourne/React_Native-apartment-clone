@@ -1,6 +1,5 @@
 import {
   ActivityIndicator,
-  StyleSheet,
   Text,
   TextStyle,
   TouchableOpacity,
@@ -48,5 +47,4 @@ const SocialAuthButton = ({
   );
 };
 
-const styles = StyleSheet.create({});
 export default SocialAuthButton;
