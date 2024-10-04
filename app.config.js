@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 module.exports = {
   scheme: "com.herbyosbourne.apartments",
   extra: {
