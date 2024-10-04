@@ -36,7 +36,7 @@ const SocialAuthButton = ({
   return (
     <TouchableOpacity style={[UtilStyles.authBtn, extraStyle]} onPress={onPress}>
       {isLoading ? (
-        <ActivityIndicator size={25} color="white" />
+        <ActivityIndicator size={25} color={type === "google" ? "#72B944" : "white"} />
       ) : (
         <>
           {authLogo[type]}
