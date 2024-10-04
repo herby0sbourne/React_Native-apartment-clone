@@ -1,13 +1,14 @@
-import { StyleSheet, View } from "react-native";
-
-import SocialAuthButton from "@/components/SocialAuthButton";
-import AppleButton from "@/components/AppleButton";
 import { useNavigation } from "expo-router";
-import useAuth from "@/hooks/useAuth";
+import { StyleSheet, View } from "react-native";
 import { useMutation } from "@tanstack/react-query";
-
-import { apiFacebookLogin } from "@/services/user.service";
 import { AccessToken, LoginManager } from "react-native-fbsdk-next";
+
+import AppleButton from "@/components/AppleButton";
+import SocialAuthButton from "@/components/SocialAuthButton";
+
+import useAuth from "@/hooks/useAuth";
+import { apiFacebookLogin, apiGoogleLogin } from "@/services/user.service";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 const SocialAuth = () => {
   const navigation = useNavigation();
@@ -30,15 +31,38 @@ const SocialAuth = () => {
     },
   });
 
+  const googleLogin = useMutation({
+    mutationFn: async () => {
+      try {
+        await GoogleSignin.hasPlayServices();
+        await GoogleSignin.signIn();
+
+        const token = await GoogleSignin.getTokens();
+        if (!token.accessToken) return;
+
+        const user = await apiGoogleLogin(token.accessToken);
+        if (!user) return;
+
+        login(user);
+        navigation.goBack();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
+
   return (
     <View style={{ gap: 10 }}>
+      {/* GOOGLE LOGIN BUTTON  */}
       <SocialAuthButton
         type={"google"}
         text={"Continue with Google"}
-        onPress={() => console.log("sign up with google")}
+        onPress={() => googleLogin.mutate()}
         textStyle={{ color: "#36454f" }}
+        isLoading={googleLogin.isPending}
       />
 
+      {/*  FACEBOOK LOGIN BUTTON */}
       <SocialAuthButton
         type={"facebook"}
         text={"Continue with Facebook"}
