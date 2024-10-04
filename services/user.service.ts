@@ -51,3 +51,15 @@ export const apiFacebookLogin = async (accessToken: string) => {
     handleError(error);
   }
 };
+
+export const apiGoogleLogin = async (accessToken: string) => {
+  try {
+    const { data } = await axios.post<DataRes>(ENDPOINTS.google, { accessToken });
+
+    if (!data) return null;
+
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
+};
