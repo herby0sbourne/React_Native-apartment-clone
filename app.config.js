@@ -39,5 +39,11 @@ module.exports = {
           "This identifier will be used to deliver personalized ads to you.",
       },
     ],
+    [
+      "@react-native-google-signin/google-signin",
+      {
+        iosUrlScheme: `${process.env.GOOGLE_IOS_URL_SCHEME}`,
+      },
+    ],
   ],
 };
