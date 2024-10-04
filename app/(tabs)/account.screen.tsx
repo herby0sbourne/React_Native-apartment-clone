@@ -1,11 +1,16 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useEffect } from "react";
 import { Link } from "expo-router";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
-import SafeArea from "@/components/SafeArea";
 import Button from "@/components/Button";
+import SafeArea from "@/components/SafeArea";
 import ButtonList from "@/components/ButtonList";
 import SignUpAndSignInBtn from "@/components/SignUpAndSignInBtn";
+
+import useAuth from "@/hooks/useAuth";
 import Colors from "@/constants/Colors";
+
 import {
   accountBtns,
   firstSignedOutBtns,
@@ -13,10 +18,13 @@ import {
   rentingBtns,
   supportBtns,
 } from "@/constants/accountButtons";
-import useAuth from "@/hooks/useAuth";
 
 const Page = () => {
   const { user, logout } = useAuth();
+
+  useEffect(() => {
+    GoogleSignin.configure();
+  }, []);
 
   return (
     <SafeArea>
