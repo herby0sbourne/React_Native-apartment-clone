@@ -29,16 +29,12 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
       "router": {
         "origin": false
-      },
-      "eas": {
-        "projectId": "a112eafa-1929-4e53-9566-f24a797bb45a"
       }
     }
   }
