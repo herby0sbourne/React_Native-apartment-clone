@@ -15,8 +15,9 @@ const userEndpoint = SERVER_URL + user;
 const ENDPOINTS = {
   search: `${locationEndpoint}/search`,
   autocomplete: `${locationEndpoint}/autocomplete`,
-  register: `${userEndpoint}/create-user`,
   login: `${userEndpoint}/login-user`,
+  google: `${userEndpoint}/google-login`,
+  register: `${userEndpoint}/create-user`,
   facebook: `${userEndpoint}/facebook-login`,
 };
 
