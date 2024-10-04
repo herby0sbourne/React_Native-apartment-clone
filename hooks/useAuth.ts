@@ -1,8 +1,10 @@
 import { useContext } from "react";
-import { AuthContext } from "@/context/authContext";
-import { useQueryClient } from "@tanstack/react-query";
 import * as SecureStore from "expo-secure-store";
+import { useQueryClient } from "@tanstack/react-query";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+
 import { User } from "@/types/user";
+import { AuthContext } from "@/context/authContext";
 
 const useAuth = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -18,6 +20,7 @@ const useAuth = () => {
   const logout = () => {
     setUser(null);
     SecureStore.deleteItemAsync("user");
+    GoogleSignin.signOut();
     queryClient.clear();
     // queryClient.refetchQueries();
   };
