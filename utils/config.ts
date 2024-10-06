@@ -1,7 +1,14 @@
 import { Platform } from "react-native";
 
+const isPreview = process.env.NODE_ENV === "development";
+
 const IPAddress = Platform.OS === "android" ? "10.0.2.2" : "localhost";
-const SERVER_URL = `http://${IPAddress}:4000/api`;
+
+const EXPO_PUBLIC_API_URL = process.env.EXPO_PUBLIC_API_URL;
+const LOCAL_API_URL = `http://${IPAddress}:4000/api`;
+
+const SERVER_URL = isPreview ? EXPO_PUBLIC_API_URL : LOCAL_API_URL;
+// const SERVER_URL = "http://192.168.100.14:4000/api";
 
 const location = "/location";
 const user = "/user";
