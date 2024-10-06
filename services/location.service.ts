@@ -1,6 +1,6 @@
 import axios, { CancelToken } from "axios";
 import { Location } from "@/types/locationIQ";
-import { ENDPOINTS } from "@/constants/variable";
+import ENDPOINTS from "@/utils/config";
 
 export const getSuggestedLocations = async (
   text: string,

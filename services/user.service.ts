@@ -1,7 +1,8 @@
 import axios from "axios";
-import { ENDPOINTS } from "@/constants/variable";
-import { handleError } from "@/utils/errorHandler";
+
 import { User } from "@/types/user";
+import ENDPOINTS from "@/utils/config";
+import { handleError } from "@/utils/errorHandler";
 
 type DataRes = User;
 
