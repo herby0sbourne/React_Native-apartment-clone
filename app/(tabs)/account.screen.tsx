@@ -23,7 +23,9 @@ const Page = () => {
   const { user, logout } = useAuth();
 
   useEffect(() => {
-    GoogleSignin.configure();
+    GoogleSignin.configure({
+      iosClientId: process.env.GOOGLE_IOS_CLIENT_ID,
+    });
   }, []);
 
   return (
