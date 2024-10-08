@@ -1,18 +1,22 @@
 import { useNavigation } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { useMutation } from "@tanstack/react-query";
+import { useRoute } from "@react-navigation/native";
 import { AccessToken, LoginManager } from "react-native-fbsdk-next";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 import AppleButton from "@/components/AppleButton";
 import SocialAuthButton from "@/components/SocialAuthButton";
 
 import useAuth from "@/hooks/useAuth";
 import { apiFacebookLogin, apiGoogleLogin } from "@/services/user.service";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 const SocialAuth = () => {
-  const navigation = useNavigation();
+  const route = useRoute();
   const { login } = useAuth();
+  const navigation = useNavigation();
+
+  const btnType = route.name === "signin-screen" ? "sign-in" : "sign-up";
 
   const facebookLogin = useMutation({
     mutationFn: async () => {
@@ -75,7 +79,7 @@ const SocialAuth = () => {
         isLoading={facebookLogin.isPending}
       />
 
-      <AppleButton type={"sign-up"} onPress={() => console.log("sign up with apple")} />
+      <AppleButton type={btnType} onPress={() => console.log("sign up with apple")} />
     </View>
   );
 };
