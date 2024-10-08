@@ -25,7 +25,7 @@ const Page = () => {
 
   useEffect(() => {
     GoogleSignin.configure({
-      iosClientId: Constants.expoConfig.extra.GOOGLE_IOS_CLIENT_ID,
+      iosClientId: Constants.expoConfig?.extra?.GOOGLE_IOS_CLIENT_ID,
     });
   }, []);
 
