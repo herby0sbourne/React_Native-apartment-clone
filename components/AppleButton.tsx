@@ -20,7 +20,7 @@ const AppleButton = ({ type, onPress }: AppleAuthProps) => {
     <AppleAuthentication.AppleAuthenticationButton
       onPress={onPress}
       buttonType={buttonType[type]}
-      buttonStyle={AppleAuthenticationButtonStyle.WHITE}
+      buttonStyle={AppleAuthenticationButtonStyle.WHITE_OUTLINE}
       cornerRadius={5}
       style={styles.btn}
     />
