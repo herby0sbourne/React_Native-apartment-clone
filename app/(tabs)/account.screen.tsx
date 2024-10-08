@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "expo-router";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import Constants from "expo-constants";
 
 import Button from "@/components/Button";
 import SafeArea from "@/components/SafeArea";
@@ -24,7 +25,7 @@ const Page = () => {
 
   useEffect(() => {
     GoogleSignin.configure({
-      iosClientId: process.env.GOOGLE_IOS_CLIENT_ID,
+      iosClientId: Constants.expoConfig.extra.GOOGLE_IOS_CLIENT_ID,
     });
   }, []);
 

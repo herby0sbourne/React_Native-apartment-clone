@@ -1,9 +1,9 @@
-require('dotenv').config();
+require("dotenv").config();
 
 module.exports = {
   scheme: "com.herbyosbourne.apartments",
   extra: {
-    fact: "kittens are cool",
+    GOOGLE_IOS_CLIENT_ID: process.env.GOOGLE_IOS_CLIENT_ID,
     eas: {
       projectId: "05968cf2-083c-45b5-974a-6bcd0cf3b60e",
     },
