@@ -4,12 +4,13 @@ import { useMutation } from "@tanstack/react-query";
 import { useRoute } from "@react-navigation/native";
 import { AccessToken, LoginManager } from "react-native-fbsdk-next";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import * as AppleAuthentication from "expo-apple-authentication";
 
 import AppleButton from "@/components/AppleButton";
 import SocialAuthButton from "@/components/SocialAuthButton";
 
 import useAuth from "@/hooks/useAuth";
-import { apiFacebookLogin, apiGoogleLogin } from "@/services/user.service";
+import { apiAppleLogin, apiFacebookLogin, apiGoogleLogin } from "@/services/user.service";
 
 const SocialAuth = () => {
   const route = useRoute();
@@ -55,6 +56,31 @@ const SocialAuth = () => {
     },
   });
 
+  const appleLogin = useMutation({
+    mutationFn: async () => {
+      try {
+        const credential = await AppleAuthentication.signInAsync({
+          requestedScopes: [
+            AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+            AppleAuthentication.AppleAuthenticationScope.EMAIL,
+          ],
+        });
+
+        console.log(credential.identityToken);
+        if (!credential.identityToken) return;
+
+        const user = await apiAppleLogin(credential.identityToken);
+
+        if (!user) return;
+
+        login(user);
+        navigation.goBack();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
+
   return (
     <View style={{ gap: 10 }}>
       {/* GOOGLE LOGIN BUTTON  */}
@@ -79,7 +105,7 @@ const SocialAuth = () => {
         isLoading={facebookLogin.isPending}
       />
 
-      <AppleButton type={btnType} onPress={() => console.log("sign up with apple")} />
+      <AppleButton type={btnType} onPress={() => appleLogin.mutate()} />
     </View>
   );
 };
