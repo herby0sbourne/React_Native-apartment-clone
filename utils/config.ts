@@ -20,6 +20,7 @@ const ENDPOINTS = {
   search: `${locationEndpoint}/search`,
   autocomplete: `${locationEndpoint}/autocomplete`,
   login: `${userEndpoint}/login-user`,
+  apple: `${userEndpoint}/apple-login`,
   google: `${userEndpoint}/google-login`,
   register: `${userEndpoint}/create-user`,
   facebook: `${userEndpoint}/facebook-login`,
