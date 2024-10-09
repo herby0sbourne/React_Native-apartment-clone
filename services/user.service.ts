@@ -64,3 +64,17 @@ export const apiGoogleLogin = async (accessToken: string) => {
     handleError(error);
   }
 };
+
+export const apiAppleLogin = async (accessToken: string) => {
+  try {
+    const { data } = await axios.post<DataRes>(ENDPOINTS.apple, {
+      identityToken: accessToken,
+    });
+
+    if (!data) return null;
+
+    return data;
+  } catch (error) {
+    handleError(error);
+  }
+};
