@@ -77,6 +77,16 @@ function RootLayoutNav() {
         }}
       />
 
+      <Stack.Screen
+        name="property/[propertyId]"
+        options={{
+          headerShown: false,
+          presentation: "modal",
+          animation: "slide_from_bottom",
+          gestureEnabled: true,
+        }}
+      />
+
       {/* <Stack.Screen name="modal" options={{ presentation: "modal" }} /> */}
     </Stack>
   );
