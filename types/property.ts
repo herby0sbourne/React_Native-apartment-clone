@@ -26,9 +26,10 @@ export interface Property {
 }
 
 interface Review {
+  id: number;
+  ID?: number;
   body: string;
   CreatedAt: string;
-  id: number;
   propertyID: number;
   stars: number;
   title: string;
@@ -44,9 +45,10 @@ interface Score {
 }
 
 interface Apartment {
+  ID?: number;
+  id: number;
   CreatedAt: string;
   DeletedAt: null;
-  id: number;
   UpdatedAt: string;
   bathrooms: number;
   bedrooms: number;
