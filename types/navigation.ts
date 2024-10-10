@@ -9,6 +9,7 @@ export type RootStackParamList = {
   "signup-screen": undefined;
   "forgot-password": undefined;
   "reset-password": { token: string };
+  property: { propertyId: number };
   // other routes...
 };
 
