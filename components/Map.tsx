@@ -114,6 +114,11 @@ const MapComponent = ({
     setActiveMarker(null);
   };
 
+  const onMapDrag = () => {
+    if (activeMarker === null) return;
+    setActiveMarker(null);
+  };
+
   const handleSearchBtn = () => {
     setProperties(getPropertiesInArea(boundingBox));
     setLocation("Map Area");
@@ -137,6 +142,7 @@ const MapComponent = ({
         provider={PROVIDER_GOOGLE}
         initialRegion={region || INITIAL_REGION}
         onPress={handleMapPress}
+        onPanDrag={onMapDrag}
         onRegionChangeComplete={(region, details) => {
           if (details?.isGesture) {
             console.log("i ran");
