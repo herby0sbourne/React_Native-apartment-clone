@@ -1,5 +1,5 @@
 import React, { MutableRefObject, useRef, useState } from "react";
-import { useFocusEffect } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { RouteProp, useRoute } from "@react-navigation/core";
 import MapView, { MarkerPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import {
@@ -38,7 +38,13 @@ interface MapProps {
 
 let mapRegion: Region | undefined = undefined;
 
-const Map = ({ properties, mapRef, isMap, setLocation, setProperties }: MapProps) => {
+const MapComponent = ({
+  properties,
+  mapRef,
+  isMap,
+  setLocation,
+  setProperties,
+}: MapProps) => {
   const markPressRef = useRef(false);
   const route = useRoute<RouteProp<RouteParams, "params">>();
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
@@ -163,7 +169,11 @@ const Map = ({ properties, mapRef, isMap, setLocation, setProperties }: MapProps
 
       {activeMarker !== null && (
         <Animated.View entering={SlideInDown} exiting={FadeOut}>
-          <PropertyCard property={properties[activeMarker]} extraStyle={styles.mapCard} />
+          <PropertyCard
+            property={properties[activeMarker]}
+            extraStyle={styles.mapCard}
+            onPress={() => router.push(`/property/${properties[activeMarker]}`)}
+          />
         </Animated.View>
       )}
 
@@ -210,4 +220,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Map;
+export default MapComponent;

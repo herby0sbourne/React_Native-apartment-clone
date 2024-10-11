@@ -1,5 +1,5 @@
 import MapView from "react-native-maps";
-import { useNavigation } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { Animated, StatusBar } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/core";
@@ -7,7 +7,7 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import ReAnimated, { useAnimatedRef, useScrollViewOffset } from "react-native-reanimated";
 
-import Map from "@/components/Map";
+import MapComponent from "@/components/Map";
 import SafeArea from "@/components/SafeArea";
 import NoProperty from "@/components/NoProperty";
 import PropertyCard from "@/components/PropertyCard";
@@ -52,6 +52,10 @@ const Page = () => {
 
   const [properties, setProperties] = useState<Property[]>([]);
   const [location, setLocation] = useState<string | undefined>();
+
+  const navigateToProperty = (propertyId: number) => {
+    router.push(`/property/${propertyId}`);
+  };
 
   useEffect(() => {
     if (route.params) {
@@ -112,7 +116,9 @@ const Page = () => {
           zIndex: 5,
           display: isMap ? "none" : "flex",
         }}
-        renderItem={({ item }) => <PropertyCard property={item} />}
+        renderItem={({ item }) => (
+          <PropertyCard property={item} onPress={() => navigateToProperty(item.id)} />
+        )}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={[
           { gap: 10, paddingHorizontal: 10, paddingBottom: bottomHeight },
@@ -121,18 +127,18 @@ const Page = () => {
         scrollEventThrottle={16}
         bounces={false}
       />
-      {/*<Map*/}
-      {/*  properties={properties}*/}
-      {/*  mapRef={mapRef}*/}
-      {/*  isMap={isMap}*/}
-      {/*  location={location || ""}*/}
-      {/*  setLocation={setLocation}*/}
-      {/*  setProperties={setProperties}*/}
-      {/*  // initialRegion={{*/}
-      {/*  //   latitude: +route.params.lat,*/}
-      {/*  //   longitude: +route.params.lng,*/}
-      {/*  // }}*/}
-      {/*/>*/}
+      <MapComponent
+        properties={properties}
+        mapRef={mapRef}
+        isMap={isMap}
+        location={location || ""}
+        setLocation={setLocation}
+        setProperties={setProperties}
+        // initialRegion={{
+        //   latitude: +route.params.lat,
+        //   longitude: +route.params.lng,
+        // }}
+      />
     </SafeArea>
   );
 };
