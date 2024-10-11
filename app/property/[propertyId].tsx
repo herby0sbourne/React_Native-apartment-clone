@@ -5,13 +5,16 @@ import { useLocalSearchParams } from "expo-router";
 import { Text } from "react-native";
 
 const PropertyScreen = () => {
-  const {propertyId} = useLocalSearchParams<{ propertyId: string }>();
+  const { propertyId } = useLocalSearchParams<{ propertyId: string }>();
 
-  const property = properties.find((property) => +propertyId === property.id)
+  const property = properties.find((property) => +propertyId === property.id);
 
   return (
     <SafeArea>
-      <Text> {property?.name}</Text>
+      <Text>
+        {property?.name}
+        PROPERTY SCREEN
+      </Text>
     </SafeArea>
   );
 };
