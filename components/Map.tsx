@@ -178,7 +178,7 @@ const MapComponent = ({
           <PropertyCard
             property={properties[activeMarker]}
             extraStyle={styles.mapCard}
-            onPress={() => router.push(`/property/${properties[activeMarker]}`)}
+            onPress={() => router.push(`/property/${properties[activeMarker].id}`)}
           />
         </Animated.View>
       )}
