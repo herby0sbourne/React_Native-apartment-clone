@@ -1,3 +1,5 @@
+import { useRef, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import {
   View,
   Text,
@@ -6,22 +8,24 @@ import {
   Dimensions,
   StyleSheet,
   ViewStyle,
+  TouchableOpacity,
 } from "react-native";
-import React, { useRef, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
-import { UtilStyles } from "@/constants/UtilStyles";
-import Colors from "@/constants/Colors";
+
 import Button from "@/components/Button";
 import { Property } from "@/types/property";
+
+import Colors from "@/constants/Colors";
+import { UtilStyles } from "@/constants/UtilStyles";
 
 const width = Dimensions.get("window").width;
 
 interface PropertyCardProps {
   property: Property;
   extraStyle?: ViewStyle;
+  onPress?: () => void;
 }
 
-const PropertyCard = ({ property, extraStyle }: PropertyCardProps) => {
+const PropertyCard = ({ property, extraStyle, onPress }: PropertyCardProps) => {
   const flatListRef = useRef<FlatList>(null);
   const [scrollIndex, setScrollIndex] = useState(0);
 
@@ -37,70 +41,75 @@ const PropertyCard = ({ property, extraStyle }: PropertyCardProps) => {
   };
 
   return (
-    <View style={[styles.cardContainer, extraStyle]}>
-      <View style={{ position: "relative" }}>
-        <FlatList
-          ref={flatListRef}
-          data={property.images}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          snapToAlignment={"center"}
-          pagingEnabled={true}
-          viewabilityConfig={{ viewAreaCoveragePercentThreshold: 95 }}
-          renderItem={data => <Image source={{ uri: data.item }} style={styles.image} />}
-          keyExtractor={item => item.toString()}
-        />
-        <View style={[styles.iconContainer, { left: 0 }]}>
-          <Ionicons
-            name={"chevron-back"}
-            size={45}
-            color={"white"}
-            onPress={() => changeIndex(-1)}
+    <TouchableOpacity onPress={onPress}>
+      <View style={[styles.cardContainer, extraStyle]}>
+        <View style={{ position: "relative" }}>
+          <FlatList
+            ref={flatListRef}
+            data={property.images}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            snapToAlignment={"center"}
+            pagingEnabled={true}
+            viewabilityConfig={{ viewAreaCoveragePercentThreshold: 95 }}
+            renderItem={(data) => (
+              <Image source={{ uri: data.item }} style={styles.image} />
+            )}
+            keyExtractor={(item) => item.toString()}
           />
+          <View style={[styles.iconContainer, { left: 0 }]}>
+            <Ionicons
+              name={"chevron-back"}
+              size={45}
+              color={"white"}
+              onPress={() => changeIndex(-1)}
+            />
+          </View>
+          <View style={[styles.iconContainer, { right: 0 }]}>
+            <Ionicons
+              name={"chevron-forward"}
+              size={45}
+              color={"white"}
+              onPress={() => changeIndex(1)}
+            />
+          </View>
         </View>
-        <View style={[styles.iconContainer, { right: 0 }]}>
-          <Ionicons
-            name={"chevron-forward"}
-            size={45}
-            color={"white"}
-            onPress={() => changeIndex(1)}
-          />
-        </View>
-      </View>
-      <View style={{ padding: 5 }}>
-        <View style={UtilStyles.row}>
-          <Text style={{ fontWeight: "600", fontSize: 17 }}>
-            <Text>${property.rentLow.toLocaleString()} </Text>
-            <Text>- {property.rentHigh.toLocaleString()}</Text>
-          </Text>
-          <Ionicons name="heart-outline" size={24} color={Colors.primary} />
-        </View>
-        <Text>
-          {property.bedroomLow} - {property.bedroomHigh} Beds
-        </Text>
-        <View style={{ marginVertical: 8 }}>
-          <Text>{property.name}</Text>
-          <Text>{property.street}</Text>
+        <View style={{ padding: 5 }}>
+          <View style={UtilStyles.row}>
+            <Text style={{ fontWeight: "600", fontSize: 17 }}>
+              <Text>${property.rentLow.toLocaleString()} </Text>
+              <Text>- {property.rentHigh.toLocaleString()}</Text>
+            </Text>
+            <Ionicons name="heart-outline" size={24} color={Colors.primary} />
+          </View>
           <Text>
-            {property.city}, {property.state.substring(0, 2).toUpperCase()} {property.zip}
+            {property.bedroomLow} - {property.bedroomHigh} Beds
           </Text>
-        </View>
-        <View style={{ flexDirection: "row" }}>
-          {property.tags.map((tag, index) => {
-            return (
-              <Text key={tag}>
-                {tag}
-                {index !== property.tags.length - 1 ? ", " : ""}
-              </Text>
-            );
-          })}
-        </View>
-        <View style={styles.btnWrapper}>
-          <Button title={"Email"} />
-          <Button title={"Call"} ghostBtn={false} />
+          <View style={{ marginVertical: 8 }}>
+            <Text>{property.name}</Text>
+            <Text>{property.street}</Text>
+            <Text>
+              {property.city}, {property.state.substring(0, 2).toUpperCase()}{" "}
+              {property.zip}
+            </Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            {property.tags.map((tag, index) => {
+              return (
+                <Text key={tag}>
+                  {tag}
+                  {index !== property.tags.length - 1 ? ", " : ""}
+                </Text>
+              );
+            })}
+          </View>
+          <View style={styles.btnWrapper}>
+            <Button title={"Email"} />
+            <Button title={"Call"} ghostBtn={false} />
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
