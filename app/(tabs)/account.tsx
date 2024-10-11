@@ -20,7 +20,7 @@ import {
   supportBtns,
 } from "@/constants/accountButtons";
 
-const Page = () => {
+const Account = () => {
   const { user, logout } = useAuth();
 
   useEffect(() => {
@@ -137,4 +137,4 @@ const styles = StyleSheet.create({
   resetBtn: { flex: 0, marginHorizontal: 10, marginBottom: 10 },
 });
 
-export default Page;
+export default Account;

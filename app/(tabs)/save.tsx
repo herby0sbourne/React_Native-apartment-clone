@@ -11,7 +11,7 @@ import Application from "@/components/Application";
 import { UtilStyles } from "@/constants/UtilStyles";
 import useAuth from "@/hooks/useAuth";
 
-const Page = () => {
+const SaveScreen = () => {
   const { user } = useAuth();
   const [activeBtn, setActiveBtn] = useState<number>(0);
 
@@ -74,4 +74,4 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 5,
   },
 });
-export default Page;
+export default SaveScreen;

@@ -2,9 +2,9 @@ import { Property } from "@/types/property";
 
 export type RootStackParamList = {
   index: undefined | IndexScreenParams;
-  "map.screen": { properties: Property[] };
-  "save.screen": undefined;
-  "account.screen": undefined;
+  map: { properties: Property[] };
+  save: undefined;
+  account: undefined;
   "signin-screen": undefined;
   "signup-screen": undefined;
   "forgot-password": undefined;

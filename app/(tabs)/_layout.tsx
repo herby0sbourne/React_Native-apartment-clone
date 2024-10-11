@@ -39,7 +39,7 @@ const Layout = () => {
         }}
       />
       <Tabs.Screen
-        name="save.screen"
+        name="save"
         options={{
           title: "Saved",
           headerShown: false,
@@ -47,7 +47,7 @@ const Layout = () => {
         }}
       />
       <Tabs.Screen
-        name="account.screen"
+        name="account"
         options={{
           title: "Account",
           headerShown: false,
