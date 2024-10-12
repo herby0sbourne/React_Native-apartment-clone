@@ -46,6 +46,7 @@ const MapComponent = ({
   setProperties,
 }: MapProps) => {
   const markPressRef = useRef(false);
+  const isCardPressedRef = useRef(false);
   const route = useRoute<RouteProp<RouteParams, "params">>();
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
   const [isSearchAreaBtn, setIsSearchAreaBtn] = useState(false);
@@ -60,6 +61,8 @@ const MapComponent = ({
   };
 
   const handleMarkerPress = (event: MarkerPressEvent, index: number) => {
+    console.log("marker pressed");
+
     const { lat, lng } = properties[index];
 
     if (event.nativeEvent?.action === "marker-press") {
@@ -105,17 +108,24 @@ const MapComponent = ({
     setActiveMarker(index);
   };
 
+  const onMapDrag = () => {
+    if (activeMarker === null) return;
+    setActiveMarker(null);
+  };
+
   const handleMapPress = () => {
+    console.log("map clicked");
+
     if (Platform.OS === "ios" && markPressRef.current) {
       markPressRef.current = false;
       return;
     }
 
-    setActiveMarker(null);
-  };
+    if (isCardPressedRef.current) {
+      isCardPressedRef.current = false;
+      return;
+    }
 
-  const onMapDrag = () => {
-    if (activeMarker === null) return;
     setActiveMarker(null);
   };
 
@@ -145,7 +155,7 @@ const MapComponent = ({
         onPanDrag={onMapDrag}
         onRegionChangeComplete={(region, details) => {
           if (details?.isGesture) {
-            console.log("i ran");
+            // console.log("i ran");
             if (!isSearchAreaBtn) setIsSearchAreaBtn(true);
 
             const newBoundingBox = [
@@ -178,7 +188,10 @@ const MapComponent = ({
           <PropertyCard
             property={properties[activeMarker]}
             extraStyle={styles.mapCard}
-            onPress={() => router.push(`/property/${properties[activeMarker].id}`)}
+            onPress={(event) => {
+              isCardPressedRef.current = true;
+              // router.push(`/property/${properties[activeMarker].id}`);
+            }}
           />
         </Animated.View>
       )}
@@ -196,7 +209,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // position: "relative",
-    ...(Platform.OS === "android" && StyleSheet.absoluteFillObject),
+    // ...(Platform.OS === "android" && StyleSheet.absoluteFillObject),
   },
   mapStyle: {
     width: "100%",
@@ -207,6 +220,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 10,
     marginHorizontal: 10,
+    // zIndex: 10,
   },
   searchAreaBtn: {
     position: "absolute",

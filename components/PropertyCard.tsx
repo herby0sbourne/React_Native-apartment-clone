@@ -9,6 +9,7 @@ import {
   StyleSheet,
   ViewStyle,
   TouchableOpacity,
+  GestureResponderEvent,
 } from "react-native";
 
 import Button from "@/components/Button";
@@ -22,7 +23,7 @@ const width = Dimensions.get("window").width;
 interface PropertyCardProps {
   property: Property;
   extraStyle?: ViewStyle;
-  onPress?: () => void;
+  onPress?: (event: GestureResponderEvent) => void;
 }
 
 const PropertyCard = ({ property, extraStyle, onPress }: PropertyCardProps) => {
@@ -41,9 +42,9 @@ const PropertyCard = ({ property, extraStyle, onPress }: PropertyCardProps) => {
   };
 
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={[styles.cardContainer, extraStyle]}>
-        <View style={{ position: "relative" }}>
+    <TouchableOpacity onPress={onPress} style={extraStyle} activeOpacity={0.9}>
+      <View style={[styles.cardContainer]}>
+        <View style={{}}>
           <FlatList
             ref={flatListRef}
             data={property.images}
@@ -121,6 +122,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     backgroundColor: "white",
     // borderColor: "#D3D3D3",
+    position: "relative",
   },
   image: {
     height: 200,
