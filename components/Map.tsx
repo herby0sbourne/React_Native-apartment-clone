@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useRef, useState } from "react";
+import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import { router, useFocusEffect } from "expo-router";
 import { RouteProp, useRoute } from "@react-navigation/core";
 import MapView, { MarkerPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import Animated, { FadeOut, SlideInDown } from "react-native-reanimated";
+import * as Location from "expo-location";
 
 import MapMarker from "@/components/MapMarker";
 import PropertyCard from "@/components/PropertyCard";
@@ -217,7 +218,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // position: "relative",
-    ...(Platform.OS === "android" && StyleSheet.absoluteFillObject),
+    ...Platform.select({
+      android: {
+        ...StyleSheet.absoluteFillObject,
+      },
+      ios: {},
+    }),
   },
   mapStyle: {
     width: "100%",
@@ -228,7 +234,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 10,
     marginHorizontal: 10,
-    // zIndex: 10,
   },
   searchAreaBtn: {
     position: "absolute",
