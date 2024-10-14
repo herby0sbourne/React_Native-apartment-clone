@@ -47,6 +47,7 @@ const MapComponent = ({
 }: MapProps) => {
   const markPressRef = useRef(false);
   const isCardPressedRef = useRef(false);
+  const isPropertyScreen = useRef(false);
   const route = useRoute<RouteProp<RouteParams, "params">>();
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
   const [isSearchAreaBtn, setIsSearchAreaBtn] = useState(false);
@@ -138,9 +139,15 @@ const MapComponent = ({
 
   useFocusEffect(
     React.useCallback(() => {
-      return () => {
-        setActiveMarker(null);
-      };
+      if (isPropertyScreen.current) {
+        isPropertyScreen.current = false;
+        return;
+      }
+
+      setActiveMarker(null);
+      // return () => {
+      //   setActiveMarker(null);
+      // };
     }, [isMap]),
   );
 
@@ -188,9 +195,10 @@ const MapComponent = ({
           <PropertyCard
             property={properties[activeMarker]}
             extraStyle={styles.mapCard}
-            onPress={(event) => {
+            onPress={() => {
               isCardPressedRef.current = true;
-              // router.push(`/property/${properties[activeMarker].id}`);
+              isPropertyScreen.current = true;
+              router.push(`/property/${properties[activeMarker].id}`);
             }}
           />
         </Animated.View>
@@ -209,7 +217,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // position: "relative",
-    // ...(Platform.OS === "android" && StyleSheet.absoluteFillObject),
+    ...(Platform.OS === "android" && StyleSheet.absoluteFillObject),
   },
   mapStyle: {
     width: "100%",
