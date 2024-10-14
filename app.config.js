@@ -12,6 +12,9 @@ module.exports = {
     supportsTablet: true,
     usesAppleSignIn: true,
     bundleIdentifier: "com.herbyosbourne.apartments",
+    config: {
+      googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY_IOS,
+    },
   },
   android: {
     package: "com.herbyosbourne.apartments",
