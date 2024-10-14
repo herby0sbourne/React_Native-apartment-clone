@@ -20,7 +20,7 @@ module.exports = {
     package: "com.herbyosbourne.apartments",
     config: {
       googleMaps: {
-        apiKey: process.env.GOOGLE_MAPS_API_KEY,
+        apiKey: process.env.GOOGLE_MAPS_API_KEY_ANDROID,
       },
     },
   },
@@ -28,6 +28,13 @@ module.exports = {
     "expo-router",
     "expo-apple-authentication",
     "expo-secure-store",
+    [
+      "expo-location",
+      {
+        locationAlwaysAndWhenInUsePermission:
+          "Allow $(PRODUCT_NAME) to use your location.",
+      },
+    ],
     [
       "react-native-fbsdk-next",
       {
