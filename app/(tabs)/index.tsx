@@ -86,6 +86,10 @@ const Page = () => {
       duration: 500,
       useNativeDriver: true,
     });
+<<<<<<< HEAD
+=======
+
+>>>>>>> 42e1b443f1e4167fdde0c4289e203aceb44e1b15
     animation.start();
 
     navigation.setOptions({
