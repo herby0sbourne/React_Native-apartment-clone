@@ -1,20 +1,20 @@
 import MapView from "react-native-maps";
 import { router, useNavigation } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { Animated, StatusBar } from "react-native";
+import { Animated, StatusBar, View } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/core";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import ReAnimated, { useAnimatedRef, useScrollViewOffset } from "react-native-reanimated";
 
 import MapComponent from "@/components/Map";
-import SafeArea from "@/components/SafeArea";
 import NoProperty from "@/components/NoProperty";
 import PropertyCard from "@/components/PropertyCard";
 import SearchHeader from "@/components/SearchHeader";
 
 import { Property } from "@/types/property";
 import { getPropertiesInArea } from "@/data/properties";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 type RootStackParamList = {
   "map.screen": { properties: Property[] };
@@ -40,9 +40,10 @@ type RouteParams = {
 const Page = () => {
   const route = useRoute<RouteProp<RouteParams, "params">>();
   const navigation = useNavigation();
-  const [isMap, setIsMap] = useState(false);
+  const [isMap, setIsMap] = useState(true);
   const mapRef = useRef<MapView | null>(null);
   const bottomHeight = useBottomTabBarHeight();
+  const inserts = useSafeAreaInsets();
 
   const flatListRef = useAnimatedRef<ReAnimated.FlatList>();
   const scrollOffset = useScrollViewOffset(flatListRef);
@@ -108,16 +109,19 @@ const Page = () => {
         totalProperty={properties.length}
       />
 
-      <SafeArea>
+      <SafeAreaView
+        edges={{ top: "additive", bottom: "additive" }}
+        style={{ padding: 0, margin: 0 }}
+      >
         <ReAnimated.FlatList
           ref={flatListRef}
           data={properties}
           scrollEnabled={!!properties.length}
           ListEmptyComponent={<NoProperty isSearch={!!route.params} />}
           style={{
-            backgroundColor: "white",
-            zIndex: 5,
-            // display: isMap ? "none" : "flex",
+            // backgroundColor: "white",
+            // zIndex: 5,
+            display: isMap ? "none" : "flex",
           }}
           renderItem={({ item }) => (
             <PropertyCard property={item} onPress={() => navigateToProperty(item.id)} />
@@ -130,19 +134,26 @@ const Page = () => {
           scrollEventThrottle={16}
           bounces={false}
         />
-      </SafeArea>
-      <MapComponent
-        properties={properties}
-        mapRef={mapRef}
-        isMap={isMap}
-        location={location || ""}
-        setLocation={setLocation}
-        setProperties={setProperties}
-        // initialRegion={{
-        //   latitude: +route.params.lat,
-        //   longitude: +route.params.lng,
-        // }}
-      />
+      </SafeAreaView>
+      <View
+        style={{
+          flex: 1,
+          // top: -inserts.top,
+        }}
+      >
+        <MapComponent
+          properties={properties}
+          mapRef={mapRef}
+          isMap={isMap}
+          location={location || ""}
+          setLocation={setLocation}
+          setProperties={setProperties}
+          // initialRegion={{
+          //   latitude: +route.params.lat,
+          //   longitude: +route.params.lng,
+          // }}
+        />
+      </View>
     </>
   );
 };

@@ -138,16 +138,6 @@ const MapComponent = ({
     setIsSearchAreaBtn(false);
   };
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-        return;
-      }
-    })();
-  }, []);
-
   useFocusEffect(
     React.useCallback(() => {
       if (isPropertyScreen.current) {
@@ -168,13 +158,7 @@ const MapComponent = ({
         ref={mapRef}
         style={styles.mapStyle}
         provider={PROVIDER_GOOGLE}
-        initialRegion={{
-          latitude: 25.7617,
-          longitude: -80.1918,
-          latitudeDelta: 0.1,
-          longitudeDelta: 0.1,
-        }}
-        // initialRegion={region || INITIAL_REGION}
+        initialRegion={region || INITIAL_REGION}
         onPress={handleMapPress}
         onPanDrag={onMapDrag}
         onRegionChangeComplete={(region, details) => {
@@ -233,6 +217,7 @@ const MapComponent = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: "relative",
     ...Platform.select({
       android: {
         ...StyleSheet.absoluteFillObject,
@@ -241,13 +226,15 @@ const styles = StyleSheet.create({
     }),
   },
   mapStyle: {
+    // width,
+    // height,
     width: "100%",
     height: "100%",
-    ...StyleSheet.absoluteFillObject,
+    // ...StyleSheet.absoluteFillObject,
   },
   mapCard: {
     position: "absolute",
-    bottom: 10,
+    bottom: Platform.OS === "ios" ? 30 : 10,
     marginHorizontal: 10,
   },
   searchAreaBtn: {
