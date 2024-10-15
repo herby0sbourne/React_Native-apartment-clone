@@ -80,11 +80,13 @@ const Page = () => {
       return;
     }
 
-    Animated.timing(translateY, {
+    const animation = Animated.timing(translateY, {
       toValue: !isMap ? 0 : bottomHeight,
       duration: 500,
       useNativeDriver: true,
-    }).start();
+    });
+
+    animation.start();
 
     navigation.setOptions({
       tabBarStyle: {
@@ -92,6 +94,8 @@ const Page = () => {
         transform: [{ translateY }],
       },
     });
+
+    return () => animation.stop();
   }, [isMap, navigation]);
 
   return (
