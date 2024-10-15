@@ -85,6 +85,10 @@ const Page = () => {
       duration: 500,
       useNativeDriver: true,
     });
+<<<<<<< HEAD
+=======
+
+>>>>>>> 42e1b443f1e4167fdde0c4289e203aceb44e1b15
     animation.start();
 
     navigation.setOptions({
@@ -98,38 +102,39 @@ const Page = () => {
   }, [isMap, navigation]);
 
   return (
-    <SafeArea>
+    <>
       <StatusBar translucent={false} barStyle={"dark-content"} />
       <SearchHeader
         scrollOffset={scrollOffset}
         isMap={isMap}
         setIsMap={setIsMap}
         searchQuery={location}
-        // searchQuery={route?.params?.location}
         totalProperty={properties.length}
       />
 
-      <ReAnimated.FlatList
-        ref={flatListRef}
-        data={properties}
-        scrollEnabled={!!properties.length}
-        ListEmptyComponent={<NoProperty isSearch={!!route.params} />}
-        style={{
-          backgroundColor: "white",
-          zIndex: 5,
-          display: isMap ? "none" : "flex",
-        }}
-        renderItem={({ item }) => (
-          <PropertyCard property={item} onPress={() => navigateToProperty(item.id)} />
-        )}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={[
-          { gap: 10, paddingHorizontal: 10, paddingBottom: bottomHeight },
-        ]}
-        showsVerticalScrollIndicator={false}
-        scrollEventThrottle={16}
-        bounces={false}
-      />
+      <SafeArea>
+        <ReAnimated.FlatList
+          ref={flatListRef}
+          data={properties}
+          scrollEnabled={!!properties.length}
+          ListEmptyComponent={<NoProperty isSearch={!!route.params} />}
+          style={{
+            backgroundColor: "white",
+            zIndex: 5,
+            // display: isMap ? "none" : "flex",
+          }}
+          renderItem={({ item }) => (
+            <PropertyCard property={item} onPress={() => navigateToProperty(item.id)} />
+          )}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={[
+            { gap: 10, paddingHorizontal: 10, paddingBottom: bottomHeight },
+          ]}
+          showsVerticalScrollIndicator={false}
+          scrollEventThrottle={16}
+          bounces={false}
+        />
+      </SafeArea>
       <MapComponent
         properties={properties}
         mapRef={mapRef}
@@ -142,7 +147,7 @@ const Page = () => {
         //   longitude: +route.params.lng,
         // }}
       />
-    </SafeArea>
+    </>
   );
 };
 

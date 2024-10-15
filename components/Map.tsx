@@ -163,7 +163,7 @@ const MapComponent = ({
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { display: !isMap ? "none" : "flex" }]}>
       <MapView
         ref={mapRef}
         style={styles.mapStyle}
