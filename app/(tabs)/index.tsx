@@ -21,7 +21,6 @@ import { Property } from "@/types/property";
 import { getPropertiesInArea } from "@/data/properties";
 import PropertyList from "@/components/PropertyList";
 
-
 type RootStackParamList = {
   "map.screen": { properties: Property[] };
 };
@@ -113,7 +112,6 @@ const Page = () => {
         totalProperty={properties.length}
       />
 
-
       {isMap ? (
         <MapComponent
           properties={properties}
@@ -135,7 +133,6 @@ const Page = () => {
           setScroll={setScrollOffset}
         />
       )}
-      </View>
     </>
   );
 };
