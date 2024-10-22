@@ -1,25 +1,18 @@
 import MapView from "react-native-maps";
 import { router, useNavigation } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { Animated, StatusBar, View } from "react-native";
+import { Animated, StatusBar } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/core";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import ReAnimated, {
-  SharedValue,
-  useAnimatedRef,
-  useScrollViewOffset,
-  useSharedValue,
-} from "react-native-reanimated";
+import { SharedValue } from "react-native-reanimated";
 
 import MapComponent from "@/components/Map";
-import NoProperty from "@/components/NoProperty";
-import PropertyCard from "@/components/PropertyCard";
 import SearchHeader from "@/components/SearchHeader";
+import PropertyList from "@/components/PropertyList";
 
 import { Property } from "@/types/property";
 import { getPropertiesInArea } from "@/data/properties";
-import PropertyList from "@/components/PropertyList";
 
 type RootStackParamList = {
   "map.screen": { properties: Property[] };
