@@ -38,7 +38,7 @@ type RouteParams = {
 const Page = () => {
   const route = useRoute<RouteProp<RouteParams, "params">>();
   const navigation = useNavigation();
-  const [isMap, setIsMap] = useState(true);
+  const [isMap, setIsMap] = useState(false);
   const mapRef = useRef<MapView | null>(null);
   const bottomHeight = useBottomTabBarHeight();
   const [scrollOffset, setScrollOffset] = useState<SharedValue<number>>();
