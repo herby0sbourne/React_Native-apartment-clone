@@ -1,7 +1,7 @@
 import MapView from "react-native-maps";
 import { router, useNavigation } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { Animated, StatusBar } from "react-native";
+import { Animated, StatusBar, View } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/core";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -13,7 +13,6 @@ import ReAnimated, {
 } from "react-native-reanimated";
 
 import MapComponent from "@/components/Map";
-import SafeArea from "@/components/SafeArea";
 import NoProperty from "@/components/NoProperty";
 import PropertyCard from "@/components/PropertyCard";
 import SearchHeader from "@/components/SearchHeader";
@@ -21,6 +20,7 @@ import SearchHeader from "@/components/SearchHeader";
 import { Property } from "@/types/property";
 import { getPropertiesInArea } from "@/data/properties";
 import PropertyList from "@/components/PropertyList";
+
 
 type RootStackParamList = {
   "map.screen": { properties: Property[] };
@@ -46,7 +46,7 @@ type RouteParams = {
 const Page = () => {
   const route = useRoute<RouteProp<RouteParams, "params">>();
   const navigation = useNavigation();
-  const [isMap, setIsMap] = useState(false);
+  const [isMap, setIsMap] = useState(true);
   const mapRef = useRef<MapView | null>(null);
   const bottomHeight = useBottomTabBarHeight();
   const [scrollOffset, setScrollOffset] = useState<SharedValue<number>>();
@@ -89,7 +89,6 @@ const Page = () => {
       duration: 500,
       useNativeDriver: true,
     });
-
     animation.start();
 
     navigation.setOptions({
@@ -114,6 +113,7 @@ const Page = () => {
         totalProperty={properties.length}
       />
 
+
       {isMap ? (
         <MapComponent
           properties={properties}
@@ -135,6 +135,7 @@ const Page = () => {
           setScroll={setScrollOffset}
         />
       )}
+      </View>
     </>
   );
 };

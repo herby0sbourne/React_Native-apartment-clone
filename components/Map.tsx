@@ -153,7 +153,7 @@ const MapComponent = ({
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { display: !isMap ? "none" : "flex" }]}>
       <MapView
         ref={mapRef}
         style={styles.mapStyle}
@@ -217,7 +217,7 @@ const MapComponent = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // position: "relative",
+    position: "relative",
     ...Platform.select({
       android: {
         ...StyleSheet.absoluteFillObject,
@@ -226,13 +226,15 @@ const styles = StyleSheet.create({
     }),
   },
   mapStyle: {
+    // width,
+    // height,
     width: "100%",
     height: "100%",
     // ...StyleSheet.absoluteFillObject,
   },
   mapCard: {
     position: "absolute",
-    bottom: 10,
+    bottom: Platform.OS === "ios" ? 30 : 10,
     marginHorizontal: 10,
   },
   searchAreaBtn: {
