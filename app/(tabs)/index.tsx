@@ -5,7 +5,12 @@ import { Animated, StatusBar, View } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/core";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import ReAnimated, { useAnimatedRef, useScrollViewOffset } from "react-native-reanimated";
+import ReAnimated, {
+  SharedValue,
+  useAnimatedRef,
+  useScrollViewOffset,
+  useSharedValue,
+} from "react-native-reanimated";
 
 import MapComponent from "@/components/Map";
 import NoProperty from "@/components/NoProperty";
@@ -14,7 +19,8 @@ import SearchHeader from "@/components/SearchHeader";
 
 import { Property } from "@/types/property";
 import { getPropertiesInArea } from "@/data/properties";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import PropertyList from "@/components/PropertyList";
+
 
 type RootStackParamList = {
   "map.screen": { properties: Property[] };
@@ -43,10 +49,7 @@ const Page = () => {
   const [isMap, setIsMap] = useState(true);
   const mapRef = useRef<MapView | null>(null);
   const bottomHeight = useBottomTabBarHeight();
-  const inserts = useSafeAreaInsets();
-
-  const flatListRef = useAnimatedRef<ReAnimated.FlatList>();
-  const scrollOffset = useScrollViewOffset(flatListRef);
+  const [scrollOffset, setScrollOffset] = useState<SharedValue<number>>();
 
   const isInitialRender = useRef(true);
   const translateY = useRef(new Animated.Value(50)).current;
@@ -102,6 +105,7 @@ const Page = () => {
     <>
       <StatusBar translucent={false} barStyle={"dark-content"} />
       <SearchHeader
+        // scrollOffset={test}
         scrollOffset={scrollOffset}
         isMap={isMap}
         setIsMap={setIsMap}
@@ -109,38 +113,8 @@ const Page = () => {
         totalProperty={properties.length}
       />
 
-      <SafeAreaView
-        edges={{ top: "additive", bottom: "additive" }}
-        style={{ padding: 0, margin: 0 }}
-      >
-        <ReAnimated.FlatList
-          ref={flatListRef}
-          data={properties}
-          scrollEnabled={!!properties.length}
-          ListEmptyComponent={<NoProperty isSearch={!!route.params} />}
-          style={{
-            // backgroundColor: "white",
-            // zIndex: 5,
-            display: isMap ? "none" : "flex",
-          }}
-          renderItem={({ item }) => (
-            <PropertyCard property={item} onPress={() => navigateToProperty(item.id)} />
-          )}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={[
-            { gap: 10, paddingHorizontal: 10, paddingBottom: bottomHeight },
-          ]}
-          showsVerticalScrollIndicator={false}
-          scrollEventThrottle={16}
-          bounces={false}
-        />
-      </SafeAreaView>
-      <View
-        style={{
-          flex: 1,
-          // top: -inserts.top,
-        }}
-      >
+
+      {isMap ? (
         <MapComponent
           properties={properties}
           mapRef={mapRef}
@@ -153,6 +127,14 @@ const Page = () => {
           //   longitude: +route.params.lng,
           // }}
         />
+      ) : (
+        <PropertyList
+          properties={properties}
+          isMap={isMap}
+          route={route}
+          setScroll={setScrollOffset}
+        />
+      )}
       </View>
     </>
   );
