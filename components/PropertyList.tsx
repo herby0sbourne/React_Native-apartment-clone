@@ -34,7 +34,7 @@ const PropertyList = ({ properties, isMap, route, setScroll }: PropertyListProps
   };
 
   return (
-    <SafeWrapper>
+    <SafeArea>
       <ReAnimated.FlatList
         onScroll={handleScroll}
         ref={flatListRef}
@@ -53,7 +53,7 @@ const PropertyList = ({ properties, isMap, route, setScroll }: PropertyListProps
         contentContainerStyle={[
           {
             gap: 10,
-            paddingTop: 180,
+            paddingTop: !!properties.length ? 180 : 0,
             paddingHorizontal: 10,
             paddingBottom: bottomHeight,
             backgroundColor: "white",
@@ -63,7 +63,7 @@ const PropertyList = ({ properties, isMap, route, setScroll }: PropertyListProps
         scrollEventThrottle={16}
         bounces={false}
       />
-    </SafeWrapper>
+    </SafeArea>
   );
 };
 
