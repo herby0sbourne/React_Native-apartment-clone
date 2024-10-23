@@ -1,6 +1,7 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import { router, useFocusEffect } from "expo-router";
+import { MutableRefObject, useRef, useState } from "react";
 import { RouteProp, useRoute } from "@react-navigation/core";
+import Animated, { FadeOut, SlideInDown } from "react-native-reanimated";
 import MapView, { MarkerPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import {
   Dimensions,
@@ -10,8 +11,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Animated, { FadeOut, SlideInDown } from "react-native-reanimated";
-import * as Location from "expo-location";
 
 import MapMarker from "@/components/MapMarker";
 import PropertyCard from "@/components/PropertyCard";
@@ -146,9 +145,6 @@ const MapComponent = ({
       }
 
       setActiveMarker(null);
-      // return () => {
-      //   setActiveMarker(null);
-      // };
     }, [isMap]),
   );
 
