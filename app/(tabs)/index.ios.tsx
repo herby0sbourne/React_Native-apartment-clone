@@ -98,25 +98,27 @@ const Page = () => {
         totalProperty={properties.length}
       />
 
-      <PropertyList
-        isMap={isMap}
-        properties={properties}
-        route={route}
-        setScroll={setScrollOffset}
-      />
-
-      <MapComponent
-        properties={properties}
-        mapRef={mapRef}
-        isMap={isMap}
-        location={location || ""}
-        setLocation={setLocation}
-        setProperties={setProperties}
-        // initialRegion={{
-        //   latitude: +route.params.lat,
-        //   longitude: +route.params.lng,
-        // }}
-      />
+      {isMap ? (
+        <MapComponent
+          properties={properties}
+          mapRef={mapRef}
+          isMap={isMap}
+          location={location || ""}
+          setLocation={setLocation}
+          setProperties={setProperties}
+          // initialRegion={{
+          //   latitude: +route.params.lat,
+          //   longitude: +route.params.lng,
+          // }}
+        />
+      ) : (
+        <PropertyList
+          isMap={isMap}
+          properties={properties}
+          route={route}
+          setScroll={setScrollOffset}
+        />
+      )}
     </>
   );
 };
