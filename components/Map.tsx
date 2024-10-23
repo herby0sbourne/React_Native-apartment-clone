@@ -1,5 +1,5 @@
 import { router, useFocusEffect } from "expo-router";
-import { MutableRefObject, useRef, useState } from "react";
+import { MutableRefObject, useCallback, useRef, useState } from "react";
 import { RouteProp, useRoute } from "@react-navigation/core";
 import Animated, { FadeOut, SlideInDown } from "react-native-reanimated";
 import MapView, { MarkerPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
@@ -138,7 +138,7 @@ const MapComponent = ({
   };
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       if (isPropertyScreen.current) {
         isPropertyScreen.current = false;
         return;
@@ -149,7 +149,12 @@ const MapComponent = ({
   );
 
   return (
-    <View style={[styles.container, { display: !isMap ? "none" : "flex" }]}>
+    <View
+      style={[
+        styles.container,
+        //  { display: isMap ? "flex" : "none" }
+      ]}
+    >
       <MapView
         ref={mapRef}
         style={styles.mapStyle}
