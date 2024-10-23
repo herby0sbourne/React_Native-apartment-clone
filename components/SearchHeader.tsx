@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 10,
     backgroundColor: "white",
+    paddingBottom: 14,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: "gray",
   },
