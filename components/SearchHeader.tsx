@@ -1,5 +1,9 @@
-import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Link } from "expo-router";
 import { useLayoutEffect } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, {
   SharedValue,
   useAnimatedStyle,
@@ -7,16 +11,12 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { HEADER_HEIGHT, TRANSITION_THRESHOLD } from "@/constants/variable";
-import { Ionicons } from "@expo/vector-icons";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import Colors from "@/constants/Colors";
-
-import { UtilStyles } from "@/constants/UtilStyles";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SearchFilter from "@/components/SearchFilter";
 import SearchBtnOption from "@/components/SearchBtnOption";
-import { Link } from "expo-router";
+
+import Colors from "@/constants/Colors";
+import { UtilStyles } from "@/constants/UtilStyles";
+import { HEADER_HEIGHT, TRANSITION_THRESHOLD } from "@/constants/variable";
 
 interface SearchHeaderProps {
   scrollOffset?: SharedValue<number>;
@@ -78,7 +78,7 @@ const SearchHeader = ({
   const iosStyles = Platform.select({
     ios: {
       paddingTop: insets.top,
-      height: HEADER_HEIGHT - insets.top / 2,
+      height: Math.floor(HEADER_HEIGHT - insets.top / 2),
     },
   });
 
@@ -138,11 +138,10 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    // height: HEADER_HEIGHT,
-    // height: 200,
     zIndex: 10,
     backgroundColor: "white",
-    paddingBottom: 20,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: "gray",
   },
   searchBar: {
     flexDirection: "row",
