@@ -34,7 +34,7 @@ const PropertyList = ({ properties, isMap, route, setScroll }: PropertyListProps
   };
 
   return (
-    <SafeWrapper>
+    <SafeWrapper style={{backgroundColor:'white'}}>
       <ReAnimated.FlatList
         onScroll={handleScroll}
         ref={flatListRef}
