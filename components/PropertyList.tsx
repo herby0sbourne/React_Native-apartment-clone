@@ -1,10 +1,10 @@
+import { Fragment } from "react";
 import { router } from "expo-router";
 import { Platform, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import ReAnimated, { useAnimatedRef, useScrollViewOffset } from "react-native-reanimated";
 
-import SafeArea from "@/components/SafeArea";
 import NoProperty from "@/components/NoProperty";
 import PropertyCard from "@/components/PropertyCard";
 
@@ -17,7 +17,7 @@ interface PropertyListProps {
 
 // const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-const SafeWrapper = Platform.OS === "ios" ? SafeAreaView : SafeArea;
+const SafeWrapper = Platform.OS === "ios" ? SafeAreaView : Fragment;
 
 const PropertyList = ({ properties, isMap, route, setScroll }: PropertyListProps) => {
   const bottomHeight = useBottomTabBarHeight();
@@ -34,7 +34,7 @@ const PropertyList = ({ properties, isMap, route, setScroll }: PropertyListProps
   };
 
   return (
-    <SafeArea>
+    <SafeWrapper>
       <ReAnimated.FlatList
         onScroll={handleScroll}
         ref={flatListRef}
@@ -53,7 +53,7 @@ const PropertyList = ({ properties, isMap, route, setScroll }: PropertyListProps
         contentContainerStyle={[
           {
             gap: 10,
-            paddingTop: !!properties.length ? 180 : 0,
+            paddingTop: properties.length ? 180 : 0,
             paddingHorizontal: 10,
             paddingBottom: bottomHeight,
             backgroundColor: "white",
@@ -63,7 +63,7 @@ const PropertyList = ({ properties, isMap, route, setScroll }: PropertyListProps
         scrollEventThrottle={16}
         bounces={false}
       />
-    </SafeArea>
+    </SafeWrapper>
   );
 };
 
