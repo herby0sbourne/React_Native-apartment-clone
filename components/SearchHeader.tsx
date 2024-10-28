@@ -78,7 +78,8 @@ const SearchHeader = ({
   const iosStyles = Platform.select({
     ios: {
       paddingTop: insets.top,
-      height: Math.floor(HEADER_HEIGHT - insets.top / 2),
+      minHeight: Math.floor(HEADER_HEIGHT - insets.top / 2),
+
     },
   });
 
