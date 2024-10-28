@@ -38,25 +38,34 @@ interface MapProps {
 
 let mapRegion: Region | undefined = undefined;
 
+// const INITIAL_REGION = {
+//   latitude: 25.80913,
+//   longitude: -80.186363,
+//   latitudeDelta: 0.4,
+//   longitudeDelta: 0.4,
+// };
+
 const MapComponent = ({
   properties,
   mapRef,
   isMap,
   setLocation,
   setProperties,
+  initialRegion,
 }: MapProps) => {
   const markPressRef = useRef(false);
   const isCardPressedRef = useRef(false);
   const isPropertyScreen = useRef(false);
+  const [isMapReady, setIsMapReady] = useState(false);
   const route = useRoute<RouteProp<RouteParams, "params">>();
-  const [activeMarker, setActiveMarker] = useState<number | null>(null);
   const [isSearchAreaBtn, setIsSearchAreaBtn] = useState(false);
   const [boundingBox, setBoundingBox] = useState<number[]>([]);
   const [region, setRegion] = useState<Region | undefined>(mapRegion);
+  const [activeMarker, setActiveMarker] = useState<number | null>(null);
 
   const INITIAL_REGION = {
-    latitude: route.params?.lat || 25.80913,
-    longitude: route.params?.lng || -80.186363,
+    latitude: route?.params?.lat || 25.80913,
+    longitude: route?.params?.lng || -80.186363,
     latitudeDelta: 0.1,
     longitudeDelta: 0.1,
   };
@@ -71,7 +80,7 @@ const MapComponent = ({
     }
 
     // Get the current region of the map
-    const currentRegion = mapRef.current?.props.region || INITIAL_REGION;
+    const currentRegion = mapRef.current?.props.region || initialRegion || INITIAL_REGION;
 
     // Get the dimensions of the map view
     const { width, height } = Dimensions.get("window");
@@ -96,16 +105,18 @@ const MapComponent = ({
       // { duration: 500 },
     );
 
-    setTimeout(() => {
-      const newRegion: Region = {
-        latitude: lat,
-        longitude: lng,
-        latitudeDelta: region?.latitudeDelta || 0.4,
-        longitudeDelta: region?.longitudeDelta || 0.4,
-      };
+    const newRegion: Region = {
+      latitude: lat,
+      longitude: lng,
+      latitudeDelta: region?.latitudeDelta || 0.4,
+      longitudeDelta: region?.longitudeDelta || 0.4,
+    };
 
-      setRegion(newRegion);
-    }, 600);
+    setRegion((prevRegion) => ({
+      ...prevRegion,
+      ...newRegion,
+    }));
+
     setActiveMarker(index);
   };
 
@@ -114,7 +125,7 @@ const MapComponent = ({
     setActiveMarker(null);
   };
 
-  const handleMapPress = () => {
+  const handleMapPress = useCallback(() => {
     console.log("map clicked");
 
     if (Platform.OS === "ios" && markPressRef.current) {
@@ -128,7 +139,7 @@ const MapComponent = ({
     }
 
     setActiveMarker(null);
-  };
+  }, [properties]);
 
   const handleSearchBtn = () => {
     setProperties(getPropertiesInArea(boundingBox));
@@ -148,23 +159,27 @@ const MapComponent = ({
     }, [isMap]),
   );
 
+  if (Platform.OS === "android" && !isMap && !isMapReady) {
+    return null;
+  }
+
   return (
     <View
       style={[
         styles.container,
-        //  { display: isMap ? "flex" : "none" }
+        //  { display: !isReady ? "flex" : "none" }
       ]}
     >
       <MapView
         ref={mapRef}
         style={styles.mapStyle}
         provider={PROVIDER_GOOGLE}
-        initialRegion={region || INITIAL_REGION}
+        initialRegion={region || initialRegion || INITIAL_REGION}
         onPress={handleMapPress}
         onPanDrag={onMapDrag}
+        onMapLoaded={() => setIsMapReady(true)}
         onRegionChangeComplete={(region, details) => {
           if (details?.isGesture) {
-            // console.log("i ran");
             if (!isSearchAreaBtn) setIsSearchAreaBtn(true);
 
             const newBoundingBox = [
@@ -219,19 +234,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: "relative",
-    ...Platform.select({
-      android: {
-        ...StyleSheet.absoluteFillObject,
-      },
-      ios: {},
-    }),
   },
   mapStyle: {
     // width,
     // height,
     width: "100%",
     height: "100%",
-    // ...StyleSheet.absoluteFillObject,
   },
   mapCard: {
     position: "absolute",
