@@ -8,6 +8,7 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import MapComponent from "@/components/Map";
+import SafeArea from "@/components/SafeArea";
 import SearchHeader from "@/components/SearchHeader";
 import PropertyList from "@/components/PropertyList";
 
@@ -88,7 +89,7 @@ const Page = () => {
   }, [isMap, navigation]);
 
   return (
-    <>
+    <SafeArea>
       <StatusBar translucent={false} barStyle={"dark-content"} />
       <SearchHeader
         scrollOffset={scrollOffset}
@@ -113,11 +114,13 @@ const Page = () => {
         setLocation={setLocation}
         setProperties={setProperties}
         // initialRegion={{
-        //   latitude: +route.params.lat,
-        //   longitude: +route.params.lng,
+        //   latitude: +route?.params?.lat || 25.80913,
+        //   longitude: +route?.params?.lng || -80.186363,
+        //   latitudeDelta: 0.1,
+        //   longitudeDelta: 0.1,
         // }}
       />
-    </>
+    </SafeArea>
   );
 };
 
