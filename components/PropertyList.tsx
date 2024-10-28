@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { router } from "expo-router";
-import { Platform, StyleSheet } from "react-native";
+import { Platform, StyleSheet,View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import ReAnimated, { useAnimatedRef, useScrollViewOffset } from "react-native-reanimated";
@@ -17,7 +17,7 @@ interface PropertyListProps {
 
 // const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-const SafeWrapper = Platform.OS === "ios" ? SafeAreaView : Fragment;
+const SafeWrapper = Platform.OS === "ios" ? SafeAreaView : View;
 
 const PropertyList = ({ properties, isMap, route, setScroll }: PropertyListProps) => {
   const bottomHeight = useBottomTabBarHeight();
