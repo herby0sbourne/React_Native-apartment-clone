@@ -1,7 +1,7 @@
+import React, { ReactNode } from "react";
 import { View } from "react-native";
 import { Marker, MarkerPressEvent } from "react-native-maps";
 import { Ionicons } from "@expo/vector-icons";
-import { ReactNode } from "react";
 
 interface MapMarkerProps {
   lat: number;
@@ -22,4 +22,4 @@ const MapMarker = ({ lat, lng, onPress, color, children }: MapMarkerProps) => {
   );
 };
 
-export default MapMarker;
+export default React.memo(MapMarker);
