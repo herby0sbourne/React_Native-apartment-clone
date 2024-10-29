@@ -13,7 +13,11 @@ interface MapMarkerProps {
 
 const MapMarker = ({ lat, lng, onPress, color, children }: MapMarkerProps) => {
   return (
-    <Marker coordinate={{ latitude: lat, longitude: lng }} onPress={onPress}>
+    <Marker
+      tracksViewChanges={false}
+      coordinate={{ latitude: lat, longitude: lng }}
+      onPress={onPress}
+    >
       <View>
         <Ionicons name="location-sharp" size={32} color={color} />
       </View>
