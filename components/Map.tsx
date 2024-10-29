@@ -2,7 +2,12 @@ import { router, useFocusEffect } from "expo-router";
 import { MutableRefObject, useCallback, useRef, useState } from "react";
 import { RouteProp, useRoute } from "@react-navigation/core";
 import Animated, { FadeOut, SlideInDown } from "react-native-reanimated";
-import MapView, { MarkerPressEvent, PROVIDER_GOOGLE, Region } from "react-native-maps";
+import MapView, {
+  Details,
+  MarkerPressEvent,
+  PROVIDER_GOOGLE,
+  Region,
+} from "react-native-maps";
 import {
   Dimensions,
   Platform,
@@ -141,6 +146,22 @@ const MapComponent = ({
     setActiveMarker(null);
   }, [properties]);
 
+  const handleRegionChange = (region: Region, details: Details) => {
+    if (details?.isGesture) {
+      if (!isSearchAreaBtn) setIsSearchAreaBtn(true);
+
+      const newBoundingBox = [
+        region.latitude - region.latitudeDelta / 2,
+        region.latitude + region.latitudeDelta / 2,
+        region.longitude - region.longitudeDelta / 2,
+        region.longitude + region.longitudeDelta / 2,
+      ];
+
+      setBoundingBox(newBoundingBox);
+      setRegion(region);
+    }
+  };
+
   const handleSearchBtn = () => {
     setProperties(getPropertiesInArea(boundingBox));
     setLocation("Map Area");
@@ -164,12 +185,7 @@ const MapComponent = ({
   }
 
   return (
-    <View
-      style={[
-        styles.container,
-        //  { display: !isReady ? "flex" : "none" }
-      ]}
-    >
+    <View style={styles.container}>
       <MapView
         ref={mapRef}
         style={styles.mapStyle}
@@ -178,21 +194,7 @@ const MapComponent = ({
         onPress={handleMapPress}
         onPanDrag={onMapDrag}
         onMapLoaded={() => setIsMapReady(true)}
-        onRegionChangeComplete={(region, details) => {
-          if (details?.isGesture) {
-            if (!isSearchAreaBtn) setIsSearchAreaBtn(true);
-
-            const newBoundingBox = [
-              region.latitude - region.latitudeDelta / 2,
-              region.latitude + region.latitudeDelta / 2,
-              region.longitude - region.longitudeDelta / 2,
-              region.longitude + region.longitudeDelta / 2,
-            ];
-
-            setBoundingBox(newBoundingBox);
-            setRegion(region);
-          }
-        }}
+        onRegionChangeComplete={handleRegionChange}
       >
         {properties.map((property, index) => {
           return (
