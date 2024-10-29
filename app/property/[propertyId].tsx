@@ -2,7 +2,8 @@ import SafeArea from "@/components/SafeArea";
 import { properties } from "@/data/properties";
 import { useLocalSearchParams } from "expo-router";
 
-import { Text } from "react-native";
+import { FlatList, Text, View } from "react-native";
+import ImageCarousel from "@/components/ImageCarousel";
 
 const PropertyScreen = () => {
   const { propertyId } = useLocalSearchParams<{ propertyId: string }>();
@@ -11,10 +12,20 @@ const PropertyScreen = () => {
 
   return (
     <SafeArea>
-      <Text>
-        {property?.name}
-        PROPERTY SCREEN
-      </Text>
+      <FlatList
+        data={[property]}
+        keyExtractor={(item) => item!.id.toString()}
+        renderItem={({ item }) => {
+          return (
+            <>
+              {item.images && <ImageCarousel images={item.images} />}
+              <View>
+                <Text>its working</Text>
+              </View>
+            </>
+          );
+        }}
+      />
     </SafeArea>
   );
 };
