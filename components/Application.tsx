@@ -1,10 +1,13 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import EmptyContent from "@/components/EmptyContent";
-import SignUpAndSignInBtn from "@/components/SignUpAndSignInBtn";
-import PropertyCard from "@/components/PropertyCard";
+import { router } from "expo-router";
+import { FlatList, StyleSheet, View } from "react-native";
 
-const Application = ({ applicationProperty, user }) => {
-  if (!applicationProperty) {
+import { TopTabProps } from "@/components/Favorites";
+import EmptyContent from "@/components/EmptyContent";
+import PropertyCard from "@/components/PropertyCard";
+import SignUpAndSignInBtn from "@/components/SignUpAndSignInBtn";
+
+const Application = ({ properties: appliProperty, user }: TopTabProps) => {
+  if (!appliProperty) {
     return (
       <View style={styles.lottieWrapper}>
         <EmptyContent
@@ -17,12 +20,21 @@ const Application = ({ applicationProperty, user }) => {
     );
   }
 
+  const navigateToPropertyDetails = (id: number) => {
+    router.push(`/property/${id}`);
+  };
+
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
-      data={applicationProperty}
+      data={appliProperty}
       contentContainerStyle={{ paddingVertical: 10, gap: 10 }}
-      renderItem={({ item }) => <PropertyCard property={item} />}
+      renderItem={({ item }) => (
+        <PropertyCard
+          property={item}
+          onPress={() => navigateToPropertyDetails(item.id)}
+        />
+      )}
       keyExtractor={(item) => item.id.toString()}
     />
   );

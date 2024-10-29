@@ -1,9 +1,12 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import EmptyContent from "@/components/EmptyContent";
-import SignUpAndSignInBtn from "@/components/SignUpAndSignInBtn";
-import PropertyCard from "@/components/PropertyCard";
+import { router } from "expo-router";
+import { FlatList, StyleSheet, View } from "react-native";
 
-const Contact = ({ contactProperty, user }) => {
+import EmptyContent from "@/components/EmptyContent";
+import { TopTabProps } from "@/components/Favorites";
+import PropertyCard from "@/components/PropertyCard";
+import SignUpAndSignInBtn from "@/components/SignUpAndSignInBtn";
+
+const Contact = ({ properties: contactProperty, user }: TopTabProps) => {
   if (!contactProperty) {
     return (
       <View style={styles.lottieWrapper}>
@@ -17,12 +20,18 @@ const Contact = ({ contactProperty, user }) => {
     );
   }
 
+  const navigateToPropertyDetails = (id: number) => {
+    router.push(`/property/${id}`);
+  };
+
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
       data={contactProperty}
       contentContainerStyle={{ paddingVertical: 10, gap: 10 }}
-      renderItem={({ item }) => <PropertyCard property={item} />}
+      renderItem={({ item }) => (
+        <PropertyCard property={item} onPress={() => navigateToPropertyDetails} />
+      )}
       keyExtractor={(item) => item.id.toString()}
     />
   );

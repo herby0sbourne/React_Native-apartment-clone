@@ -24,9 +24,9 @@ const SaveScreen = () => {
   };
 
   const displayScreen = {
-    0: <Favorites likeProperty={likeProperty} user={user} />,
-    1: <Contact contactProperty={contactProperty} user={user} />,
-    2: <Application applicationProperty={applicationProperty} user={user} />,
+    0: <Favorites properties={likeProperty} user={user} />,
+    1: <Contact properties={contactProperty} user={user} />,
+    2: <Application properties={applicationProperty} user={user} />,
   };
 
   return (
