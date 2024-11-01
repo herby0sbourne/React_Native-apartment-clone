@@ -2,6 +2,7 @@ import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import { useSharedValue } from "react-native-reanimated";
 import { useRef, useState } from "react";
+import { CAROUSEL_IMAGE_HEIGHT } from "@/constants/variable";
 
 const width = Dimensions.get("window").width;
 
@@ -33,7 +34,7 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
         loop={true}
         width={width}
         // width={430}
-        height={200}
+        height={CAROUSEL_IMAGE_HEIGHT}
         snapEnabled={true}
         pagingEnabled={true}
         autoPlayInterval={2000}
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ccc",
-    height: 200,
+    height: CAROUSEL_IMAGE_HEIGHT,
     // width: "100%",
   },
   title: {
