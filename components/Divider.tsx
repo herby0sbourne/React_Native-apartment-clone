@@ -8,10 +8,11 @@ interface DividerProps {
 }
 
 const Divider = ({ children, style }: DividerProps) => {
+  const ph = children ? { paddingHorizontal: 10 } : {};
   return (
     <View style={[styles.container, UtilStyles.flex, style]}>
       <View style={styles.line} />
-      <Text style={{ paddingHorizontal: 10 }}>{children}</Text>
+      <Text style={ph}>{children}</Text>
       <View style={styles.line} />
     </View>
   );
