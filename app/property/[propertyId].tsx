@@ -7,6 +7,7 @@ import ImageCarousel from "@/components/ImageCarousel";
 import PropertyHeader from "@/components/propertyDetailsScreen/PropertyHeader";
 import Divider from "@/components/Divider";
 import PricingAndFloorPlan from "@/components/propertyDetailsScreen/PricingAndFloorPlan";
+import AboutSection from "@/components/propertyDetailsScreen/AboutSection";
 
 const PropertyScreen = () => {
   const { propertyId } = useLocalSearchParams<{ propertyId: string }>();
@@ -30,6 +31,9 @@ const PropertyScreen = () => {
                 <PropertyHeader property={item} />
                 <Divider style={{ marginTop: 10 }} />
                 <PricingAndFloorPlan property={item} />
+                <Divider style={{ marginTop: 10 }} />
+                <AboutSection property={item} />
+                <Divider style={{ marginTop: 10 }} />
               </View>
             </>
           );
