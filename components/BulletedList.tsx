@@ -8,8 +8,6 @@ interface BulletedListProps {
 }
 
 const BulletedList = ({ data, extraStyle, heading }: BulletedListProps) => {
-  console.log(data);
-
   const row = data
     .map((item, index) => {
       if (index % 2 === 0) {
@@ -44,8 +42,6 @@ const BulletedList = ({ data, extraStyle, heading }: BulletedListProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    // paddingHorizontal: 5,
-
     paddingVertical: 10,
   },
   heading: {
@@ -62,7 +58,6 @@ const styles = StyleSheet.create({
   secondRow: {
     flexDirection: "row",
     alignItems: "center",
-
     width: "45%",
   },
 });
