@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { router } from "expo-router";
-import { Platform, StyleSheet,View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import ReAnimated, { useAnimatedRef, useScrollViewOffset } from "react-native-reanimated";
@@ -25,6 +25,9 @@ const PropertyList = ({ properties, isMap, route, setScroll }: PropertyListProps
   const flatListRef = useAnimatedRef<ReAnimated.FlatList>();
   const scrollOffset = useScrollViewOffset(flatListRef);
 
+  const paddingBottom =
+    Platform.OS === "ios" ? bottomHeight : bottomHeight + bottomHeight / 2;
+
   const navigateToProperty = (propertyId: number) => {
     router.push(`/property/${propertyId}`);
   };
@@ -34,7 +37,7 @@ const PropertyList = ({ properties, isMap, route, setScroll }: PropertyListProps
   };
 
   return (
-    <SafeWrapper style={{backgroundColor:'white'}}>
+    <SafeWrapper style={{ backgroundColor: "white" }}>
       <ReAnimated.FlatList
         onScroll={handleScroll}
         ref={flatListRef}
@@ -55,7 +58,7 @@ const PropertyList = ({ properties, isMap, route, setScroll }: PropertyListProps
             gap: 10,
             paddingTop: properties.length ? 180 : 0,
             paddingHorizontal: 10,
-            paddingBottom: bottomHeight,
+            paddingBottom: paddingBottom,
             backgroundColor: "white",
           },
         ]}
