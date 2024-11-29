@@ -6,10 +6,16 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
 
 interface PropertyHeaderProps {
-  property: Property;
+  address: {
+    name: string;
+    street: string;
+    city: string;
+    state: string;
+    zip: number;
+  };
 }
 
-const PropertyHeader = ({ property }: PropertyHeaderProps) => {
+const PropertyHeader = ({ address }: PropertyHeaderProps) => {
   const [heartIcon, setHeartIcon] = useState<"heart" | "heart-outline">("heart-outline");
 
   const handleHeartPress = () => {
@@ -32,12 +38,12 @@ const PropertyHeader = ({ property }: PropertyHeaderProps) => {
 
   return (
     <>
-      <Text style={{ fontSize: 24, fontWeight: "bold" }}>{property.name}</Text>
+      <Text style={{ fontSize: 24, fontWeight: "bold" }}>{address.name}</Text>
       <View style={[UtilStyles.row, { marginTop: 10 }]}>
         <View>
-          <Text style={{ marginRight: 8 }}>{property.street}</Text>
+          <Text style={{ marginRight: 8 }}>{address.street}</Text>
           <Text>
-            {property.city}, {abvState(property.state)} {property.zip}
+            {address.city}, {abvState(address.state)} {address.zip}
           </Text>
         </View>
         <View style={[UtilStyles.flex, { gap: 20 }]}>
