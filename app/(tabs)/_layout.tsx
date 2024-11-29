@@ -15,12 +15,13 @@ function TabBarIcon(props: {
 
 const TabBarIconComponent =
   (name: string) =>
-  ({ color }: { color: string }) => (
-    <TabBarIcon
-      name={name as React.ComponentProps<typeof Ionicons>["name"]}
-      color={color}
-    />
-  );
+  ({ color }: { color: string }) =>
+    (
+      <TabBarIcon
+        name={name as React.ComponentProps<typeof Ionicons>["name"]}
+        color={color}
+      />
+    );
 
 const Layout = () => {
   return (
