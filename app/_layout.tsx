@@ -89,6 +89,16 @@ function RootLayoutNav() {
           gestureEnabled: true,
         }}
       />
+      <Stack.Screen
+        name="messageScreen"
+        options={{
+          title: "Account",
+          headerShown: false,
+          presentation: "modal",
+          animation: "slide_from_bottom",
+          gestureEnabled: true,
+        }}
+      />
 
       {/* <Stack.Screen name="modal" options={{ presentation: "modal" }} /> */}
     </Stack>
