@@ -1,13 +1,15 @@
 import { useMemo } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { router } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
-import Colors from "@/constants/Colors";
 import phoneNumberFormatter from "phone-number-formats";
-import { UtilStyles } from "@/constants/UtilStyles";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
 import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
+
 import Button from "../Button";
-import { router } from "expo-router";
+import Colors from "@/constants/Colors";
+import { UtilStyles } from "@/constants/UtilStyles";
 
 interface ContactSectionProps {
   propertyId: string;
@@ -58,7 +60,7 @@ const ContactSection = ({ propertyId, phoneNumber, website }: ContactSectionProp
           onPress={() => {
             router.push({
               pathname: "messageScreen",
-              params: { propertyId: property.id },
+              params: { propertyId },
             });
           }}
         />
