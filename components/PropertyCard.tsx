@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import {
@@ -105,7 +106,10 @@ const PropertyCard = ({ property, extraStyle, onPress }: PropertyCardProps) => {
             })}
           </View>
           <View style={styles.btnWrapper}>
-            <Button title={"Email"} />
+            <Button
+              title={"Email"}
+              onPress={() => router.push(`/messageScreen?propertyId=${property.id}`)}
+            />
             <Button title={"Call"} ghostBtn={false} />
           </View>
         </View>
