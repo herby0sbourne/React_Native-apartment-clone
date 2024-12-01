@@ -25,6 +25,19 @@ const ContactSection = ({ propertyId, phoneNumber, website }: ContactSectionProp
     }).string;
   }, [phoneNumber]);
 
+  const navigateToMessageScreen = (tour = false) => {
+    const params = {
+      propertyId: propertyId,
+    };
+    if (tour) {
+      params.tour = tour;
+    }
+    router.push({
+      pathname: "messageScreen",
+      params,
+    });
+  };
+
   return (
     <>
       <Text style={[styles.titleStyle, styles.vertiMar]}>Contact</Text>
@@ -41,29 +54,8 @@ const ContactSection = ({ propertyId, phoneNumber, website }: ContactSectionProp
         </View>
       </TouchableOpacity>
       <View style={[UtilStyles.flex, styles.flexGap]}>
-        <Button
-          title="Tour"
-          ghostBtn
-          onPress={() => {
-            router.push({
-              pathname: "messageScreen",
-              params: {
-                propertyId: propertyId,
-                tour: true,
-              },
-            });
-          }}
-        />
-        <Button
-          title="Message"
-          ghostBtn
-          onPress={() => {
-            router.push({
-              pathname: "messageScreen",
-              params: { propertyId },
-            });
-          }}
-        />
+        <Button title="Tour" ghostBtn onPress={() => navigateToMessageScreen(true)} />
+        <Button title="Message" ghostBtn onPress={() => navigateToMessageScreen()} />
       </View>
     </>
   );
