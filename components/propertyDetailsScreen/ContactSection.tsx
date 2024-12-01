@@ -4,12 +4,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import phoneNumberFormatter from "phone-number-formats";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
 
 import Button from "../Button";
 import Colors from "@/constants/Colors";
 import { UtilStyles } from "@/constants/UtilStyles";
+import { callPhoneNumber, formattedPhoneNumber } from "@/utils/callPhoneNumber";
 
 interface ContactSectionProps {
   propertyId: string;
@@ -18,13 +18,6 @@ interface ContactSectionProps {
 }
 
 const ContactSection = ({ propertyId, phoneNumber, website }: ContactSectionProps) => {
-  const formattedPhoneNumber = useMemo(() => {
-    return new phoneNumberFormatter(phoneNumber).format({
-      type: "international",
-      separator: "-",
-    }).string;
-  }, [phoneNumber]);
-
   const navigateToMessageScreen = (tour = false) => {
     const params = {
       propertyId: propertyId,
@@ -41,10 +34,10 @@ const ContactSection = ({ propertyId, phoneNumber, website }: ContactSectionProp
   return (
     <>
       <Text style={[styles.titleStyle, styles.vertiMar]}>Contact</Text>
-      <TouchableOpacity onPress={() => Linking.openURL(`tel:${formattedPhoneNumber}`)}>
+      <TouchableOpacity onPress={() => callPhoneNumber(phoneNumber)}>
         <View style={[UtilStyles.flex, styles.options]}>
           <MaterialIcons name={"smartphone"} color={Colors.info} size={16} />
-          <Text style={styles.textStyle}>{formattedPhoneNumber}</Text>
+          <Text style={styles.textStyle}>{formattedPhoneNumber(phoneNumber)}</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => WebBrowser.openBrowserAsync(`https:${website}`)}>

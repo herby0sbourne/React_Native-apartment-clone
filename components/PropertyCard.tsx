@@ -18,6 +18,7 @@ import { Property } from "@/types/property";
 
 import Colors from "@/constants/Colors";
 import { UtilStyles } from "@/constants/UtilStyles";
+import { callPhoneNumber } from "@/utils/callPhoneNumber";
 
 const width = Dimensions.get("window").width;
 
@@ -110,7 +111,11 @@ const PropertyCard = ({ property, extraStyle, onPress }: PropertyCardProps) => {
               title={"Email"}
               onPress={() => router.push(`/messageScreen?propertyId=${property.id}`)}
             />
-            <Button title={"Call"} ghostBtn={false} />
+            <Button
+              title={"Call"}
+              ghostBtn={false}
+              onPress={() => callPhoneNumber(property.phoneNumber)}
+            />
           </View>
         </View>
       </View>
