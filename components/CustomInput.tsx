@@ -11,7 +11,7 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 interface InputProps extends TextInputProps {
-  value: string;
+  value: string | undefined;
   extraStyle?: TextStyle;
   onChangeText: (text: string) => void;
   placeholder: string;
