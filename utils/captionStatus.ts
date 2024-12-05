@@ -9,6 +9,7 @@ interface InputTypes {
   email: string;
   password: string;
   confirmPassword: string;
+  message?: string;
 }
 
 type InputKeys = keyof InputTypes;
