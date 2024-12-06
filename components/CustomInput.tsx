@@ -20,6 +20,7 @@ interface InputProps extends TextInputProps {
   caption?: string;
   status?: string;
   password?: boolean;
+  required?: boolean;
 }
 
 const EyeIcon = ({ isPassword }: { isPassword: boolean }) => {
@@ -37,6 +38,7 @@ const CustomInput = ({
   caption,
   status,
   password,
+  required,
   secureTextEntry,
   ...props
 }: InputProps) => {
@@ -45,7 +47,10 @@ const CustomInput = ({
 
   return (
     <>
-      <Text style={[styles.label]}>{label}</Text>
+      <Text style={[styles.label]}>
+        {label}
+        {required && <Text style={{ color: "red" }}>*</Text>}
+      </Text>
       <View style={[styles.container]}>
         <TextInput
           style={[styles.inputStyle, extraStyle, statusColor]}
